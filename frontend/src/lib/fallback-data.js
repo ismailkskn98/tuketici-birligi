@@ -481,7 +481,7 @@ export function getFallbackHeroSlides(locale = "tr") {
       ctaLabel: isEnglish ? "Read More" : "Devamını Oku",
       href: isEnglish ? "/news/tuketici-haklari-bilgilendirme-icerikleri-hazirlaniyor" : "/haberler/tuketici-haklari-bilgilendirme-icerikleri-hazirlaniyor",
       image: "/ornek-hero.webp",
-      imageMobile: "/ornek-hero.webp",
+      imageMobile: "/ornek-hero-16-15.webp",
       imageTablet: "/ornek-hero.webp",
       imageDesktop: "/ornek-hero.webp",
     },

@@ -7,7 +7,7 @@ export function isPlaceholderHref(href) {
 
 export function FooterLink({ href, children, className }) {
   const styles = cn(
-    "group/link relative inline-flex w-fit rounded-sm text-sm leading-6 text-ink/68 transition duration-200 hover:-translate-y-px hover:text-secondary",
+    "group/link relative inline-flex w-fit rounded-sm text-[13px] leading-5 text-ink/68 transition duration-200 hover:-translate-y-px hover:text-secondary sm:text-sm sm:leading-6",
     "after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-secondary/70 after:transition-transform after:duration-300 hover:after:scale-x-100",
     className
   );

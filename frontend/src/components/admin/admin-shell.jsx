@@ -3,21 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  FileText,
-  HelpCircle,
-  Home,
-  ImageIcon,
-  LayoutDashboard,
-  LogOut,
-  MapPinned,
-  Menu,
-  MessageSquareText,
-  Settings,
-  Shield,
-  Users,
-  X,
-} from "lucide-react";
+import { FileText, HelpCircle, Home, ImageIcon, LayoutDashboard, LogOut, MapPinned, Menu, MessageSquareText, Settings, Shield, Users, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { adminNavigation } from "@/lib/navigation";
@@ -91,7 +77,7 @@ export function AdminShell({ children }) {
           </span>
           <span className="grid min-w-0">
             <span className="truncate text-sm font-bold text-ink">Yönetim Paneli</span>
-            <span className="truncate text-xs text-muted">Tüketiciler Birliği</span>
+            <span className="truncate text-xs text-muted">Tüketici Birliği</span>
           </span>
         </Link>
 
@@ -114,21 +100,12 @@ export function AdminShell({ children }) {
         <header className="sticky top-0 z-30 border-b border-line bg-white/95 backdrop-blur">
           <div className="flex min-h-16 items-center justify-between gap-3 px-4 md:px-8">
             <div className="flex min-w-0 items-center gap-3">
-              <Button
-                aria-expanded={mobileMenuOpen}
-                aria-label="Admin menüsünü aç"
-                className="lg:hidden"
-                onClick={() => setMobileMenuOpen(true)}
-                size="icon-sm"
-                variant="outline"
-              >
+              <Button aria-expanded={mobileMenuOpen} aria-label="Admin menüsünü aç" className="lg:hidden" onClick={() => setMobileMenuOpen(true)} size="icon-sm" variant="outline">
                 <Menu aria-hidden="true" className="size-4" />
               </Button>
               <div className="min-w-0">
                 <p className="text-xs font-bold uppercase tracking-[0.14em] text-primary-dark">Admin</p>
-                <h1 className="truncate text-base font-bold tracking-normal text-ink md:text-lg">
-                  İçerik ve başvuru yönetimi
-                </h1>
+                <h1 className="truncate text-base font-bold tracking-normal text-ink md:text-lg">İçerik ve başvuru yönetimi</h1>
               </div>
             </div>
             <Button onClick={logout} type="button" variant="outline">
@@ -142,28 +119,17 @@ export function AdminShell({ children }) {
 
       {mobileMenuOpen ? (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <button
-            aria-label="Admin menüsünü kapat"
-            className="absolute inset-0 bg-ink/25"
-            onClick={() => setMobileMenuOpen(false)}
-            type="button"
-          />
+          <button aria-label="Admin menüsünü kapat" className="absolute inset-0 bg-ink/25" onClick={() => setMobileMenuOpen(false)} type="button" />
           <div className="relative flex h-full w-[min(22rem,calc(100vw-2rem))] flex-col border-r border-line bg-white p-5 shadow-soft">
             <div className="flex items-center justify-between gap-3">
               <Link className="focus-ring flex items-center gap-3 rounded-md" href="/admin">
                 <Image alt="" height={40} src="/logo.svg" width={40} />
                 <span className="grid">
                   <span className="text-sm font-bold text-ink">Yönetim Paneli</span>
-                  <span className="text-xs text-muted">Tüketiciler Birliği</span>
+                  <span className="text-xs text-muted">Tüketici Birliği</span>
                 </span>
               </Link>
-              <Button
-                aria-label="Menüyü kapat"
-                onClick={() => setMobileMenuOpen(false)}
-                size="icon-sm"
-                type="button"
-                variant="ghost"
-              >
+              <Button aria-label="Menüyü kapat" onClick={() => setMobileMenuOpen(false)} size="icon-sm" type="button" variant="ghost">
                 <X aria-hidden="true" className="size-4" />
               </Button>
             </div>

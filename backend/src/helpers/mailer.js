@@ -18,9 +18,9 @@ function getTransporter() {
       auth: env.smtp.user
         ? {
             user: env.smtp.user,
-            pass: env.smtp.pass
+            pass: env.smtp.pass,
           }
-        : undefined
+        : undefined,
     });
   }
 
@@ -39,7 +39,7 @@ async function sendMail({ to, subject, text, html }) {
     to,
     subject,
     text,
-    html
+    html,
   });
 
   return true;
@@ -55,14 +55,14 @@ async function sendApplicationConfirmation({ to, fullName, applicationNumber }) 
     "",
     "Telefon veya e-posta ile iletişime geçtiğimizde bu numarayı paylaşabilirsiniz.",
     "",
-    "Tüketiciler Birliği"
+    "Tüketici Birliği",
   ].join("\n");
 
   return sendMail({
     to,
     subject,
     text,
-    html: `<p>Merhaba ${fullName},</p><p>Başvurunuz başarıyla alınmıştır.</p><p><strong>Başvuru No:</strong> ${applicationNumber}</p><p>Telefon veya e-posta ile iletişime geçtiğimizde bu numarayı paylaşabilirsiniz.</p><p>Tüketiciler Birliği</p>`
+    html: `<p>Merhaba ${fullName},</p><p>Başvurunuz başarıyla alınmıştır.</p><p><strong>Başvuru No:</strong> ${applicationNumber}</p><p>Telefon veya e-posta ile iletişime geçtiğimizde bu numarayı paylaşabilirsiniz.</p><p>Tüketici Birliği</p>`,
   });
 }
 
@@ -82,14 +82,14 @@ async function sendAdminNotification({ submission }) {
     `Konu: ${submission.categoryLabel || submission.category}`,
     `Firma: ${submission.companyName || "-"}`,
     "",
-    submission.message
+    submission.message,
   ].join("\n");
 
   return sendMail({
     to,
     subject,
     text,
-    html: `<p>Yeni bir tüketici başvurusu alındı.</p><p><strong>Başvuru No:</strong> ${submission.applicationNumber}<br/><strong>Ad Soyad:</strong> ${submission.fullName}<br/><strong>E-posta:</strong> ${submission.email}<br/><strong>Telefon:</strong> ${submission.phone || "-"}<br/><strong>Konu:</strong> ${submission.categoryLabel || submission.category}<br/><strong>Firma:</strong> ${submission.companyName || "-"}</p><p>${String(submission.message || "").replace(/\n/g, "<br/>")}</p>`
+    html: `<p>Yeni bir tüketici başvurusu alındı.</p><p><strong>Başvuru No:</strong> ${submission.applicationNumber}<br/><strong>Ad Soyad:</strong> ${submission.fullName}<br/><strong>E-posta:</strong> ${submission.email}<br/><strong>Telefon:</strong> ${submission.phone || "-"}<br/><strong>Konu:</strong> ${submission.categoryLabel || submission.category}<br/><strong>Firma:</strong> ${submission.companyName || "-"}</p><p>${String(submission.message || "").replace(/\n/g, "<br/>")}</p>`,
   });
 }
 
@@ -97,5 +97,5 @@ module.exports = {
   isMailConfigured,
   sendAdminNotification,
   sendApplicationConfirmation,
-  sendMail
+  sendMail,
 };

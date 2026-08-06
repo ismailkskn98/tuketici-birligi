@@ -1,11 +1,11 @@
 /**
- * Desktop mega/dropdown menu data for Tüketiciler Birliği.
+ * Desktop mega/dropdown menu data for Tüketici Birliği.
  * Real routes use existing paths; placeholders use "#" (non-navigating).
  */
 export const navigationMenu = [
   {
     item: "Anasayfa",
-    href: "/"
+    href: "/",
   },
   {
     item: "Kurumsal",
@@ -21,8 +21,8 @@ export const navigationMenu = [
           { label: "Kanunlar", href: "#" },
           { label: "Yönetmelikler", href: "#" },
           { label: "Esas ve Usuller", href: "#" },
-          { label: "Yönergeler", href: "#" }
-        ]
+          { label: "Yönergeler", href: "#" },
+        ],
       },
       {
         label: "Stratejik Yönetim",
@@ -30,11 +30,11 @@ export const navigationMenu = [
         submenu: [
           { label: "Stratejik Plan", href: "#" },
           { label: "Performans Programı", href: "#" },
-          { label: "Faaliyet Raporları", href: "#" }
-        ]
+          { label: "Faaliyet Raporları", href: "#" },
+        ],
       },
-      { label: "Kariyer", href: "#" }
-    ]
+      { label: "Kariyer", href: "#" },
+    ],
   },
   {
     item: "Hak Rehberleri",
@@ -45,8 +45,8 @@ export const navigationMenu = [
       { label: "Cayma Hakkı", href: "#" },
       { label: "Mesafeli Satış", href: "#" },
       { label: "Garanti, İade ve Değişim", href: "#" },
-      { label: "Tüketici Kredileri", href: "#" }
-    ]
+      { label: "Tüketici Kredileri", href: "#" },
+    ],
   },
   {
     item: "Başvurular",
@@ -56,8 +56,8 @@ export const navigationMenu = [
       { label: "Tüketici Haritası", href: "/tuketici-haritasi" },
       { label: "Başvuru Süreci", href: "#" },
       { label: "Gerekli Belgeler", href: "#" },
-      { label: "Sıkça Sorulan Sorular", href: "/sss" }
-    ]
+      { label: "Sıkça Sorulan Sorular", href: "/sss" },
+    ],
   },
   {
     item: "Yayınlar",
@@ -66,8 +66,8 @@ export const navigationMenu = [
       { label: "Duyurular", href: "/duyurular" },
       { label: "Raporlar", href: "#" },
       { label: "Broşür ve Yayınlar", href: "#" },
-      { label: "İstatistikler", href: "#" }
-    ]
+      { label: "İstatistikler", href: "#" },
+    ],
   },
   {
     item: "Basın Odası",
@@ -75,13 +75,13 @@ export const navigationMenu = [
       { label: "Basın Bültenleri", href: "#" },
       { label: "Medya Kiti", href: "#" },
       { label: "Görsel Arşiv", href: "#" },
-      { label: "Basın İletişim", href: "/iletisim" }
-    ]
+      { label: "Basın İletişim", href: "/iletisim" },
+    ],
   },
   {
     item: "İletişim",
-    href: "/iletisim"
-  }
+    href: "/iletisim",
+  },
 ];
 
 /** Flat links used by search, footer and mobile fallbacks (real routes only). */
@@ -95,7 +95,7 @@ export const publicNavigation = [
   { key: "applyNow", href: "/basvuru-yap", title: "Başvuru Yap" },
   { key: "provinceMap", href: "/tuketici-haritasi", title: "Tüketici Haritası" },
   { key: "faq", href: "/sss", title: "Sıkça Sorulan Sorular" },
-  { key: "contact", href: "/iletisim", title: "İletişim" }
+  { key: "contact", href: "/iletisim", title: "İletişim" },
 ];
 
 /** Legal / utility links for the fat footer. */
@@ -103,7 +103,7 @@ export const footerLegalLinks = [
   { label: "Gizlilik", href: "/gizlilik" },
   { label: "Aydınlatma Metni", href: "/aydinlatma-metni" },
   { label: "KVKK", href: "/kvkk" },
-  { label: "Sıkça Sorulan Sorular", href: "/sss" }
+  { label: "Sıkça Sorulan Sorular", href: "/sss" },
 ];
 
 function flattenFooterLinks(links = []) {
@@ -134,7 +134,7 @@ export function getFooterColumns(menu = navigationMenu) {
       columns.push({
         title: entry.item,
         href: entry.href || null,
-        links: flattenFooterLinks(entry.links)
+        links: flattenFooterLinks(entry.links),
       });
       continue;
     }
@@ -143,7 +143,7 @@ export function getFooterColumns(menu = navigationMenu) {
       columns.push({
         title: entry.item,
         href: entry.href,
-        links: [{ label: entry.item, href: entry.href }]
+        links: [{ label: entry.item, href: entry.href }],
       });
     }
   }
@@ -160,7 +160,7 @@ export const adminNavigation = [
   { title: "Formlar", href: "/admin/formlar" },
   { title: "Medya", href: "/admin/medya" },
   { title: "Ayarlar", href: "/admin/ayarlar" },
-  { title: "Kullanıcılar", href: "/admin/kullanicilar" }
+  { title: "Kullanıcılar", href: "/admin/kullanicilar" },
 ];
 
 function isPlaceholderHref(href) {
@@ -219,7 +219,7 @@ export function findActiveNavTrail(menu = navigationMenu, pathname = "/") {
         depth: 0,
         topItem: entry.item,
         linkLabel: null,
-        subLabel: null
+        subLabel: null,
       });
     }
 
@@ -233,7 +233,7 @@ export function findActiveNavTrail(menu = navigationMenu, pathname = "/") {
             depth: 2,
             topItem: entry.item,
             linkLabel: link.label,
-            subLabel: sub.label
+            subLabel: sub.label,
           });
         }
       }
@@ -245,7 +245,7 @@ export function findActiveNavTrail(menu = navigationMenu, pathname = "/") {
           depth: 1,
           topItem: entry.item,
           linkLabel: link.label,
-          subLabel: null
+          subLabel: null,
         });
       }
     }

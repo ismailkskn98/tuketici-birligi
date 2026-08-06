@@ -28,7 +28,7 @@ export function MenuItem({
   const showHoverHighlight = isHovered || showDropdown;
 
   const triggerClassName = cn(
-    "relative z-0 inline-flex h-full items-center gap-1.5 px-3.5 text-nowrap transition-colors duration-200 xl:px-4",
+    "relative z-0 inline-flex h-full items-center gap-0.5 px-1.5 text-nowrap transition-colors duration-200 lg:px-1.5 xl:gap-1 xl:px-2.5 2xl:gap-1.5 2xl:px-3.5",
     isActive ? "text-secondary-dark" : showHoverHighlight ? "text-ink" : "text-ink/75",
     className
   );
@@ -38,7 +38,7 @@ export function MenuItem({
       {showHoverHighlight ? (
         <HoverHighlight
           layoutId="nav-item-hover"
-          className="inset-x-1.5 top-1/2 bottom-auto h-10 -translate-y-1/2 rounded-lg"
+          className="inset-x-0.5 top-1/2 bottom-auto h-7 -translate-y-1/2 rounded-md xl:inset-x-1 xl:h-8 2xl:inset-x-1.5 2xl:h-9 2xl:rounded-lg"
         />
       ) : null}
       {isActive ? <ActiveNavUnderline /> : null}
@@ -47,7 +47,7 @@ export function MenuItem({
         <ChevronDown
           aria-hidden="true"
           className={cn(
-            "relative size-3.5 shrink-0 opacity-45 transition duration-200",
+            "relative size-3 shrink-0 opacity-45 transition duration-200 xl:size-3.5",
             (showDropdown || isActive) && "opacity-70",
             isActive && "text-secondary-dark",
             showDropdown && "rotate-180"

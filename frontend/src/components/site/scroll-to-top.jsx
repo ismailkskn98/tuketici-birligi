@@ -54,7 +54,7 @@ export function ScrollToTop() {
         ease: [0.22, 1, 0.36, 1],
       }}
       className={cn(
-        "fixed right-5 bottom-5 z-40",
+        "fixed right-5 bottom-5 z-9999",
         "flex size-12 items-center justify-center",
         "appearance-none border-0 bg-transparent p-0",
         "outline-none ring-0 shadow-none",
@@ -64,7 +64,7 @@ export function ScrollToTop() {
         visible ? "pointer-events-auto" : "pointer-events-none",
       )}
     >
-      <ScrollTopLogo visible={visible} className="size-10 sm:size-11 pointer-events-none" />
+      <ScrollTopLogo visible={visible} className="size-11 pointer-events-none" />
     </motion.button>
   );
 }

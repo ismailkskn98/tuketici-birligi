@@ -16,14 +16,14 @@ function FaqItem({ accordion, copiedLabel, copyLinkLabel, hideAnswerLabel, item,
   return (
     <article
       className={cn(
-        "group relative scroll-mt-24 overflow-hidden rounded-[24px] border border-line/80 bg-white shadow-[0_12px_40px_rgba(22,32,51,0.05)] transition duration-300",
+        "group relative scroll-mt-24 overflow-hidden rounded-2xl border border-line/80 bg-white shadow-[0_12px_40px_rgba(22,32,51,0.05)] transition duration-300 md:rounded-[20px] 2xl:rounded-[24px]",
         "hover:border-primary/35 hover:shadow-soft",
         accordion && open && "-translate-y-0.5",
       )}
       id={item.slug}
     >
       {item.summary ? (
-        <span className="absolute right-0 top-0 z-10 rounded-bl-[18px] bg-ink px-3.5 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white">
+        <span className="absolute right-0 top-0 z-10 rounded-bl-[14px] bg-ink px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-white md:rounded-bl-[16px] md:px-3 md:py-1.5 md:text-[10px] 2xl:rounded-bl-[18px] 2xl:px-3.5 2xl:py-2">
           {item.summary}
           <CutoutCorner className="absolute -bottom-[23px] right-0 -rotate-90 text-ink" size={24} />
           <CutoutCorner className="absolute -left-[23px] top-0 -rotate-90 text-ink" size={24} />
@@ -31,38 +31,40 @@ function FaqItem({ accordion, copiedLabel, copyLinkLabel, hideAnswerLabel, item,
       ) : null}
 
       <div className="flex h-full flex-col">
-        <div className={cn("p-5 pb-0 md:p-7 md:pb-0", item.summary && "pr-16 md:pr-24")}>
+        <div className={cn("p-4 pb-0 md:p-5 md:pb-0 lg:p-5 xl:p-6 xl:pb-0 2xl:p-7 2xl:pb-0", item.summary && "pr-14 md:pr-20 xl:pr-22 2xl:pr-24")}>
           {accordion ? (
             <button aria-controls={`${item.slug}-answer`} aria-expanded={open} className="focus-ring text-left" onClick={onToggle} type="button">
-              <h2 className="font-heading text-lg font-semibold leading-snug tracking-tight text-ink md:text-xl md:leading-snug">{item.title}</h2>
+              <h2 className="font-heading text-base font-semibold leading-snug tracking-tight text-ink md:text-[1.05rem] lg:text-lg xl:text-lg 2xl:text-xl 2xl:leading-snug">{item.title}</h2>
             </button>
           ) : (
-            <h2 className="font-heading text-lg font-semibold leading-snug tracking-tight text-ink md:text-xl md:leading-snug">{item.title}</h2>
+            <h2 className="font-heading text-base font-semibold leading-snug tracking-tight text-ink md:text-[1.05rem] lg:text-lg xl:text-lg 2xl:text-xl 2xl:leading-snug">{item.title}</h2>
           )}
 
           <div className={cn("grid transition-[grid-template-rows,opacity] duration-300 ease-out", showBody ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0")} id={`${item.slug}-answer`}>
-            <div className="overflow-hidden">{item.body ? <p className="mt-4 max-w-4xl text-sm leading-7 text-muted md:text-[15px] md:leading-8">{item.body}</p> : null}</div>
+            <div className="overflow-hidden">
+              {item.body ? <p className="mt-3 max-w-3xl text-sm leading-6 text-muted md:mt-3 md:text-[13px] md:leading-6 lg:leading-6 xl:mt-4 xl:text-sm xl:leading-7 2xl:text-[15px] 2xl:leading-8">{item.body}</p> : null}
+            </div>
           </div>
         </div>
 
-        <div className="mt-6 flex items-center justify-between gap-3 border-t border-line/80 px-5 py-4 md:px-7">
-          <span className="text-xs font-medium text-ink/55">{item.summary}</span>
+        <div className="mt-4 flex items-center justify-between gap-3 border-t border-line/80 px-4 py-3 md:mt-5 md:px-5 md:py-3.5 lg:mt-5 xl:mt-6 xl:px-6 xl:py-4 2xl:px-7">
+          <span className="text-[11px] font-medium text-ink/55 md:text-xs">{item.summary}</span>
 
           {accordion && !open ? (
-            <button className="focus-ring inline-flex items-center gap-1.5 text-xs font-semibold text-ink/60 transition group-hover:text-secondary" onClick={onToggle} type="button">
+            <button className="focus-ring inline-flex items-center gap-1.5 text-[11px] font-semibold text-ink/60 transition group-hover:text-secondary md:text-xs" onClick={onToggle} type="button">
               {showAnswerLabel}
               <ArrowUpRight aria-hidden="true" className="size-3.5 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </button>
           ) : (
             <div className="flex items-center gap-3">
               {accordion ? (
-                <button className="focus-ring text-xs font-semibold text-ink/50 transition hover:text-ink" onClick={onToggle} type="button">
+                <button className="focus-ring text-[11px] font-semibold text-ink/50 transition hover:text-ink md:text-xs" onClick={onToggle} type="button">
                   {hideAnswerLabel}
                 </button>
               ) : null}
               <button
                 aria-label={justCopied ? copiedLabel : copyLinkLabel}
-                className="focus-ring inline-flex items-center gap-2 text-xs font-semibold text-ink/60 transition hover:text-secondary"
+                className="focus-ring inline-flex items-center gap-2 text-[11px] font-semibold text-ink/60 transition hover:text-secondary md:text-xs"
                 onClick={(event) => {
                   event.stopPropagation();
                   onCopy(item.slug);
@@ -138,12 +140,12 @@ export function FaqBrowser({
   }
 
   return (
-    <div className="grid gap-8 md:gap-10">
-      <div className="mx-auto grid w-full max-w-xl gap-5">
+    <div className="grid gap-6 md:gap-7 lg:gap-8 2xl:gap-10">
+      <div className="mx-auto grid w-full max-w-lg gap-4 md:max-w-xl md:gap-5">
         <div className="relative">
           <Search aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted" />
           <Input
-            className="h-12 rounded-full border-line/90 bg-white pl-11 pr-11 text-sm shadow-xs placeholder:text-muted"
+            className="h-11 rounded-full border-line/90 bg-white pl-11 pr-11 text-sm shadow-xs placeholder:text-muted md:h-12"
             onChange={(event) => setQuery(event.target.value)}
             placeholder={searchPlaceholder}
             value={query}
@@ -167,7 +169,7 @@ export function FaqBrowser({
 
             return (
               <button
-                className={cn("focus-ring rounded-full px-3.5 py-1.5 text-sm font-medium transition", active ? "bg-ink text-white" : "text-muted hover:text-ink")}
+                className={cn("focus-ring rounded-full px-3 py-1.5 text-[13px] font-medium transition md:px-3.5 md:text-sm", active ? "bg-ink text-white" : "text-muted hover:text-ink")}
                 key={value}
                 onClick={() => setActiveCategory(value)}
                 type="button"
@@ -180,7 +182,7 @@ export function FaqBrowser({
       </div>
 
       {filteredItems.length ? (
-        <div className={cn("mx-auto grid w-full gap-4", accordion && "max-w-4xl")}>
+        <div className={cn("mx-auto grid w-full gap-3 md:gap-3.5 lg:gap-4", accordion && "max-w-2xl lg:max-w-3xl xl:max-w-3xl 2xl:max-w-4xl")}>
           {filteredItems.map((item) => (
             <FaqItem
               accordion={accordion}
@@ -198,7 +200,7 @@ export function FaqBrowser({
           ))}
         </div>
       ) : (
-        <div className={cn("mx-auto w-full rounded-[24px] border border-dashed border-line bg-white/80 px-6 py-14 text-center text-sm text-muted", accordion && "max-w-4xl")}>{emptyText}</div>
+        <div className={cn("mx-auto w-full rounded-2xl border border-dashed border-line bg-white/80 px-5 py-10 text-center text-sm text-muted md:rounded-[24px] md:px-6 md:py-14", accordion && "max-w-2xl lg:max-w-3xl xl:max-w-3xl 2xl:max-w-4xl")}>{emptyText}</div>
       )}
     </div>
   );

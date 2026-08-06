@@ -28,16 +28,16 @@ export async function Header({ settings }) {
 
       <StickyMainBar>
         <Reveal className="gridContainer" delay={0.04} duration={0.6} viewport={{ once: true, amount: 0.9 }} y={10}>
-          <div className="grid min-h-[88px] grid-cols-[1fr_auto] items-stretch gap-6 md:min-h-[96px] xl:grid-cols-[1fr_auto_1fr] xl:gap-10">
-            <div className="flex items-center py-4 md:py-5">
+          <div className="grid min-h-[72px] grid-cols-[minmax(0,1fr)_auto] items-center gap-2 md:min-h-[80px] lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:gap-2 xl:min-h-[88px] xl:gap-4 2xl:min-h-[96px] 2xl:gap-6">
+            <div className="flex min-w-0 items-center py-2 md:py-2.5 lg:py-2 xl:py-3">
               <HeaderBrand shortName={settings.shortName} tagline={t("tagline")} />
             </div>
 
-            <div className="hidden h-full justify-self-center xl:block">
+            <div className="hidden min-w-0 lg:flex lg:h-full lg:items-stretch lg:justify-center">
               <SiteNavbar />
             </div>
 
-            <div className="flex items-center justify-self-end gap-3 py-4 sm:gap-4 md:py-5">
+            <div className="flex shrink-0 items-center justify-end gap-1.5 py-2 sm:gap-2 md:py-2.5 lg:gap-1.5 xl:gap-3 xl:py-3">
               <div className="hidden sm:block">
                 <SiteSearch />
               </div>

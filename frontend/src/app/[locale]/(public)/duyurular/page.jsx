@@ -2,7 +2,7 @@ import { AnnouncementsPageContent } from "@/components/site/announcements";
 
 export const metadata = {
   title: "Duyurular",
-  description: "Tüketiciler Birliği güncel duyuruları."
+  description: "Tüketici Birliği güncel duyuruları.",
 };
 
 export default async function AnnouncementsPage({ params }) {

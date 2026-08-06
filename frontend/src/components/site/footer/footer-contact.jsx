@@ -12,13 +12,13 @@ function ContactItem({ children, icon: Icon }) {
 
 export function FooterContact({ settings, title }) {
   return (
-    <div className="rounded-xl border border-line/80 bg-white/72 p-4 transition duration-200 hover:border-primary-dark/25">
+    <div className="rounded-xl border border-line/80 bg-white/72 p-3.5 transition duration-200 hover:border-primary-dark/25 sm:p-4 md:p-3.5 lg:p-4">
       <h3 className="font-heading text-[13px] font-bold tracking-normal text-ink">
         <Link className="focus-ring cursor-pointer rounded-sm transition-colors hover:text-secondary" href="/iletisim">
           {title}
         </Link>
       </h3>
-      <ul className="mt-3 grid gap-3 text-sm leading-6 text-ink/70">
+      <ul className="mt-2.5 grid gap-2.5 text-[13px] leading-5 text-ink/70 sm:mt-3 sm:gap-3 sm:text-sm sm:leading-6 md:gap-2.5 md:text-[13px] md:leading-5 lg:gap-3 lg:text-sm lg:leading-6">
         <ContactItem icon={MapPin}>{settings.address}</ContactItem>
         <ContactItem icon={Phone}>{settings.phone}</ContactItem>
         <ContactItem icon={Mail}>

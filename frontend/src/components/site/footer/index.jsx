@@ -29,8 +29,8 @@ export async function Footer({ settings }) {
       <FooterCta t={t} />
 
       <div className="relative gridContainer">
-        <nav aria-label={t("navLabel")} className="py-10 md:py-14">
-          <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_20rem] xl:items-start">
+        <nav aria-label={t("navLabel")} className="py-8 md:py-10 lg:py-12 2xl:py-14">
+          <div className="grid gap-6 md:gap-7 lg:grid-cols-[minmax(0,1fr)_16.5rem] lg:items-start lg:gap-x-8 xl:grid-cols-[minmax(0,1fr)_19rem] xl:gap-x-10 2xl:gap-x-12">
             <FooterColumns columns={columns} />
             <FooterContact settings={settings} title={t("contact")} />
           </div>

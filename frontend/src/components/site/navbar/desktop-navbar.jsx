@@ -29,9 +29,9 @@ export function DesktopNavbar({
   return (
     <nav
       aria-label="Ana menü"
-      className={cn("flex h-full w-full items-stretch font-sans text-sm font-medium text-nowrap text-ink", className)}
+      className={cn("flex h-full w-full min-w-0 items-stretch justify-center font-sans text-[12px] font-medium text-nowrap text-ink xl:text-[13px] 2xl:text-sm", className)}
     >
-      <Menu setActive={setActive} linkComponent={linkComponent} className={cn("h-full gap-1 md:gap-1.5 xl:gap-2", menuClassName)}>
+      <Menu setActive={setActive} linkComponent={linkComponent} className={cn("h-full min-w-0 gap-0 xl:gap-1 2xl:gap-1.5", menuClassName)}>
         {items.map((entry) => {
           const hasDropdown = Array.isArray(entry.links) && entry.links.length > 0;
           const isTopActive = trail?.topItem === entry.item;

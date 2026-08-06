@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { Stagger, StaggerItem } from "@/components/motion/reveal";
+import { Reveal } from "@/components/motion/reveal";
 import {
   CutoutCard,
   CutoutCardAction,
@@ -62,70 +62,61 @@ const HIGHLIGHTS = [
 
 export function HomeHighlights() {
   return (
-    <section aria-labelledby="home-highlights-title" className="gridContainer pb-10 md:pb-14">
-      <Stagger className="grid gap-8" stagger={0.08} viewport={{ once: true, amount: 0.18 }}>
-        {/* <div id="home-highlights-title">
-          <SectionHeading
-            eyebrow="Öne çıkanlar"
-            title="Bilgiye hızlı erişim sağlayan sade bir deneyim"
-            description="Ana temas noktalarını tek bakışta görünür kılan bu alan, ziyaretçilerin ihtiyaç duyduğu bilgiye daha kısa sürede ve daha az karmaşayla ulaşmasını destekler."
-          />
-        </div> */}
+    <section aria-labelledby="home-highlights-title" className="gridContainer">
+      <div className="grid gap-3 sm:gap-4 md:grid-cols-3 md:gap-3 lg:gap-4 xl:gap-5">
+        {HIGHLIGHTS.map((item, index) => (
+          <Reveal
+            key={item.title}
+            className="h-full"
+            delay={index * 0.08}
+            duration={0.6}
+            viewport={{ once: true, amount: "some" }}
+            y={12}
+          >
+            <CutoutCard className={`${cutoutCardSurfaceClassName} h-full rounded-2xl border border-line/80 bg-white text-ink shadow-sm md:rounded-[22px] 2xl:rounded-[28px]`}>
+              <article className="flex h-full flex-col">
+                <CutoutCardMedia className="h-56 rounded-t-2xl sm:h-60 md:h-40 lg:h-44 xl:h-52 2xl:h-72 md:rounded-t-[22px] 2xl:rounded-t-[28px]">
+                  <CutoutCardImage alt="" sizes="(max-width: 768px) 100vw, 33vw" src={item.imageSrc} />
+                  <CutoutCardOverlay className="from-black/45 via-black/5 to-transparent" />
 
-        <div className="grid gap-4 md:grid-cols-3">
-          {HIGHLIGHTS.map((item) => (
-            <StaggerItem key={item.title} className="h-full">
-              <CutoutCard className={`${cutoutCardSurfaceClassName} h-full rounded-[28px] border border-line/80 bg-white text-ink shadow-sm`}>
-                <article className="flex h-full flex-col">
-                  <CutoutCardMedia className="h-72 rounded-t-[28px]">
-                    <CutoutCardImage alt="" sizes="(max-width: 768px) 100vw, 33vw" src={item.imageSrc} />
-                    <CutoutCardOverlay className="from-black/45 via-black/5 to-transparent" />
+                  <CutoutCardInsetLabel className="bottom-0 left-0 z-20 rounded-tr-[16px] bg-white px-3.5 py-2 md:px-3 md:py-1.5 lg:px-4 lg:py-2 xl:rounded-tr-[18px] 2xl:rounded-tr-[20px] 2xl:px-5 2xl:py-3">
+                    <span className="font-sans text-[10px] font-semibold uppercase tracking-[0.16em] text-muted md:text-[9px] lg:text-[10px] 2xl:text-[11px] 2xl:tracking-[0.18em]">{item.kicker}</span>
+                    <CutoutCorner className="absolute -bottom-px -right-[31px] rotate-90 text-white" />
+                    <CutoutCorner className="absolute -left-px -top-[31px] rotate-90 text-white" />
+                  </CutoutCardInsetLabel>
 
-                    <CutoutCardInsetLabel className="bottom-0 left-0 z-20 rounded-tr-[20px] bg-white px-5 py-3">
-                      <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">{item.kicker}</span>
-                      <CutoutCorner className="absolute -bottom-px -right-[31px] rotate-90 text-white" />
-                      <CutoutCorner className="absolute -left-px -top-[31px] rotate-90 text-white" />
-                    </CutoutCardInsetLabel>
+                  <CutoutCardPin className={`right-0 top-0 z-20 rounded-bl-[14px] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] shadow-md ring-1 ring-white/15 md:px-2.5 md:py-1 lg:px-3 lg:py-1.5 xl:rounded-bl-[16px] 2xl:px-4 2xl:py-2 2xl:text-xs ${item.pinClassName}`}>
+                    {item.badge}
+                    <CutoutCorner className={`absolute -left-[23px] top-0 -rotate-90 ${item.pinCornerClassName}`} size={24} />
+                    <CutoutCorner className={`absolute -bottom-[23px] right-0 -rotate-90 ${item.pinCornerClassName}`} size={24} />
+                  </CutoutCardPin>
+                </CutoutCardMedia>
 
-                    <CutoutCardPin className={`right-0 top-0 z-20 rounded-bl-[16px] px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] shadow-md ring-1 ring-white/15 ${item.pinClassName}`}>
-                      {item.badge}
-                      <CutoutCorner className={`absolute -left-[23px] top-0 -rotate-90 ${item.pinCornerClassName}`} size={24} />
-                      <CutoutCorner className={`absolute -bottom-[23px] right-0 -rotate-90 ${item.pinCornerClassName}`} size={24} />
-                    </CutoutCardPin>
+                <CutoutCardContent className="flex flex-1 flex-col p-5 md:p-3.5 lg:p-4 xl:p-5 2xl:p-6">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted md:tracking-[0.12em] lg:text-[11px] 2xl:text-xs 2xl:tracking-[0.16em]">Bilgilendirme alanı</p>
+                  <h3 className="mt-2 text-lg font-semibold leading-snug text-ink md:mt-1.5 md:text-base lg:mt-2 lg:text-lg xl:text-xl 2xl:mt-3 2xl:text-xl">{item.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-6 text-muted md:mt-1.5 md:text-[13px] md:leading-5 lg:mt-2 lg:text-sm lg:leading-6 2xl:mt-3 2xl:leading-7">{item.text}</p>
 
-                    {/* <div className="absolute inset-x-6 bottom-16 z-10 flex items-center justify-end">
-                    <div className="max-w-56 text-white">
-                      <p className="text-sm font-semibold leading-6 text-white drop-shadow-sm">{item.note}</p>
-                    </div>
-                  </div> */}
-                  </CutoutCardMedia>
+                  <CutoutCardFooter className="mt-4 border-t border-line/80 pt-2.5 md:mt-3 md:pt-2 lg:mt-4 xl:mt-5 2xl:pt-3">
+                    <span className="text-[11px] font-medium text-ink/70 md:text-[10px] lg:text-[11px] 2xl:text-xs">{item.footer}</span>
+                    <span className="text-[10px] text-muted md:text-[9px] lg:text-[10px] 2xl:text-[11px]">{item.meta}</span>
+                  </CutoutCardFooter>
+                </CutoutCardContent>
 
-                  <CutoutCardContent className="flex flex-1 flex-col p-6">
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">Bilgilendirme alanı</p>
-                    <h3 className="mt-3 text-xl font-semibold leading-snug text-ink">{item.title}</h3>
-                    <p className="mt-3 flex-1 text-sm leading-7 text-muted">{item.text}</p>
-
-                    <CutoutCardFooter className="mt-5 border-t border-line/80 pt-3">
-                      <span className="text-xs font-medium text-ink/70">{item.footer}</span>
-                      <span className="text-[11px] text-muted">{item.meta}</span>
-                    </CutoutCardFooter>
-                  </CutoutCardContent>
-
-                  <CutoutCardAction className="bottom-5 right-5">
-                    <Link
-                      href={item.href}
-                      className="focus-ring inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-sm font-medium text-white shadow-md transition-transform duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5"
-                    >
-                      {item.cta}
-                      <ArrowUpRight aria-hidden="true" className="size-4" />
-                    </Link>
-                  </CutoutCardAction>
-                </article>
-              </CutoutCard>
-            </StaggerItem>
-          ))}
-        </div>
-      </Stagger>
+                <CutoutCardAction className="bottom-4 right-4 md:bottom-3 md:right-3 lg:bottom-4 lg:right-4 2xl:bottom-5 2xl:right-5">
+                  <Link
+                    href={item.href}
+                    className="focus-ring inline-flex items-center gap-1.5 rounded-full bg-ink px-3 py-1.5 text-xs font-medium text-white shadow-md transition-transform duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 md:gap-1 md:px-2.5 md:py-1 md:text-[11px] lg:gap-1.5 lg:px-3 lg:py-1.5 lg:text-xs 2xl:gap-2 2xl:px-4 2xl:py-2 2xl:text-sm"
+                  >
+                    {item.cta}
+                    <ArrowUpRight aria-hidden="true" className="size-3.5 md:size-3 lg:size-3.5 2xl:size-4" />
+                  </Link>
+                </CutoutCardAction>
+              </article>
+            </CutoutCard>
+          </Reveal>
+        ))}
+      </div>
     </section>
   );
 }

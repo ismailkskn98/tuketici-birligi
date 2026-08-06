@@ -1,4 +1,15 @@
 {
+  "Metadata": {
+    "title": "Consumers Union",
+    "titleTemplate": "%s | Consumers Union",
+    "description": "Institutional web platform for consumer rights, applications, announcements and contact channels.",
+    "keywords": "consumers union, consumer rights, application, guides, announcements",
+    "ogTitle": "Consumers Union",
+    "ogDescription": "Accessible web platform for consumer rights and institutional application processes.",
+    "siteName": "Consumers Union",
+    "shortName": "CU",
+    "manifestDescription": "Consumers Union institutional web app"
+  },
   "Header": {
     "cta": "Apply Now",
     "openMenu": "Open menu",
@@ -204,12 +215,12 @@
     "title": "Privacy Notice",
     "pageDescription": "This is a draft privacy notice prepared under Türkiye’s Personal Data Protection Law No. 6698.",
     "dialogDescription": "Information about how personal data shared in the application form is processed.",
-    "intro": "As Tüketiciler Birliği, we process the personal data you share during application and contact processes under Law No. 6698 on the Protection of Personal Data (“KVKK”). This notice is provided to inform you about our data processing activities.",
+    "intro": "As Tüketici Birliği, we process the personal data you share during application and contact processes under Law No. 6698 on the Protection of Personal Data (“KVKK”). This notice is provided to inform you about our data processing activities.",
     "disclaimer": "This text is a draft. The final version will be updated by the legal and content teams.",
     "sections": {
       "dataController": {
         "title": "Data controller",
-        "body": "Your personal data is processed by Tüketiciler Birliği as the data controller."
+        "body": "Your personal data is processed by Tüketici Birliği as the data controller."
       },
       "processedData": {
         "title": "Personal data processed",

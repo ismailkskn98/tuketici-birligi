@@ -24,7 +24,7 @@ export function FooterColumn({ title, href, links }) {
           </Link>
         )}
       </h3>
-      <ul className="mt-3 grid gap-1.5">
+      <ul className="mt-2.5 grid gap-1 sm:mt-3 sm:gap-1.5">
         {links.map((link) => (
           <li key={`${title}-${link.label}`}>
             <FooterLink href={link.href}>{link.label}</FooterLink>
@@ -37,7 +37,7 @@ export function FooterColumn({ title, href, links }) {
 
 export function FooterColumns({ columns }) {
   return (
-    <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 xl:gap-x-6">
+    <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-5 sm:gap-y-8 md:gap-x-5 md:gap-y-9 lg:grid-cols-4 lg:gap-x-5 xl:grid-cols-6 xl:gap-x-5 2xl:gap-x-6 2xl:gap-y-10">
       {columns.map((column) => (
         <FooterColumn href={column.href} key={column.title} links={column.links} title={column.title} />
       ))}

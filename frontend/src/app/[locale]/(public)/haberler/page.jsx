@@ -2,7 +2,7 @@ import { NewsPageContent } from "@/components/site/news";
 
 export const metadata = {
   title: "Haberler",
-  description: "Tüketiciler Birliği haberleri ve faaliyet duyuruları."
+  description: "Tüketici Birliği haberleri ve faaliyet duyuruları.",
 };
 
 export default async function NewsPage({ params }) {

@@ -15,8 +15,11 @@ export async function HomeFeed({ announcements = [], guides = [], news = [] }) {
   const slides = useNews ? newsItems : announcementItems;
 
   return (
-    <section className="gridContainer py-12 md:py-16">
-      <Reveal className="grid gap-14 xl:grid-cols-[minmax(0,0.92fr)_20rem] xl:items-start xl:gap-x-24 2xl:grid-cols-[minmax(0,0.88fr)_21rem] 2xl:gap-x-28" viewport={{ once: true, amount: 0.16 }}>
+    <section className="gridContainer">
+      <Reveal
+        className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_15.5rem] lg:items-start lg:gap-x-10 xl:grid-cols-[minmax(0,0.95fr)_17.5rem] xl:gap-x-14 2xl:grid-cols-[minmax(0,0.88fr)_21rem] 2xl:gap-x-28 2xl:gap-y-14"
+        viewport={{ once: true, amount: 0.16 }}
+      >
         <div className="min-w-0">
           {slides.length ? (
             <FeedShowcaseCarousel

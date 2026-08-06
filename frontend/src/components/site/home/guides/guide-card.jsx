@@ -3,7 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { CutoutCorner } from "@/components/ui/cutout-card";
 
-const FALLBACK_IMAGE = "/ornek-hero.png";
+const FALLBACK_IMAGE = "/ornek-hero.webp";
 
 export function GuideCard({ badgeLabel, guide, locale = "tr", readMoreLabel, variant = "default" }) {
   const isFeatured = variant === "featured";
@@ -27,13 +27,7 @@ export function GuideCard({ badgeLabel, guide, locale = "tr", readMoreLabel, var
       {isFeatured ? (
         <>
           <div className="relative min-h-72 overflow-hidden bg-surface">
-            <Image
-              alt={guide.title}
-              className="object-cover transition duration-700 group-hover:scale-[1.03]"
-              fill
-              sizes="(max-width: 1024px) 100vw, 40rem"
-              src={image}
-            />
+            <Image alt={guide.title} className="object-cover transition duration-700 group-hover:scale-[1.03]" fill sizes="(max-width: 1024px) 100vw, 40rem" src={image} />
             <div className="absolute inset-0 bg-linear-to-tr from-ink/35 via-transparent to-transparent" />
           </div>
 
@@ -48,36 +42,26 @@ export function GuideCard({ badgeLabel, guide, locale = "tr", readMoreLabel, var
                   }).format(new Date(guide.published_at))}
                 </p>
               ) : null}
-              <h3 className="font-heading text-3xl font-semibold leading-tight tracking-tight text-ink md:text-[2.35rem]">
-                {guide.title}
-              </h3>
+              <h3 className="font-heading text-3xl font-semibold leading-tight tracking-tight text-ink md:text-[2.35rem]">{guide.title}</h3>
               {guide.summary ? <p className="max-w-xl text-sm leading-7 text-muted md:text-[15px]">{guide.summary}</p> : null}
             </div>
 
             <div className="mt-8 flex items-center justify-between gap-3 border-t border-line/80 pt-4">
               <span className="text-sm font-semibold text-ink">{readMoreLabel}</span>
-              <ArrowUpRight
-                aria-hidden="true"
-                className="size-4 text-ink/45 transition duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-secondary"
-              />
+              <ArrowUpRight aria-hidden="true" className="size-4 text-ink/45 transition duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-secondary" />
             </div>
           </div>
         </>
       ) : (
         <>
           <div className="grid gap-3 pr-16">
-            <h3 className="font-heading text-xl font-semibold leading-snug tracking-tight text-ink md:text-[1.35rem]">
-              {guide.title}
-            </h3>
+            <h3 className="font-heading text-xl font-semibold leading-snug tracking-tight text-ink md:text-[1.35rem]">{guide.title}</h3>
             {guide.summary ? <p className="line-clamp-3 text-sm leading-7 text-muted">{guide.summary}</p> : null}
           </div>
 
           <div className="mt-8 flex items-center justify-between gap-3 border-t border-line/80 pt-4">
             <span className="text-sm font-semibold text-ink">{readMoreLabel}</span>
-            <ArrowUpRight
-              aria-hidden="true"
-              className="size-4 text-ink/45 transition duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-secondary"
-            />
+            <ArrowUpRight aria-hidden="true" className="size-4 text-ink/45 transition duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-secondary" />
           </div>
         </>
       )}

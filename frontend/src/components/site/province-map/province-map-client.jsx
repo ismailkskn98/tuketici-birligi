@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Reveal } from "@/components/motion/reveal";
 import { cn } from "@/lib/utils";
 import { DensityFilterDialog, ProvinceEntriesDialog, ProvinceSearchDialog } from "./province-map-dialogs";
-import { ProvinceMapHeader } from "./province-map-header";
+import { ProvinceMapHeader, ProvinceMapLegend } from "./province-map-header";
 import { ProvinceLatestCarousel } from "./province-latest-carousel";
 import { ProvinceMapStage } from "./province-map-stage";
 import { emptyProvinceData, getProvinceMapCategoryCount, normalizeProvinceMap } from "./province-map-utils";
@@ -33,8 +33,8 @@ export function ProvinceMapClient({ compact = false, data }) {
   }
 
   return (
-    <section className={cn("overflow-hidden bg-white", compact ? "py-10 md:py-12" : "py-14 md:py-20")}>
-      <Reveal className="mx-auto grid w-full min-w-0 gridContainer" viewport={{ once: true, amount: 0.14 }}>
+    <section className={cn("overflow-hidden bg-white", compact ? "py-0" : "py-10 sm:py-12 md:py-14 lg:py-16 2xl:py-20")}>
+      <Reveal className="mx-auto grid w-full min-w-0 gridContainer gap-5 sm:gap-6 md:gap-8 lg:gap-9 2xl:gap-10" viewport={{ once: true, amount: 0.14 }}>
         <ProvinceMapHeader
           activeProvinceCount={activeProvinceCount}
           categoryCount={categoryCount}
@@ -44,7 +44,11 @@ export function ProvinceMapClient({ compact = false, data }) {
           onSearchOpen={() => setSearchOpen(true)}
           totalEntries={totalEntries}
         />
-        <ProvinceMapStage compact={compact} densityFilter={densityFilter} onProvinceOpen={openProvince} provinceByCode={provinceByCode} />
+
+        <div className="grid gap-3 sm:gap-4 md:gap-0">
+          <ProvinceMapStage compact={compact} densityFilter={densityFilter} onProvinceOpen={openProvince} provinceByCode={provinceByCode} />
+          <ProvinceMapLegend className="justify-center px-1 md:hidden" />
+        </div>
 
         <ProvinceLatestCarousel compact={compact} entries={latestEntries} onProvinceOpen={openProvince} onSearchOpen={() => setSearchOpen(true)} />
       </Reveal>

@@ -5,6 +5,7 @@ import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { A11y, Keyboard } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "@/i18n/navigation";
+import { SectionEyebrow } from "@/components/ui/section-eyebrow";
 import { FeaturedFeedCard } from "./featured-feed-card";
 
 import "swiper/css";
@@ -21,18 +22,15 @@ export function FeedShowcaseCarousel({ description, eyebrow, featuredLabel, item
 
   return (
     <div className="min-w-0">
-      <div className="flex flex-col gap-4 border-b border-line/70 pb-6 md:flex-row md:items-end md:justify-between md:gap-10">
+      <div className="flex flex-col gap-3 border-b border-line/70 pb-5 md:flex-row md:items-end md:justify-between md:gap-6 lg:gap-8 lg:pb-5 xl:gap-10 xl:pb-6">
         <div className="min-w-0 max-w-2xl">
-          <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-secondary">
-            <span aria-hidden="true" className="size-1.5 rounded-full bg-secondary" />
-            {eyebrow}
-          </span>
-          <h2 className="mt-3 font-heading text-[1.85rem] font-semibold leading-[1.12] tracking-tight text-ink md:text-[2.35rem]">{title}</h2>
-          {description ? <p className="mt-3 max-w-xl text-sm leading-7 text-muted">{description}</p> : null}
+          <SectionEyebrow>{eyebrow}</SectionEyebrow>
+          <h2 className="mt-3 font-heading text-[1.65rem] font-semibold leading-[1.12] tracking-tight text-ink sm:mt-3.5 sm:text-[1.85rem] md:mt-4 md:text-[2rem] lg:text-[1.85rem] xl:text-[2.15rem] 2xl:text-[2.35rem]">{title}</h2>
+          {description ? <p className="mt-3 max-w-xl text-sm leading-6 text-muted sm:mt-3.5 md:mt-4 md:leading-7 lg:text-[13px] lg:leading-6 xl:text-sm xl:leading-7">{description}</p> : null}
         </div>
 
         <Link
-          className="focus-ring inline-flex shrink-0 items-center gap-1.5 self-start text-[12px] font-bold uppercase tracking-[0.12em] text-ink transition hover:text-secondary-dark md:self-end"
+          className="focus-ring inline-flex shrink-0 items-center gap-1.5 self-start text-[11px] font-bold uppercase tracking-[0.12em] text-ink transition hover:text-secondary-dark md:self-end md:text-[12px]"
           href={viewAllHref}
         >
           {viewAllLabel}
@@ -43,7 +41,7 @@ export function FeedShowcaseCarousel({ description, eyebrow, featuredLabel, item
       <Swiper
         a11y={{ enabled: true }}
         autoHeight
-        className="home-feed-swiper mt-7 min-w-0"
+        className="home-feed-swiper mt-5 min-w-0 lg:mt-6 2xl:mt-7"
         grabCursor={showControls}
         keyboard={{ enabled: true, onlyInViewport: true }}
         modules={[A11y, Keyboard]}

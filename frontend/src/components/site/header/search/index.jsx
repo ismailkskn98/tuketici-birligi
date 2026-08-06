@@ -7,6 +7,7 @@ import { useRouter } from "@/i18n/navigation";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { ResponsiveModal } from "@/components/ui/responsive-modal";
+import { cn } from "@/lib/utils";
 import { publicNavigation } from "@/lib/navigation";
 
 const navIcons = {
@@ -21,23 +22,43 @@ const navIcons = {
   contact: Phone,
 };
 
-export function SiteSearch() {
+export function SiteSearch({
+  className,
+  onBeforeOpen,
+  onOpenChange,
+  open: openProp,
+  showTrigger = true,
+  triggerClassName,
+} = {}) {
   const t = useTranslations("Search");
   const tNav = useTranslations("Nav");
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const isControlled = openProp !== undefined;
+  const open = isControlled ? openProp : uncontrolledOpen;
+
+  function setOpen(next) {
+    if (!isControlled) setUncontrolledOpen(next);
+    onOpenChange?.(next);
+  }
+
+  function openSearch() {
+    onBeforeOpen?.();
+    setOpen(true);
+  }
 
   useEffect(() => {
     function onKeyDown(event) {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
-        setOpen((current) => !current);
+        if (!open) onBeforeOpen?.();
+        setOpen(!open);
       }
     }
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
+  }, [onBeforeOpen, open]);
 
   function goTo(href) {
     setOpen(false);
@@ -45,21 +66,25 @@ export function SiteSearch() {
   }
 
   return (
-    <>
-      <button
-        aria-label={t("trigger")}
-        className="focus-ring inline-flex h-10 cursor-pointer items-center gap-2 px-1.5 text-ink/70 transition-colors hover:text-ink sm:pr-2"
-        onClick={() => setOpen(true)}
-        type="button"
-      >
-        <Search aria-hidden="true" size={18} strokeWidth={1.75} />
-        <kbd className="pointer-events-none hidden font-sans text-[10px] font-medium tracking-wide text-muted sm:inline-flex">⌘K</kbd>
-      </button>
+    <div className={cn(className)}>
+      {showTrigger ? (
+        <button
+          aria-label={t("trigger")}
+          className={cn(
+            "focus-ring inline-flex size-8 cursor-pointer items-center justify-center text-ink/70 transition-colors hover:text-ink sm:size-9 lg:size-8 xl:size-9",
+            triggerClassName,
+          )}
+          onClick={openSearch}
+          type="button"
+        >
+          <Search aria-hidden="true" className="size-3.5 sm:size-4 lg:size-3.5 xl:size-4" strokeWidth={1.75} />
+        </button>
+      ) : null}
 
       <ResponsiveModal
         description={t("placeholder")}
         dialogClassName="top-[min(16vh,6.5rem)] translate-y-0 gap-0 overflow-hidden rounded-2xl border border-line/50 bg-white p-0 shadow-soft ring-0 sm:max-w-xl"
-        drawerClassName="bg-white"
+        drawerClassName="z-60 bg-white"
         hideTitle
         onOpenChange={setOpen}
         open={open}
@@ -108,6 +133,6 @@ export function SiteSearch() {
           </div>
         </Command>
       </ResponsiveModal>
-    </>
+    </div>
   );
 }

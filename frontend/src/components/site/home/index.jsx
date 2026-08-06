@@ -80,11 +80,13 @@ export async function HomePageContent({ locale }) {
 
       <HomeLogoCarousel />
 
-      <section className="bg-white pt-6 sm:pt-12 md:pt-16">
-        <HomeHighlights />
-        <HomeFeed announcements={announcements} guides={guides} news={news} />
-        <ProvinceMapSection compact data={provinceMap} />
-        <HomeFaq items={faqs} />
+      <section className="bg-white pt-8 sm:pt-10 md:pt-12 lg:pt-14 2xl:pt-16 pb-12 sm:pb-14 md:pb-16 lg:pb-18 2xl:pb-20">
+        <div className="flex flex-col gap-12 sm:gap-14 md:gap-16 lg:gap-[4.5rem] xl:gap-20 2xl:gap-24">
+          <HomeHighlights />
+          <HomeFeed announcements={announcements} guides={guides} news={news} />
+          <ProvinceMapSection compact data={provinceMap} />
+          <HomeFaq items={faqs} />
+        </div>
       </section>
     </>
   );

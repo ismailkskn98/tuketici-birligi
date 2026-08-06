@@ -1,4 +1,15 @@
 {
+  "Metadata": {
+    "title": "Tüketici Birliği",
+    "titleTemplate": "%s | Tüketici Birliği",
+    "description": "Tüketici hakları, başvuru süreçleri, duyurular ve iletişim kanalları için kurumsal web platformu.",
+    "keywords": "tüketici birliği, tüketici hakları, başvuru, hak rehberi, duyuru",
+    "ogTitle": "Tüketici Birliği",
+    "ogDescription": "Tüketici hakları ve kurumsal başvuru süreçleri için erişilebilir web platformu.",
+    "siteName": "Tüketici Birliği",
+    "shortName": "TB",
+    "manifestDescription": "Tüketici Birliği kurumsal web uygulaması"
+  },
   "Header": {
     "cta": "Başvuru Yap",
     "openMenu": "Menüyü aç",
@@ -204,12 +215,12 @@
     "title": "Aydınlatma Metni",
     "pageDescription": "6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında hazırlanmış taslak aydınlatma metnidir.",
     "dialogDescription": "Başvuru formunda paylaştığınız kişisel verilerin işlenmesine ilişkin bilgilendirme.",
-    "intro": "Tüketiciler Birliği olarak, başvuru ve iletişim süreçlerinde paylaştığınız kişisel verileri 6698 sayılı Kişisel Verilerin Korunması Kanunu (“KVKK”) kapsamında işleriz. Bu metin, veri işleme faaliyetlerimiz hakkında sizi bilgilendirmek amacıyla hazırlanmıştır.",
+    "intro": "Tüketici Birliği olarak, başvuru ve iletişim süreçlerinde paylaştığınız kişisel verileri 6698 sayılı Kişisel Verilerin Korunması Kanunu (“KVKK”) kapsamında işleriz. Bu metin, veri işleme faaliyetlerimiz hakkında sizi bilgilendirmek amacıyla hazırlanmıştır.",
     "disclaimer": "Bu metin taslak niteliktedir. Nihai içerik hukuk ve içerik ekibi tarafından güncellenecektir.",
     "sections": {
       "dataController": {
         "title": "Veri sorumlusu",
-        "body": "Kişisel verileriniz, veri sorumlusu sıfatıyla Tüketiciler Birliği tarafından işlenir."
+        "body": "Kişisel verileriniz, veri sorumlusu sıfatıyla Tüketici Birliği tarafından işlenir."
       },
       "processedData": {
         "title": "İşlenen kişisel veriler",

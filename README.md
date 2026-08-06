@@ -1,4 +1,4 @@
-# Tüketiciler Birliği Kurumsal Web
+# Tüketici Birliği Kurumsal Web
 
 Next.js frontend ve Express/MySQL backend içeren kurumsal web başlangıç projesi.
 

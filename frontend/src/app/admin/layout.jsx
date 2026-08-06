@@ -3,11 +3,11 @@ import { fontVariables } from "@/lib/fonts";
 import "../globals.css";
 
 export const metadata = {
-  title: "Admin | Tüketiciler Birliği",
+  title: "Admin | Tüketici Birliği",
   robots: {
     index: false,
-    follow: false
-  }
+    follow: false,
+  },
 };
 
 export default function AdminLayout({ children }) {

@@ -84,8 +84,8 @@ export function ProvinceMapStage({
     <section ref={stageRef} className="relative w-full min-w-0 overflow-x-clip py-1 text-ink">
       <div
         className={cn(
-          "mx-auto grid w-full max-w-6xl min-w-0 place-items-center px-0 md:px-8",
-          compact ? "min-h-[14rem] md:min-h-[23rem]" : "min-h-[18rem] md:min-h-[29rem]"
+          "mx-auto grid w-full max-w-6xl min-w-0 place-items-center px-0 md:px-6 lg:px-8",
+          compact ? "min-h-[12rem] sm:min-h-[14rem] md:min-h-[18rem] lg:min-h-[20rem] xl:min-h-[23rem]" : "min-h-[15rem] sm:min-h-[18rem] md:min-h-[22rem] lg:min-h-[26rem] xl:min-h-[29rem]",
         )}
       >
         <div className="province-map-svg-shell w-full max-w-full min-w-0">

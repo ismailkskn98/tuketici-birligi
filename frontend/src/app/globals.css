@@ -1,0 +1,397 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+  Theme tokens (migrated from tailwind.config.js).
+  Font families reference next/font CSS variables — see src/lib/fonts.js
+*/
+@theme {
+  --font-sans: var(--font-sans-family), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-heading-family), var(--font-sans-family), ui-sans-serif,
+    sans-serif;
+
+  --color-primary: #9fb8f4;
+  --color-primary-dark: #5475c7;
+  --color-primary-soft: #edf3ff;
+  --color-primary-foreground: #162033;
+
+  --color-secondary: #870b18;
+  --color-secondary-dark: #870b18;
+  --color-secondary-soft: #f0faeb;
+  --color-secondary-foreground: #162033;
+
+  --color-ink: #262626;
+
+  --color-muted: #647084;
+  --color-muted-foreground: #647084;
+
+  --color-line: #dbe3ef;
+  --color-surface: #f7f9fc;
+  --color-wheat: #f4cf62;
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --shadow-soft: 0 18px 50px rgba(22, 32, 51, 0.08);
+}
+
+/*
+  Breakout grid: center column for content; .fluid children span full width.
+*/
+@utility gridContainer {
+  display: grid;
+  grid-template-columns: 1fr min(92%, 90rem) 1fr;
+
+  &>* {
+    grid-column: 2;
+  }
+}
+
+@utility fluid {
+  grid-column: 1 / -1;
+}
+
+a,
+button {
+  cursor: pointer;
+}
+
+:root {
+  color-scheme: light;
+  --radius: 8px;
+  --site-header-height: 5.5rem;
+  --hero-stage-height: 85vh;
+  --background: #ffffff;
+  --foreground: #262626;
+  --card: #ffffff;
+  --card-foreground: #262626;
+  --popover: #ffffff;
+  --popover-foreground: #262626;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #dbe3ef;
+  --input: #dbe3ef;
+  --ring: #5475c7;
+  --accent: #edf3ff;
+  --accent-foreground: #262626;
+  --ui-muted: #edf3ff;
+  --ui-muted-foreground: #647084;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --hero-stage-height: 85vh;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --hero-stage-height: 85vh;
+  }
+}
+
+/*
+  v4 default border color is currentcolor — keep v3-like borders for unstyled borders.
+*/
+@layer base {
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-line, currentcolor);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    overflow-x: clip;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    position: relative;
+    overflow-x: clip;
+    margin: 0;
+    background: #ffff;
+    color: #262626;
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  ::selection {
+    background: #b5e19c;
+    color: #262626;
+  }
+}
+
+.focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus-ring:focus-visible {
+  outline-color: #5475c7;
+}
+
+.content-grid {
+  background-image:
+    linear-gradient(rgba(84, 117, 199, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(84, 117, 199, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.province-map-svg-shell,
+.province-map-svg-shell>div,
+.province-map-svg-shell #svg-turkiye-haritasi-container {
+  width: 100% !important;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.province-map-svg-shell svg {
+  display: block;
+  width: 100% !important;
+  max-width: 100%;
+  height: auto !important;
+}
+
+.province-latest-swiper,
+.province-latest-swiper .swiper-wrapper,
+.province-latest-swiper .swiper-slide {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.province-latest-swiper .swiper-pagination {
+  bottom: 0 !important;
+}
+
+.province-latest-swiper .swiper-pagination-bullet {
+  width: 6px;
+  height: 6px;
+  margin-inline: 4px !important;
+  background: #9fb8f4;
+  opacity: 0.42;
+  transition:
+    width 180ms ease,
+    background-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.province-latest-swiper .swiper-pagination-bullet-active {
+  width: 18px;
+  border-radius: 9999px;
+  background: #870b18;
+  opacity: 1;
+}
+
+@keyframes footer-cta-sheen {
+
+  0%,
+  100% {
+    transform: translate3d(-28%, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(28%, 0, 0);
+  }
+}
+
+.footer-cta-sheen {
+  background: linear-gradient(105deg, transparent 22%, rgba(255, 255, 255, 0.82) 46%, transparent 64%);
+  animation: footer-cta-sheen 12s ease-in-out infinite;
+}
+
+@keyframes logo-marquee {
+
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-track {
+  animation: logo-marquee 30s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track-pause-hover:hover {
+  animation-play-state: paused;
+}
+
+.marquee-fade,
+.logo-loop-edge-fade {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* Custom thin scrollbars from lg up; native below. */
+@media (min-width: 1024px) {
+
+  .site-search-scroll,
+  .application-form-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(22, 32, 51, 0.22) transparent;
+  }
+
+  .site-search-scroll::-webkit-scrollbar,
+  .application-form-scroll::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .site-search-scroll::-webkit-scrollbar-track,
+  .application-form-scroll::-webkit-scrollbar-track {
+    background: transparent;
+    margin-block: 8px;
+  }
+
+  .site-search-scroll::-webkit-scrollbar-thumb,
+  .application-form-scroll::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: rgba(22, 32, 51, 0.16);
+  }
+
+  .site-search-scroll::-webkit-scrollbar-thumb:hover,
+  .application-form-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(22, 32, 51, 0.3);
+  }
+
+  .site-search-scroll::-webkit-scrollbar-button,
+  .application-form-scroll::-webkit-scrollbar-button,
+  .site-search-scroll::-webkit-scrollbar-button:single-button,
+  .application-form-scroll::-webkit-scrollbar-button:single-button,
+  .site-search-scroll::-webkit-scrollbar-button:vertical:start:decrement,
+  .application-form-scroll::-webkit-scrollbar-button:vertical:start:decrement,
+  .site-search-scroll::-webkit-scrollbar-button:vertical:end:increment,
+  .application-form-scroll::-webkit-scrollbar-button:vertical:end:increment,
+  .site-search-scroll::-webkit-scrollbar-button:vertical:start:increment,
+  .application-form-scroll::-webkit-scrollbar-button:vertical:start:increment,
+  .site-search-scroll::-webkit-scrollbar-button:vertical:end:decrement,
+  .application-form-scroll::-webkit-scrollbar-button:vertical:end:decrement {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+  }
+
+  .application-form-scroll {
+    scrollbar-gutter: stable;
+    scrollbar-color: rgba(38, 38, 38, 0.2) transparent;
+  }
+
+  .application-form-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .application-form-scroll::-webkit-scrollbar-track {
+    margin-block: 18px;
+  }
+
+  .application-form-scroll::-webkit-scrollbar-thumb {
+    background: rgba(38, 38, 38, 0.14);
+    border: 1px solid transparent;
+    background-clip: padding-box;
+  }
+
+  .application-form-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(38, 38, 38, 0.28);
+    border: 1px solid transparent;
+    background-clip: padding-box;
+  }
+}
+
+.cls-1 {
+  fill: url(#Adsız_degrade_269-2);
+}
+
+.cls-2 {
+  fill: url(#Adsız_degrade_269-4);
+}
+
+.cls-3 {
+  fill: url(#Adsız_degrade_269-6);
+}
+
+.cls-4 {
+  fill: url(#Adsız_degrade_269);
+}
+
+.cls-5 {
+  fill: url(#Adsız_degrade_269-7);
+}
+
+.cls-6 {
+  fill: #870b18;
+}
+
+.cls-7 {
+  fill: url(#Adsız_degrade_269-5);
+}
+
+.cls-8 {
+  fill: url(#Adsız_degrade_269-3);
+}

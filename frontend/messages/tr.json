@@ -1,0 +1,236 @@
+{
+  "Header": {
+    "cta": "Başvuru Yap",
+    "openMenu": "Menüyü aç",
+    "closeMenu": "Menüyü kapat",
+    "mainNav": "Ana menü",
+    "mobileNav": "Mobil menü",
+    "tagline": "Kurumsal web platformu"
+  },
+  "Nav": {
+    "home": "Anasayfa",
+    "corporate": "Kurumsal",
+    "guides": "Hak Rehberleri",
+    "news": "Haberler",
+    "announcements": "Duyurular",
+    "applicationGuide": "Başvuru Rehberi",
+    "applyNow": "Başvuru Yap",
+    "provinceMap": "Tüketici Haritası",
+    "faq": "Sıkça Sorulan Sorular",
+    "contact": "İletişim"
+  },
+  "LanguageSwitcher": {
+    "turkish": "Türkçe",
+    "english": "English",
+    "label": "Dil seçimi"
+  },
+  "Search": {
+    "placeholder": "Sayfa veya içerik ara...",
+    "empty": "Sonuç bulunamadı.",
+    "title": "Site araması",
+    "trigger": "Ara",
+    "pages": "Sayfalar",
+    "noResults": "Sonuç bulunamadı.",
+    "hint": "Navigasyon ve sayfalar",
+    "open": "Aç",
+    "close": "Kapat"
+  },
+  "Hero": {
+    "readMore": "Devamını Oku",
+    "prevSlide": "Önceki",
+    "nextSlide": "Sonraki",
+    "scrollHint": "Kaydır",
+    "categoryNews": "Haber",
+    "categoryAnnouncement": "Duyuru",
+    "categoryGuide": "Rehber",
+    "categoryEvent": "Etkinlik"
+  },
+  "HomeGuides": {
+    "eyebrow": "Hak rehberleri",
+    "title": "Tüketici haklarına dair sade ve güvenilir içerikler",
+    "description": "Ayıplı mal, cayma hakkı ve sık karşılaşılan başvuru konularında hazırlanan rehberlerle doğru bilgiye hızlıca ulaşın.",
+    "badge": "Rehber",
+    "readMore": "Rehberi oku",
+    "viewAll": "Tüm rehberler",
+    "empty": "Yayında rehber bulunmuyor."
+  },
+  "HomeFeed": {
+    "newsEyebrow": "Haberler",
+    "newsTitle": "Kurum haberleri ve faaliyetler",
+    "newsDescription": "Kurumsal gelişmeleri, ziyaretleri ve kamuoyunu ilgilendiren faaliyet başlıklarını öne çıkan içeriklerle takip edin.",
+    "newsViewAll": "Tüm haberler",
+    "announcementsEyebrow": "Duyurular",
+    "announcementsTitle": "Öne çıkan bilgilendirmeler",
+    "announcementsDescription": "İletişim, süreç güncellemeleri ve ziyaretçileri doğrudan etkileyen yeni bilgilendirmeleri tek alanda görün.",
+    "announcementsViewAll": "Tüm duyurular",
+    "guidesEyebrow": "Hak rehberleri",
+    "guidesTitle": "Hak ararken önce bakılabilecek rehberler",
+    "guidesDescription": "Başvuru öncesinde en sık ihtiyaç duyulan iki temel konuya kısa ve anlaşılır bir başlangıç sunuyoruz.",
+    "guidesViewAll": "Tüm rehberler",
+    "guidesReadMore": "Rehberi oku",
+    "featuredLabel": "Öne çıkan",
+    "readMore": "İncele",
+    "areasEyebrow": "Odak alanları",
+    "areasTitle": "Ziyaretçilerin en çok baktığı başlıklar",
+    "areasDescription": "İlk kez gelen kullanıcıların en sık ihtiyaç duyduğu sayfaları kısa açıklamalarıyla birlikte burada topladık.",
+    "areaOneTitle": "Başvuru koşulları",
+    "areaOneDescription": "Kimlerin başvuru yapabileceği, hangi konuların değerlendirildiği ve ilk aşamada hangi bilgilere ihtiyaç duyulduğu.",
+    "areaTwoTitle": "Hak rehberleri",
+    "areaTwoDescription": "Ayıplı mal, cayma hakkı ve benzeri başlıklarda temel çerçeveyi anlatan kısa rehberler.",
+    "areaThreeTitle": "Duyurular",
+    "areaThreeDescription": "Başvuru kanalları, iletişim saatleri ve süreçlerdeki güncellemeler için yayınlanan son bilgilendirmeler.",
+    "areaFourTitle": "İletişim",
+    "areaFourDescription": "Telefon, e-posta ve adres bilgileri üzerinden kurumla doğrudan temas kurabileceğiniz sayfa.",
+    "areasCta": "İletişim bilgilerini görüntüle",
+    "emptyNews": "Yayında haber bulunmuyor.",
+    "emptyAnnouncements": "Yayında duyuru bulunmuyor."
+  },
+  "HomeFaq": {
+    "eyebrow": "Sık sorulanlar",
+    "title": "En çok merak edilen başlıklar",
+    "description": "Başvuru, belge ve süreç konularında hızlı cevap arayan ziyaretçiler için kısa bir başlangıç alanı.",
+    "viewAll": "Tüm soruları aç",
+    "searchPlaceholder": "Soru veya konu ara...",
+    "categoriesLabel": "SSS kategorileri",
+    "all": "Tümü",
+    "empty": "Bu filtreyle eşleşen soru bulunamadı.",
+    "clearSearch": "Aramayı temizle",
+    "copyLink": "Bağlantıyı kopyala",
+    "copied": "Kopyalandı",
+    "showAnswer": "Yanıtı göster",
+    "hideAnswer": "Gizle"
+  },
+  "Faq": {
+    "eyebrow": "SSS",
+    "title": "Sıkça sorulan sorular",
+    "description": "Başvuru, belge, süreç ve iletişim konularında en çok merak edilen cevaplara hızlıca ulaşın.",
+    "searchPlaceholder": "Soru veya konu ara...",
+    "categoriesLabel": "SSS kategorileri",
+    "all": "Tümü",
+    "empty": "Aramanızla eşleşen soru bulunamadı.",
+    "clearSearch": "Aramayı temizle",
+    "copyLink": "Bağlantıyı kopyala",
+    "copied": "Kopyalandı"
+  },
+  "Footer": {
+    "navLabel": "Site haritası",
+    "brandHome": "Anasayfaya git",
+    "contact": "İletişim",
+    "legal": "Yasal",
+    "rights": "Tüm hakları saklıdır.",
+    "privacy": "Gizlilik",
+    "disclosure": "Aydınlatma Metni",
+    "kvkk": "KVKK",
+    "faq": "Sıkça Sorulan Sorular",
+    "socialLabel": "Sosyal medya",
+    "ctaTitle": "Tüketici hakları için doğru bilgiye ulaşın",
+    "ctaText": "Başvuru süreci, hak rehberleri ve iletişim kanalları tek bir yerde; ihtiyacınız olan resmi bilgiye hızlıca erişin.",
+    "ctaPrimary": "Başvuru Yap",
+    "ctaSecondary": "İletişim",
+    "backToTop": "Yukarı çık"
+  },
+  "ApplicationForm": {
+    "pageTitle": "Başvuru Yap",
+    "pageDescription": "Tüketici başvurunuzu iletin. Ekibimiz başvurunuzu inceler ve sizinle iletişime geçer.",
+    "overlayTitle": "Tüketici Başvurusu",
+    "overlayDescription": "Bilgilerinizi eksiksiz doldurun. Gönderimden sonra size bir başvuru numarası verilecektir.",
+    "sections": {
+      "personal": "Kişisel Bilgiler",
+      "details": "Başvuru Detayları",
+      "files": "Dosya Yükleme",
+      "consents": "Onaylar"
+    },
+    "fields": {
+      "fullName": "Ad Soyad",
+      "phone": "Telefon",
+      "email": "E-posta",
+      "category": "Başvuru Konusu",
+      "categoryPlaceholder": "Konu seçin",
+      "companyName": "Firma Adı",
+      "purchaseDate": "Alışveriş Tarihi",
+      "productName": "Ürün / Hizmet Adı",
+      "requestedAmount": "Talep Edilen Tutar (₺)",
+      "message": "Açıklama",
+      "messagePlaceholder": "Sorununuzu detaylı şekilde anlatınız.",
+      "filesTitle": "Dosyaları sürükleyin veya seçin",
+      "filesDrop": "Dosyaları bırakın",
+      "filesFull": "En fazla 8 dosya eklenebilir",
+      "filesHint": "Fatura, dekont, sözleşme, yazışma veya görsel. PDF, JPG, PNG, WEBP, AVIF. En fazla 8 dosya.",
+      "filesEmpty": "Dosya seçilmedi",
+      "privacyBefore": "",
+      "privacyLink": "Aydınlatma metnini",
+      "privacyAfter": "okudum ve kişisel verilerimin işlenmesini kabul ediyorum.",
+      "contact": "Gerekli durumlarda benimle telefon veya e-posta üzerinden iletişime geçilmesini kabul ediyorum."
+    },
+    "categories": {
+      "defective_goods": "Ayıplı Mal",
+      "defective_service": "Ayıplı Hizmet",
+      "return_withdrawal": "İade / Cayma Hakkı",
+      "warranty": "Garanti",
+      "shipping": "Kargo",
+      "subscription": "Abonelik",
+      "ecommerce": "E-Ticaret",
+      "banking_finance": "Banka / Finans",
+      "other": "Diğer"
+    },
+    "errors": {
+      "fullName": "Ad soyad en az 3 karakter olmalı.",
+      "phone": "Geçerli bir telefon numarası girin.",
+      "email": "Geçerli bir e-posta adresi girin.",
+      "category": "Başvuru konusu seçin.",
+      "companyName": "Firma adı en az 2 karakter olmalı.",
+      "message": "Açıklama en az 50 karakter olmalı.",
+      "privacy": "Kişisel veri onayını işaretlemelisiniz.",
+      "contact": "İletişim onayını işaretlemelisiniz."
+    },
+    "submit": "Başvuru Yap",
+    "submitting": "Gönderiliyor...",
+    "successTitle": "Başvurunuz başarıyla alınmıştır.",
+    "successText": "Telefonla veya e-posta ile iletişime geçtiğimizde başvuru numaranızı paylaşabilirsiniz.",
+    "applicationNo": "Başvuru No",
+    "error": "Başvuru gönderilemedi. Lütfen tekrar deneyin.",
+    "newApplication": "Yeni başvuru"
+  },
+  "Disclosure": {
+    "eyebrow": "KVKK",
+    "title": "Aydınlatma Metni",
+    "pageDescription": "6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında hazırlanmış taslak aydınlatma metnidir.",
+    "dialogDescription": "Başvuru formunda paylaştığınız kişisel verilerin işlenmesine ilişkin bilgilendirme.",
+    "intro": "Tüketiciler Birliği olarak, başvuru ve iletişim süreçlerinde paylaştığınız kişisel verileri 6698 sayılı Kişisel Verilerin Korunması Kanunu (“KVKK”) kapsamında işleriz. Bu metin, veri işleme faaliyetlerimiz hakkında sizi bilgilendirmek amacıyla hazırlanmıştır.",
+    "disclaimer": "Bu metin taslak niteliktedir. Nihai içerik hukuk ve içerik ekibi tarafından güncellenecektir.",
+    "sections": {
+      "dataController": {
+        "title": "Veri sorumlusu",
+        "body": "Kişisel verileriniz, veri sorumlusu sıfatıyla Tüketiciler Birliği tarafından işlenir."
+      },
+      "processedData": {
+        "title": "İşlenen kişisel veriler",
+        "body": "Kimlik bilgileriniz (ad soyad), iletişim bilgileriniz (telefon, e-posta), başvuru içeriği, varsa firma / ürün / hizmet bilgileri ve yüklediğiniz belgeler işlenebilir."
+      },
+      "purposes": {
+        "title": "İşleme amaçları",
+        "body": "Verileriniz; tüketici başvurunuzun alınması, değerlendirilmesi, sizinle iletişime geçilmesi, kayıtların tutulması ve yasal yükümlülüklerin yerine getirilmesi amacıyla işlenir."
+      },
+      "legalBasis": {
+        "title": "Hukuki sebep",
+        "body": "Kişisel verileriniz; açık rızanız, bir hakkın tesisi, kullanılması veya korunması ve mevzuattan doğan yükümlülüklerimizin yerine getirilmesi hukuki sebeplerine dayanılarak işlenebilir."
+      },
+      "transfer": {
+        "title": "Aktarım",
+        "body": "Verileriniz, yalnızca başvurunuzun değerlendirilmesi için gerekli olduğu ölçüde ve mevzuatın izin verdiği hallerde yetkili kurumlara, danışmanlara veya hizmet sağlayıcılara aktarılabilir."
+      },
+      "retention": {
+        "title": "Saklama süresi",
+        "body": "Kişisel verileriniz, işleme amacının gerektirdiği süre ve ilgili mevzuatta öngörülen zamanaşımı süreleri boyunca saklanır; süre sonunda silinir, yok edilir veya anonim hale getirilir."
+      },
+      "rights": {
+        "title": "Haklarınız",
+        "body": "KVKK’nın 11. maddesi kapsamında verilerinizin işlenip işlenmediğini öğrenme, düzeltme, silme, aktarıldığı üçüncü kişileri bilme ve işleme faaliyetine itiraz etme haklarına sahipsiniz."
+      },
+      "contact": {
+        "title": "İletişim",
+        "body": "Haklarınızı kullanmak veya aydınlatma metni hakkında bilgi almak için sitemizdeki iletişim kanallarından bize ulaşabilirsiniz."
+      }
+    }
+  }
+}

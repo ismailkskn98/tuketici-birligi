@@ -1,0 +1,17 @@
+⨯ Failed to start server
+Error: listen EADDRINUSE: address already in use :::3601
+    at <unknown> (Error: listen EADDRINUSE: address already in use :::3601)
+    at new Promise (<anonymous>) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '::',
+  port: 3601
+}
+npm error Lifecycle script `dev` failed with error:
+npm error code 1
+npm error path C:\ismail_dev\tuketicilerBirligi\frontend
+npm error workspace tuketiciler-birligi-frontend@0.1.0
+npm error location C:\ismail_dev\tuketicilerBirligi\frontend
+npm error command failed
+npm error command C:\Windows\system32\cmd.exe /d /s /c next dev -p 3601

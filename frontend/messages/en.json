@@ -1,0 +1,236 @@
+{
+  "Header": {
+    "cta": "Apply Now",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mainNav": "Main menu",
+    "mobileNav": "Mobile menu",
+    "tagline": "Institutional web platform"
+  },
+  "Nav": {
+    "home": "Home",
+    "corporate": "About",
+    "guides": "Consumer Guides",
+    "news": "News",
+    "announcements": "Announcements",
+    "applicationGuide": "Application Guide",
+    "applyNow": "Apply Now",
+    "provinceMap": "Consumer Map",
+    "faq": "Frequently Asked Questions",
+    "contact": "Contact"
+  },
+  "LanguageSwitcher": {
+    "turkish": "Türkçe",
+    "english": "English",
+    "label": "Language"
+  },
+  "Search": {
+    "placeholder": "Search pages or content...",
+    "empty": "No results found.",
+    "title": "Site search",
+    "trigger": "Search",
+    "pages": "Pages",
+    "noResults": "No results found.",
+    "hint": "Navigation and pages",
+    "open": "Open",
+    "close": "Close"
+  },
+  "Hero": {
+    "readMore": "Read more",
+    "prevSlide": "Prev",
+    "nextSlide": "Next",
+    "scrollHint": "Scroll",
+    "categoryNews": "News",
+    "categoryAnnouncement": "Announcement",
+    "categoryGuide": "Guide",
+    "categoryEvent": "Event"
+  },
+  "HomeGuides": {
+    "eyebrow": "Consumer guides",
+    "title": "Clear and reliable guidance on consumer rights",
+    "description": "Reach the right information quickly with guides on defective goods, withdrawal rights, and common application topics.",
+    "badge": "Guide",
+    "readMore": "Read guide",
+    "viewAll": "All guides",
+    "empty": "No published guides yet."
+  },
+  "HomeFeed": {
+    "newsEyebrow": "News",
+    "newsTitle": "Institutional news and activity",
+    "newsDescription": "Follow institutional updates, visits, and public-facing activities through a more editorial and highlighted layout.",
+    "newsViewAll": "All news",
+    "announcementsEyebrow": "Announcements",
+    "announcementsTitle": "Key updates",
+    "announcementsDescription": "Keep communication changes, process updates, and practical notices in a clearer and more visible section.",
+    "announcementsViewAll": "All announcements",
+    "guidesEyebrow": "Consumer guides",
+    "guidesTitle": "Guides worth checking before applying",
+    "guidesDescription": "A short and readable starting point for the topics visitors look for most before beginning an application.",
+    "guidesViewAll": "All guides",
+    "guidesReadMore": "Read guide",
+    "featuredLabel": "Featured",
+    "readMore": "Explore",
+    "areasEyebrow": "Focus areas",
+    "areasTitle": "The pages visitors check most",
+    "areasDescription": "A compact overview of the sections people usually need first when they arrive on the site.",
+    "areaOneTitle": "Application conditions",
+    "areaOneDescription": "Who can apply, which topics are reviewed, and what basic information is needed at the first step.",
+    "areaTwoTitle": "Consumer guides",
+    "areaTwoDescription": "Short guidance on defective goods, withdrawal rights, and similar core consumer topics.",
+    "areaThreeTitle": "Announcements",
+    "areaThreeDescription": "Recent updates about application channels, contact hours, and process-related notices.",
+    "areaFourTitle": "Contact",
+    "areaFourDescription": "The page where visitors can directly reach the institution through phone, email, and address details.",
+    "areasCta": "View contact details",
+    "emptyNews": "No published news yet.",
+    "emptyAnnouncements": "No published announcements yet."
+  },
+  "HomeFaq": {
+    "eyebrow": "Common questions",
+    "title": "The topics visitors ask about most",
+    "description": "A quick starting point for visitors who want fast answers about applications, documents, and process steps.",
+    "viewAll": "Open all questions",
+    "searchPlaceholder": "Search a question or topic...",
+    "categoriesLabel": "FAQ categories",
+    "all": "All",
+    "empty": "No questions match this filter.",
+    "clearSearch": "Clear search",
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "showAnswer": "Show answer",
+    "hideAnswer": "Hide"
+  },
+  "Faq": {
+    "eyebrow": "FAQ",
+    "title": "Frequently asked questions",
+    "description": "Find quick answers about applications, documents, process steps, and communication channels.",
+    "searchPlaceholder": "Search a question or topic...",
+    "categoriesLabel": "FAQ categories",
+    "all": "All",
+    "empty": "No questions match your search.",
+    "clearSearch": "Clear search",
+    "copyLink": "Copy link",
+    "copied": "Copied"
+  },
+  "Footer": {
+    "navLabel": "Site map",
+    "brandHome": "Go to homepage",
+    "contact": "Contact",
+    "legal": "Legal",
+    "rights": "All rights reserved.",
+    "privacy": "Privacy",
+    "disclosure": "Privacy Notice",
+    "kvkk": "KVKK",
+    "faq": "Frequently Asked Questions",
+    "socialLabel": "Social media",
+    "ctaTitle": "Reach reliable guidance for consumer rights",
+    "ctaText": "Find the application process, consumer guides, and contact channels in one place with clear access to official information.",
+    "ctaPrimary": "Apply Now",
+    "ctaSecondary": "Contact",
+    "backToTop": "Back to top"
+  },
+  "ApplicationForm": {
+    "pageTitle": "Apply Now",
+    "pageDescription": "Submit your consumer application. Our team will review it and get back to you.",
+    "overlayTitle": "Consumer Application",
+    "overlayDescription": "Complete the form carefully. You will receive an application number after submission.",
+    "sections": {
+      "personal": "Personal Information",
+      "details": "Application Details",
+      "files": "File Upload",
+      "consents": "Consents"
+    },
+    "fields": {
+      "fullName": "Full Name",
+      "phone": "Phone",
+      "email": "Email",
+      "category": "Application Subject",
+      "categoryPlaceholder": "Select a subject",
+      "companyName": "Company Name",
+      "purchaseDate": "Purchase Date",
+      "productName": "Product / Service Name",
+      "requestedAmount": "Requested Amount (₺)",
+      "message": "Description",
+      "messagePlaceholder": "Describe your issue in detail.",
+      "filesTitle": "Drag files here or browse",
+      "filesDrop": "Drop files to upload",
+      "filesFull": "You can add up to 8 files",
+      "filesHint": "Invoice, receipt, contract, correspondence or image. PDF, JPG, PNG, WEBP, AVIF. Up to 8 files.",
+      "filesEmpty": "No files selected",
+      "privacyBefore": "I have read the",
+      "privacyLink": "privacy notice",
+      "privacyAfter": "and agree to the processing of my personal data.",
+      "contact": "I agree to be contacted by phone or email when necessary."
+    },
+    "categories": {
+      "defective_goods": "Defective Goods",
+      "defective_service": "Defective Service",
+      "return_withdrawal": "Return / Withdrawal",
+      "warranty": "Warranty",
+      "shipping": "Shipping",
+      "subscription": "Subscription",
+      "ecommerce": "E-Commerce",
+      "banking_finance": "Banking / Finance",
+      "other": "Other"
+    },
+    "errors": {
+      "fullName": "Full name must be at least 3 characters.",
+      "phone": "Enter a valid phone number.",
+      "email": "Enter a valid email address.",
+      "category": "Select an application subject.",
+      "companyName": "Company name must be at least 2 characters.",
+      "message": "Description must be at least 50 characters.",
+      "privacy": "You must accept the privacy consent.",
+      "contact": "You must accept the contact consent."
+    },
+    "submit": "Submit Application",
+    "submitting": "Submitting...",
+    "successTitle": "Your application has been received.",
+    "successText": "You can share this application number when we contact you by phone or email.",
+    "applicationNo": "Application No",
+    "error": "The application could not be sent. Please try again.",
+    "newApplication": "New application"
+  },
+  "Disclosure": {
+    "eyebrow": "KVKK",
+    "title": "Privacy Notice",
+    "pageDescription": "This is a draft privacy notice prepared under Türkiye’s Personal Data Protection Law No. 6698.",
+    "dialogDescription": "Information about how personal data shared in the application form is processed.",
+    "intro": "As Tüketiciler Birliği, we process the personal data you share during application and contact processes under Law No. 6698 on the Protection of Personal Data (“KVKK”). This notice is provided to inform you about our data processing activities.",
+    "disclaimer": "This text is a draft. The final version will be updated by the legal and content teams.",
+    "sections": {
+      "dataController": {
+        "title": "Data controller",
+        "body": "Your personal data is processed by Tüketiciler Birliği as the data controller."
+      },
+      "processedData": {
+        "title": "Personal data processed",
+        "body": "We may process your identity details (full name), contact details (phone, email), application content, company / product / service information if provided, and any documents you upload."
+      },
+      "purposes": {
+        "title": "Purposes of processing",
+        "body": "Your data is processed to receive and review your consumer application, contact you, keep records, and fulfil legal obligations."
+      },
+      "legalBasis": {
+        "title": "Legal basis",
+        "body": "Your personal data may be processed based on your explicit consent, the establishment, exercise or protection of a right, and our legal obligations."
+      },
+      "transfer": {
+        "title": "Transfers",
+        "body": "Your data may be transferred only to the extent necessary for reviewing your application, and only where permitted by law, to competent authorities, advisors or service providers."
+      },
+      "retention": {
+        "title": "Retention period",
+        "body": "Your personal data is stored for as long as required by the processing purpose and applicable limitation periods, and is then deleted, destroyed or anonymised."
+      },
+      "rights": {
+        "title": "Your rights",
+        "body": "Under Article 11 of the KVKK, you have the right to learn whether your data is processed, request correction or deletion, learn the third parties to whom it is transferred, and object to processing."
+      },
+      "contact": {
+        "title": "Contact",
+        "body": "To exercise your rights or request information about this notice, you can reach us through the contact channels on this website."
+      }
+    }
+  }
+}

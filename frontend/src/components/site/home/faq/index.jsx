@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { FaqBrowser } from "@/components/site/faq/faq-browser";
 
@@ -10,7 +11,7 @@ export async function HomeFaq({ items = [] }) {
 
   return (
     <section aria-labelledby="home-faq-title" className="gridContainer py-10 md:py-12">
-      <div className="grid gap-8 md:gap-10">
+      <Reveal className="grid gap-8 md:gap-10" viewport={{ once: true, amount: 0.18 }}>
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div id="home-faq-title" className="max-w-2xl">
             <SectionHeading
@@ -50,7 +51,7 @@ export async function HomeFaq({ items = [] }) {
           searchPlaceholder={t("searchPlaceholder")}
           showAnswerLabel={t("showAnswer")}
         />
-      </div>
+      </Reveal>
     </section>
   );
 }

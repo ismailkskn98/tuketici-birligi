@@ -3,6 +3,7 @@ import { useLocale } from "next-intl";
 import { HiArrowRight } from "react-icons/hi2";
 import { Link } from "@/i18n/navigation";
 import { formatDate } from "@/lib/utils";
+import { FadeIn } from "@/components/motion/reveal";
 
 // export const HERO_FALLBACK_IMAGE = "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1920&q=80";
 export const HERO_FALLBACK_IMAGE = "/ornek-hero.png";
@@ -40,7 +41,7 @@ export function HeroContent({ slide, labels, priority = false }) {
       />
 
       <div className="gridContainer relative z-10 w-full py-16 sm:py-20 md:py-24 lg:py-28">
-        <div className="max-w-xl pr-4 sm:pr-10 lg:max-w-3xl">
+        <FadeIn className="max-w-xl pr-4 sm:pr-10 lg:max-w-3xl" delay={0.08} duration={0.55} viewport={{ once: true, amount: 0.45 }}>
           {hasMeta ? (
             <div
               className="flex flex-wrap items-center gap-x-3 gap-y-1 font-sans text-[10px] font-medium uppercase tracking-[0.16em] text-white/55 sm:text-[11px]"
@@ -84,7 +85,7 @@ export function HeroContent({ slide, labels, priority = false }) {
               </Link>
             </div>
           ) : null}
-        </div>
+        </FadeIn>
       </div>
     </div>
   );

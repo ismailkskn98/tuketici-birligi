@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { Reveal } from "@/components/motion/reveal";
 import { cn } from "@/lib/utils";
 import { DensityFilterDialog, ProvinceEntriesDialog, ProvinceSearchDialog } from "./province-map-dialogs";
 import { ProvinceMapHeader } from "./province-map-header";
@@ -33,7 +34,7 @@ export function ProvinceMapClient({ compact = false, data }) {
 
   return (
     <section className={cn("overflow-hidden bg-white", compact ? "py-10 md:py-12" : "py-14 md:py-20")}>
-      <div className="mx-auto grid w-full min-w-0 gridContainer">
+      <Reveal className="mx-auto grid w-full min-w-0 gridContainer" viewport={{ once: true, amount: 0.14 }}>
         <ProvinceMapHeader
           activeProvinceCount={activeProvinceCount}
           categoryCount={categoryCount}
@@ -46,7 +47,7 @@ export function ProvinceMapClient({ compact = false, data }) {
         <ProvinceMapStage compact={compact} densityFilter={densityFilter} onProvinceOpen={openProvince} provinceByCode={provinceByCode} />
 
         <ProvinceLatestCarousel compact={compact} entries={latestEntries} onProvinceOpen={openProvince} onSearchOpen={() => setSearchOpen(true)} />
-      </div>
+      </Reveal>
 
       <ProvinceEntriesDialog
         onOpenChange={(open) => {

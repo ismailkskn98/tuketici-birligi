@@ -1,41 +1,35 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import NumberFlow from "@number-flow/react";
 import { Filter, Search } from "lucide-react";
 import { useInView, useReducedMotion } from "motion/react";
 import { Button } from "@/components/ui/button";
-import { DENSITY_FILTERS, PROVINCE_MAP_COLORS, formatCount } from "./province-map-utils";
+import { DENSITY_FILTERS, PROVINCE_MAP_COLORS } from "./province-map-utils";
 
 function AnimatedCount({ value }) {
   const reduceMotion = useReducedMotion();
   const ref = useRef(null);
   const inView = useInView(ref, { amount: 0.6, once: true });
-  const shouldAnimate = !reduceMotion && value > 0;
   const [displayValue, setDisplayValue] = useState(0);
 
   useEffect(() => {
-    if (!inView || !shouldAnimate) return undefined;
+    if (!inView) return;
+    setDisplayValue(value);
+  }, [inView, value]);
 
-    let animationFrame = 0;
-    const duration = 700;
-    const startTime = performance.now();
-
-    function tick(now) {
-      const progress = Math.min((now - startTime) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplayValue(Math.round(value * eased));
-
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(tick);
-      }
-    }
-
-    animationFrame = requestAnimationFrame(tick);
-
-    return () => cancelAnimationFrame(animationFrame);
-  }, [inView, shouldAnimate, value]);
-
-  return <span ref={ref}>{formatCount(shouldAnimate ? displayValue : value)}</span>;
+  return (
+    <span ref={ref}>
+      <NumberFlow
+        animated={!reduceMotion}
+        locales="tr-TR"
+        opacityTiming={{ duration: 450, easing: "ease-out" }}
+        spinTiming={{ duration: 1200, easing: "ease-out" }}
+        transformTiming={{ duration: 1200, easing: "ease-out" }}
+        value={reduceMotion ? value : displayValue}
+      />
+    </span>
+  );
 }
 
 function HeaderMetric({ label, value }) {

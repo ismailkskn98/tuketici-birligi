@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { ArrowUpRight } from "lucide-react";
+import { Stagger, StaggerItem } from "@/components/motion/reveal";
 import { Link } from "@/i18n/navigation";
 import { AreaItem } from "./area-item";
 
@@ -25,29 +26,32 @@ export async function AreasOfAction() {
   ];
 
   return (
-    <aside className="px-2 lg:sticky lg:top-24 lg:px-0">
+    <aside className="lg:sticky lg:top-24">
       <div>
-        <span className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-[11px] font-medium text-muted shadow-[0_6px_18px_rgba(22,32,51,0.04)]">
-          <span aria-hidden="true" className="size-1.5 rounded-full bg-secondary/85" />
+        <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-primary-dark">
+          <span aria-hidden="true" className="size-1.5 rounded-full bg-primary-dark" />
           {t("areasEyebrow")}
         </span>
-        <h2 className="mt-4 font-heading text-2xl font-semibold tracking-tight text-ink">{t("areasTitle")}</h2>
-        <p className="mt-3 text-sm leading-7 text-muted">{t("areasDescription")}</p>
+        <h2 className="mt-3 max-w-72 font-heading text-[1.55rem] font-semibold leading-snug tracking-tight text-ink">{t("areasTitle")}</h2>
       </div>
 
-      <div className="mt-6 grid gap-1">
+      <Stagger className="mt-8" stagger={0.07} viewport={{ once: true, amount: 0.25 }}>
         {items.map((item, index) => (
-          <AreaItem description={item.description} index={index + 1} key={item.title} title={item.title} />
+          <StaggerItem key={item.title} y={16}>
+            <AreaItem description={item.description} index={index + 1} title={item.title} />
+          </StaggerItem>
         ))}
-      </div>
+      </Stagger>
 
-      <Link
-        className="focus-ring mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-ink/72 transition hover:text-secondary-dark"
-        href="/iletisim"
-      >
-        {t("areasCta")}
-        <ArrowUpRight aria-hidden="true" className="size-4" />
-      </Link>
+      <div className="mt-8 flex justify-end border-t border-line/60 pt-5">
+        <Link
+          className="focus-ring inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-ink transition hover:text-secondary-dark"
+          href="/iletisim"
+        >
+          {t("areasCta")}
+          <ArrowUpRight aria-hidden="true" className="size-3.5" />
+        </Link>
+      </div>
     </aside>
   );
 }

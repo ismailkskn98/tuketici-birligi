@@ -38,7 +38,7 @@ export default function LogoLoop({ logos = [], className, pauseOnHover = false, 
 
   return (
     <div className={cn("overflow-hidden w-full", fade && "marquee-fade", className)} aria-label={ariaLabel}>
-      <div className={cn("w-full marquee-track flex items-center", pauseOnHover && "marquee-track-pause-hover")}>
+      <div className={cn("marquee-track flex w-max items-center", pauseOnHover && "marquee-track-pause-hover")}>
         <LogoGroup logos={logos} />
         <LogoGroup logos={logos} ariaHidden />
       </div>

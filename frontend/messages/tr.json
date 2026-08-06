@@ -69,6 +69,8 @@
     "guidesViewAll": "Tüm rehberler",
     "guidesReadMore": "Rehberi oku",
     "featuredLabel": "Öne çıkan",
+    "previousSlide": "Önceki içerik",
+    "nextSlide": "Sonraki içerik",
     "readMore": "İncele",
     "areasEyebrow": "Odak alanları",
     "areasTitle": "Ziyaretçilerin en çok baktığı başlıklar",
@@ -111,6 +113,12 @@
     "clearSearch": "Aramayı temizle",
     "copyLink": "Bağlantıyı kopyala",
     "copied": "Kopyalandı"
+  },
+  "AccessRestricted": {
+    "eyebrow": "Geçici erişim",
+    "title": "Bu sayfa şu anda yapım aşamasında.",
+    "description": "Müşteri sunumu için sitenin yalnızca belirli bölümleri erişime açık bırakıldı. Kısa süre sonra bu alan da yayına alınacak.",
+    "homeCta": "Anasayfaya dön"
   },
   "Footer": {
     "navLabel": "Site haritası",

@@ -1,14 +1,7 @@
 import { FeedItem } from "./feed-item";
 import { FeaturedFeedCard } from "./featured-feed-card";
 
-export function FeedGrid({
-  category,
-  categoryLabel,
-  ctaLabel,
-  featuredItem,
-  items,
-  locale = "tr",
-}) {
+export function FeedGrid({ category, categoryLabel, ctaLabel, featuredItem, items, locale = "tr" }) {
   if (!featuredItem && !items.length) {
     return null;
   }

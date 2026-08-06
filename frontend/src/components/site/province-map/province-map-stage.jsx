@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { cloneElement } from "react";
+import { cloneElement, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { getProvinceColor, matchesDensityFilter, PROVINCE_MAP_COLORS } from "./province-map-utils";
 
@@ -13,6 +13,21 @@ export function ProvinceMapStage({
   onProvinceOpen,
   provinceByCode
 }) {
+  const stageRef = useRef(null);
+  const [tooltip, setTooltip] = useState(null);
+
+  function updateTooltip(event, city) {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const rect = stage.getBoundingClientRect();
+    setTooltip({
+      name: city.name,
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+    });
+  }
+
   function renderCity(cityComponent, city) {
     const province = provinceByCode.get(Number(city.plateNumber));
     const count = province?.count || 0;
@@ -30,8 +45,17 @@ export function ProvinceMapStage({
           event.preventDefault();
           onProvinceOpen(city.plateNumber, city.name);
         },
+        onMouseEnter: (event) => {
+          cityComponent.props.onMouseEnter?.(event);
+          updateTooltip(event, city);
+        },
+        onMouseMove: (event) => {
+          cityComponent.props.onMouseMove?.(event);
+          updateTooltip(event, city);
+        },
         onMouseLeave: (event) => {
           cityComponent.props.onMouseLeave?.(event);
+          setTooltip(null);
           const cityPath = event.currentTarget.querySelector("path");
           if (cityPath) {
             cityPath.style.fill = fill;
@@ -57,7 +81,7 @@ export function ProvinceMapStage({
   }
 
   return (
-    <section className="relative w-full min-w-0 overflow-hidden py-1 text-ink">
+    <section ref={stageRef} className="relative w-full min-w-0 overflow-x-clip py-1 text-ink">
       <div
         className={cn(
           "mx-auto grid w-full max-w-6xl min-w-0 place-items-center px-0 md:px-8",
@@ -74,6 +98,16 @@ export function ProvinceMapStage({
           />
         </div>
       </div>
+
+      {tooltip ? (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute z-20 rounded-md border border-line bg-white px-2.5 py-1 text-[11px] font-semibold tracking-wide text-ink shadow-[0_6px_18px_rgba(22,32,51,0.08)]"
+          style={{ left: tooltip.x + 14, top: tooltip.y + 14 }}
+        >
+          {tooltip.name}
+        </div>
+      ) : null}
     </section>
   );
 }

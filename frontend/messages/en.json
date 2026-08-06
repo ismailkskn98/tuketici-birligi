@@ -69,6 +69,8 @@
     "guidesViewAll": "All guides",
     "guidesReadMore": "Read guide",
     "featuredLabel": "Featured",
+    "previousSlide": "Previous item",
+    "nextSlide": "Next item",
     "readMore": "Explore",
     "areasEyebrow": "Focus areas",
     "areasTitle": "The pages visitors check most",
@@ -111,6 +113,12 @@
     "clearSearch": "Clear search",
     "copyLink": "Copy link",
     "copied": "Copied"
+  },
+  "AccessRestricted": {
+    "eyebrow": "Temporary access",
+    "title": "This page is currently under construction.",
+    "description": "Only selected sections of the site are open during the client preview. This area will be published shortly as well.",
+    "homeCta": "Back to home"
   },
   "Footer": {
     "navLabel": "Site map",

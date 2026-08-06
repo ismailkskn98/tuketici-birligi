@@ -229,6 +229,13 @@ button {
   opacity: 1;
 }
 
+.home-feed-swiper,
+.home-feed-swiper .swiper-wrapper,
+.home-feed-swiper .swiper-slide {
+  min-width: 0;
+  max-width: 100%;
+}
+
 @keyframes footer-cta-sheen {
 
   0%,
@@ -258,6 +265,7 @@ button {
 }
 
 .marquee-track {
+  width: max-content;
   animation: logo-marquee 30s linear infinite;
   will-change: transform;
 }

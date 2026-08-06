@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
 import { A11y, Autoplay, EffectFade, Keyboard, Parallax } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { FadeIn } from "@/components/motion/reveal";
 import { HeroContent } from "./hero-content";
 import { HeroSidePagination } from "./hero-side-pagination";
 
@@ -55,7 +56,12 @@ export function HeroCarousel({ slides, labels }) {
 
   return (
     <section data-hero-root className="relative gridContainer z-1 h-full bg-white">
-      <div className="2xl:fluid relative overflow-hidden rounded-2xl bg-white 2xl:mx-12 aspect-16/15 sm:aspect-video xl:aspect-16/6">
+      <FadeIn
+        className="2xl:fluid relative overflow-hidden rounded-2xl bg-white 2xl:mx-12 aspect-16/15 sm:aspect-video lg:aspect-16/6"
+        delay={0.06}
+        duration={0.7}
+        viewport={{ once: true, amount: 0.35 }}
+      >
         <Swiper
           modules={[A11y, Autoplay, EffectFade, Keyboard, Parallax]}
           a11y={{ enabled: true }}
@@ -118,7 +124,7 @@ export function HeroCarousel({ slides, labels }) {
             </article>
           </>
         ) : null}
-      </div>
+      </FadeIn>
     </section>
   );
 }

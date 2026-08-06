@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
+import { Reveal } from "@/components/motion/reveal";
 import { SiteNavbar } from "@/components/site/navbar";
 import { ApplicationCta } from "@/components/site/application-form";
 import { HeaderBrand } from "./brand";
@@ -15,7 +16,7 @@ export async function Header({ settings }) {
   return (
     <header className="contents">
       {/* bu üst taraf şimdilik yorum satırı kalacak */}
-      <div className="gridContainer bg-primary-foreground text-white">
+      <Reveal className="gridContainer bg-primary-foreground text-white" duration={0.55} viewport={{ once: true, amount: 0.9 }} y={8}>
         <div className="flex min-h-9 items-center justify-end gap-4 py-1.5">
           <SocialLinks settings={settings} />
           <span aria-hidden="true" className="h-3 w-px bg-white/50" />
@@ -23,10 +24,10 @@ export async function Header({ settings }) {
             <LanguageSwitcher />
           </Suspense>
         </div>
-      </div>
+      </Reveal>
 
       <StickyMainBar>
-        <div className="gridContainer">
+        <Reveal className="gridContainer" delay={0.04} duration={0.6} viewport={{ once: true, amount: 0.9 }} y={10}>
           <div className="grid min-h-[88px] grid-cols-[1fr_auto] items-stretch gap-6 md:min-h-[96px] xl:grid-cols-[1fr_auto_1fr] xl:gap-10">
             <div className="flex items-center py-4 md:py-5">
               <HeaderBrand shortName={settings.shortName} tagline={t("tagline")} />
@@ -47,7 +48,7 @@ export async function Header({ settings }) {
               <MobileNavDrawer settings={settings} />
             </div>
           </div>
-        </div>
+        </Reveal>
       </StickyMainBar>
     </header>
   );

@@ -16,7 +16,7 @@ export async function Header({ settings }) {
   return (
     <header className="contents">
       {/* bu üst taraf şimdilik yorum satırı kalacak */}
-      <Reveal className="gridContainer bg-primary-foreground text-white" duration={0.55} viewport={{ once: true, amount: 0.9 }} y={8}>
+      <Reveal className="gridContainer bg-primary text-white" duration={0.55} viewport={{ once: true, amount: 0.9 }} y={8}>
         <div className="flex min-h-9 items-center justify-end gap-4 py-1.5">
           <SocialLinks settings={settings} />
           <span aria-hidden="true" className="h-3 w-px bg-white/50" />

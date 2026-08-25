@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { MainLogo } from "@/components/common/mainLogo";
 
-export function HeaderBrand({ shortName, tagline }) {
+export function HeaderBrand({ shortName }) {
   const [logoKey, setLogoKey] = useState(0);
 
   return (
@@ -17,11 +17,10 @@ export function HeaderBrand({ shortName, tagline }) {
         key={logoKey}
         className="size-10 shrink-0 sm:size-12 md:size-12 lg:size-10 xl:size-14 2xl:size-16"
         drawOnMount
-        drawDuration={3.2}
       />
 
       <span className="grid min-w-0">
-        <span className="truncate font-heading text-[0.8125rem] font-medium leading-tight tracking-tight text-[#870b18] sm:text-sm lg:max-w-[8.5rem] lg:text-[0.8125rem] xl:max-w-[11rem] xl:text-[0.9375rem] 2xl:max-w-none 2xl:text-base">
+        <span className="truncate font-heading text-[0.8125rem] font-medium leading-tight tracking-tight text-ink sm:text-sm lg:max-w-[8.5rem] lg:text-[0.8125rem] xl:max-w-[11rem] xl:text-[0.9375rem] 2xl:max-w-none 2xl:text-base">
           {shortName}
         </span>
       </span>

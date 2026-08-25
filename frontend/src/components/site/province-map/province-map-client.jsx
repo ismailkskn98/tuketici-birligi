@@ -34,7 +34,7 @@ export function ProvinceMapClient({ compact = false, data }) {
 
   return (
     <section className={cn("overflow-hidden bg-white", compact ? "py-0" : "py-10 sm:py-12 md:py-14 lg:py-16 2xl:py-20")}>
-      <Reveal className="mx-auto grid w-full min-w-0 gridContainer gap-5 sm:gap-6 md:gap-8 lg:gap-9 2xl:gap-10" viewport={{ once: true, amount: 0.14 }}>
+      <Reveal className="mx-auto grid w-full min-w-0 gridContainer" viewport={{ once: true, amount: 0.14 }}>
         <ProvinceMapHeader
           activeProvinceCount={activeProvinceCount}
           categoryCount={categoryCount}

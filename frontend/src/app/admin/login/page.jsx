@@ -7,7 +7,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md">
         <div className="mb-6 flex items-center justify-center gap-3 rounded-lg border border-line bg-white p-4 shadow-xs">
           <span className="grid size-14 place-items-center rounded-lg border border-line bg-white">
-            <Image alt="" height={44} src="/logo.svg" width={44} />
+            <Image alt="" height={44} src="/main-logo-yazisiz.svg" width={44} />
           </span>
           <div>
             <h1 className="text-xl font-bold tracking-normal text-ink">Yönetim Paneli</h1>

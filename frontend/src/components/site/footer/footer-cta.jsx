@@ -9,7 +9,7 @@ function FooterCtaLink({ children, href, variant = "primary" }) {
         "focus-ring inline-flex min-h-10 w-full items-center justify-center gap-1.5 rounded-full px-3.5 text-[13px] font-semibold transition duration-200 sm:w-auto sm:min-h-10 sm:px-4 sm:text-sm md:min-h-9 md:px-3.5 md:text-[13px] lg:min-h-10 lg:px-4 lg:text-sm 2xl:min-h-11",
         variant === "secondary"
           ? "border border-line/80 bg-white/70 text-ink shadow-[0_10px_24px_rgba(22,32,51,0.05)] hover:-translate-y-0.5 hover:border-primary-dark/30 hover:text-primary-dark"
-          : "bg-secondary text-white shadow-[0_14px_32px_rgba(135,11,24,0.18)] hover:-translate-y-0.5 hover:bg-secondary-dark",
+          : "bg-secondary text-white shadow-[0_14px_32px_rgba(236,99,22,0.22)] hover:-translate-y-0.5 hover:bg-secondary-dark",
       )}
       href={href}
     >

@@ -73,7 +73,7 @@ export function AdminShell({ children }) {
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 border-r border-line bg-white p-5 lg:flex lg:flex-col">
         <Link className="focus-ring flex items-center gap-3 rounded-md" href="/admin">
           <span className="grid size-12 place-items-center rounded-lg border border-line bg-white shadow-xs">
-            <Image alt="" height={38} src="/logo.svg" width={38} />
+            <Image alt="" height={38} src="/main-logo-yazisiz.svg" width={38} />
           </span>
           <span className="grid min-w-0">
             <span className="truncate text-sm font-bold text-ink">Yönetim Paneli</span>
@@ -123,7 +123,7 @@ export function AdminShell({ children }) {
           <div className="relative flex h-full w-[min(22rem,calc(100vw-2rem))] flex-col border-r border-line bg-white p-5 shadow-soft">
             <div className="flex items-center justify-between gap-3">
               <Link className="focus-ring flex items-center gap-3 rounded-md" href="/admin">
-                <Image alt="" height={40} src="/logo.svg" width={40} />
+                <Image alt="" height={40} src="/main-logo-yazisiz.svg" width={40} />
                 <span className="grid">
                   <span className="text-sm font-bold text-ink">Yönetim Paneli</span>
                   <span className="text-xs text-muted">Tüketici Birliği</span>

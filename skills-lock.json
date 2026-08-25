@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "build-awwwards-quality-sites": {
+      "source": "MengTo/Skills",
+      "sourceType": "github",
+      "skillPath": "agent-skills/web-design/build-awwwards-quality-sites/SKILL.md",
+      "computedHash": "5a1bb2b382c617361c7984c036a834b4153f9160bcb84fa189d005a9e192a2ac"
+    },
+    "high-end-visual-design": {
+      "source": "Leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/soft-skill/SKILL.md",
+      "computedHash": "f730e4132775f13eea19e3dc39afc6bb453cfc0498872b127ad8f0d47cfd802d"
+    }
+  }
+}

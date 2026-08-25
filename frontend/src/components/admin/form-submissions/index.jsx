@@ -37,8 +37,8 @@ const statusLabels = {
 
 const statusStyles = {
   new: "bg-primary-soft text-primary-dark",
-  in_review: "bg-wheat/20 text-ink",
-  resolved: "bg-secondary-soft text-secondary-dark",
+  in_review: "bg-teal/15 text-primary",
+  resolved: "bg-wheat/15 text-ink",
   spam: "bg-surface text-muted",
 };
 

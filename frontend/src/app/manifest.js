@@ -12,23 +12,29 @@ export default async function manifest() {
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",
-    theme_color: "#870b18",
+    theme_color: "#1A3863",
     lang: locale,
     icons: [
       {
-        src: "/logo.ico",
+        src: "/main-logo-yazisiz.ico",
         sizes: "any",
         type: "image/x-icon",
       },
       {
-        src: "/logo.png",
+        src: "/main-logo-yazisiz.png",
         sizes: "192x192",
         type: "image/png",
       },
       {
-        src: "/logo.png",
+        src: "/main-logo-yazisiz.png",
         sizes: "512x512",
         type: "image/png",
+      },
+      {
+        src: "/main-logo-yazisiz.svg",
+        sizes: "any",
+        type: "image/svg+xml",
+        purpose: "any",
       },
     ],
   };

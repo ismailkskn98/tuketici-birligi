@@ -10,24 +10,25 @@
   --font-heading: var(--font-heading-family), var(--font-sans-family), ui-sans-serif,
     sans-serif;
 
-  --color-primary: #9fb8f4;
-  --color-primary-dark: #5475c7;
-  --color-primary-soft: #edf3ff;
-  --color-primary-foreground: #162033;
+  --color-primary: #1a3863;
+  --color-primary-dark: #1a213e;
+  --color-primary-soft: #e8eef5;
+  --color-primary-foreground: #ffffff;
 
-  --color-secondary: #870b18;
-  --color-secondary-dark: #870b18;
-  --color-secondary-soft: #f0faeb;
-  --color-secondary-foreground: #162033;
+  --color-secondary: #ec6316;
+  --color-secondary-dark: #c95212;
+  --color-secondary-soft: #fff1e8;
+  --color-secondary-foreground: #1a213e;
 
-  --color-ink: #262626;
+  --color-ink: #1a213e;
 
-  --color-muted: #647084;
-  --color-muted-foreground: #647084;
+  --color-muted: #5a6b7d;
+  --color-muted-foreground: #5a6b7d;
 
-  --color-line: #dbe3ef;
-  --color-surface: #f7f9fc;
-  --color-wheat: #f4cf62;
+  --color-line: #d5dde8;
+  --color-surface: #f5f7fa;
+  --color-wheat: #5d9331;
+  --color-teal: #10878e;
 
   --color-border: var(--border);
   --color-input: var(--input);
@@ -51,7 +52,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
-  --shadow-soft: 0 18px 50px rgba(22, 32, 51, 0.08);
+  --shadow-soft: 0 18px 50px rgba(26, 33, 62, 0.08);
 }
 
 /*
@@ -81,20 +82,20 @@ button {
   --site-header-height: 5.5rem;
   --hero-stage-height: 85vh;
   --background: #ffffff;
-  --foreground: #262626;
+  --foreground: #1a213e;
   --card: #ffffff;
-  --card-foreground: #262626;
+  --card-foreground: #1a213e;
   --popover: #ffffff;
-  --popover-foreground: #262626;
+  --popover-foreground: #1a213e;
   --destructive: #dc2626;
   --destructive-foreground: #ffffff;
-  --border: #dbe3ef;
-  --input: #dbe3ef;
-  --ring: #5475c7;
-  --accent: #edf3ff;
-  --accent-foreground: #262626;
-  --ui-muted: #edf3ff;
-  --ui-muted-foreground: #647084;
+  --border: #d5dde8;
+  --input: #d5dde8;
+  --ring: #1a3863;
+  --accent: #e8eef5;
+  --accent-foreground: #1a213e;
+  --ui-muted: #e8eef5;
+  --ui-muted-foreground: #5a6b7d;
 }
 
 @media (min-width: 640px) {
@@ -135,8 +136,8 @@ button {
     position: relative;
     overflow-x: clip;
     margin: 0;
-    background: #ffff;
-    color: #262626;
+    background: #ffffff;
+    color: #1a213e;
     font-family: var(--font-sans);
   }
 
@@ -163,8 +164,8 @@ button {
   }
 
   ::selection {
-    background: #b5e19c;
-    color: #262626;
+    background: #cfe0c0;
+    color: #1a213e;
   }
 }
 
@@ -174,13 +175,13 @@ button {
 }
 
 .focus-ring:focus-visible {
-  outline-color: #5475c7;
+  outline-color: #1a3863;
 }
 
 .content-grid {
   background-image:
-    linear-gradient(rgba(84, 117, 199, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(84, 117, 199, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(26, 56, 99, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 56, 99, 0.08) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
@@ -214,8 +215,8 @@ button {
   width: 6px;
   height: 6px;
   margin-inline: 4px !important;
-  background: #9fb8f4;
-  opacity: 0.42;
+  background: #1a3863;
+  opacity: 0.35;
   transition:
     width 180ms ease,
     background-color 180ms ease,
@@ -225,7 +226,7 @@ button {
 .province-latest-swiper .swiper-pagination-bullet-active {
   width: 18px;
   border-radius: 9999px;
-  background: #870b18;
+  background: #ec6316;
   opacity: 1;
 }
 
@@ -372,34 +373,3 @@ button {
   }
 }
 
-.cls-1 {
-  fill: url(#Adsız_degrade_269-2);
-}
-
-.cls-2 {
-  fill: url(#Adsız_degrade_269-4);
-}
-
-.cls-3 {
-  fill: url(#Adsız_degrade_269-6);
-}
-
-.cls-4 {
-  fill: url(#Adsız_degrade_269);
-}
-
-.cls-5 {
-  fill: url(#Adsız_degrade_269-7);
-}
-
-.cls-6 {
-  fill: #870b18;
-}
-
-.cls-7 {
-  fill: url(#Adsız_degrade_269-5);
-}
-
-.cls-8 {
-  fill: url(#Adsız_degrade_269-3);
-}

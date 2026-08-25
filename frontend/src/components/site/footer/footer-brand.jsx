@@ -8,13 +8,13 @@ export function FooterBrand({ orgName, settings, t, year }) {
       <Link aria-label={t("brandHome")} className="focus-ring group flex max-w-full flex-col items-center gap-3 rounded-2xl px-2 sm:flex-row sm:gap-4 md:gap-5" href="/">
         <Image
           alt=""
-          className="pointer-events-none size-14 shrink-0 select-none object-contain drop-shadow-[0_12px_22px_rgba(22,32,51,0.10)] transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.04] sm:size-16 md:size-18 lg:size-20 2xl:size-24"
+          className="pointer-events-none size-14 shrink-0 select-none object-contain drop-shadow-[0_12px_22px_rgba(26,33,62,0.12)] transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.04] sm:size-16 md:size-18 lg:size-20 2xl:size-24"
           draggable={false}
           height={96}
-          src="/logo.svg"
+          src="/main-logo-yazisiz.svg"
           width={96}
         />
-        <span className="max-w-[15ch] text-center font-heading text-[clamp(1.75rem,5.2vw,2.75rem)] font-semibold leading-[0.98] tracking-normal text-secondary transition-colors duration-300 group-hover:text-secondary-dark sm:max-w-none sm:text-left md:text-[clamp(2rem,4vw,3.25rem)] xl:text-[clamp(2.35rem,3.8vw,3.75rem)] 2xl:text-[clamp(2.75rem,3.5vw,4.4rem)]">
+        <span className="max-w-[15ch] text-center font-heading text-[clamp(1.75rem,5.2vw,2.75rem)] font-semibold leading-[0.98] tracking-normal text-ink transition-colors duration-300 group-hover:text-primary sm:max-w-none sm:text-left md:text-[clamp(2rem,4vw,3.25rem)] xl:text-[clamp(2.35rem,3.8vw,3.75rem)] 2xl:text-[clamp(2.75rem,3.5vw,4.4rem)]">
           {settings.shortName || orgName}
         </span>
       </Link>

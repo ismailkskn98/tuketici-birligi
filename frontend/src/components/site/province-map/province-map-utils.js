@@ -1,10 +1,10 @@
 import { provinces as provinceList } from "@/lib/provinces";
 
 export const PROVINCE_MAP_COLORS = {
-  high: "#870b18",
-  medium: "#9fb8f4",
-  empty: "#dbe3ef",
-  hover: "#f4cf62",
+  high: "#EC6316",
+  medium: "#1A3863",
+  empty: "#d5dde8",
+  hover: "#10878E",
 };
 
 export const DENSITY_FILTERS = [

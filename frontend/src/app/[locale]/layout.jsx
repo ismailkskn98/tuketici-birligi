@@ -23,9 +23,9 @@ export async function generateMetadata({ params }) {
     description: t("description"),
     keywords: t("keywords"),
     icons: {
-      icon: "/logo.ico",
-      shortcut: "/logo.ico",
-      apple: "/logo.png",
+      icon: [{ url: "/main-logo-yazisiz.ico" }, { url: "/main-logo-yazisiz.svg", type: "image/svg+xml" }],
+      shortcut: "/main-logo-yazisiz.ico",
+      apple: "/main-logo-yazisiz.png",
     },
     openGraph: {
       title: t("ogTitle"),
@@ -34,13 +34,13 @@ export async function generateMetadata({ params }) {
       siteName: t("siteName"),
       locale: locale === "en" ? "en_US" : "tr_TR",
       type: "website",
-      images: [{ url: "/logo.png", alt: t("siteName") }],
+      images: [{ url: "/main-logo-yazisiz.png", alt: t("siteName") }],
     },
     twitter: {
       card: "summary",
       title: t("ogTitle"),
       description: t("ogDescription"),
-      images: ["/logo.png"],
+      images: ["/main-logo-yazisiz.png"],
     },
   };
 }

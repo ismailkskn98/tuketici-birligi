@@ -38,8 +38,8 @@ export function MobileNavDrawer({ settings }) {
           <div className="flex h-dvh flex-col bg-white">
             <div className="flex shrink-0 items-center justify-between gap-3 px-5 py-4">
               <DrawerClose nativeButton={false} render={<Link className="focus-ring flex min-w-0 items-center gap-2 rounded-lg" href="/" />}>
-                <Image alt="" className="size-11 shrink-0 rounded-xl object-contain" height={44} src="/logo.svg" width={44} />
-                <span className="truncate font-heading text-sm font-medium tracking-tight text-[#870b18]">{shortName}</span>
+                <Image alt="" className="size-11 shrink-0 object-contain" height={44} src="/main-logo-yazisiz.svg" width={44} />
+                <span className="truncate font-heading text-sm font-medium tracking-tight text-ink">{shortName}</span>
               </DrawerClose>
 
               <div className="flex items-center gap-1">

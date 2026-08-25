@@ -237,6 +237,26 @@ button {
   max-width: 100%;
 }
 
+@keyframes scroll-top-arrow-nudge {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+.scroll-top-arrow-nudge {
+  animation: scroll-top-arrow-nudge 2.6s ease-in-out infinite;
+}
+
+.group:hover .scroll-top-arrow-nudge,
+.group:focus-visible .scroll-top-arrow-nudge {
+  animation-play-state: paused;
+}
+
 @keyframes footer-cta-sheen {
 
   0%,
@@ -293,6 +313,10 @@ button {
   }
 
   .marquee-track {
+    animation: none;
+  }
+
+  .scroll-top-arrow-nudge {
     animation: none;
   }
 }

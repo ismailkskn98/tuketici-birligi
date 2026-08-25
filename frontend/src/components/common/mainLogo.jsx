@@ -30,9 +30,18 @@ const groupVariants = {
   }),
 };
 
-export function MainLogo({ className = "", drawOnMount = false, drawOnHover = false }) {
+export function MainLogo({
+  className = "",
+  drawOnMount = false,
+  drawOnHover = false,
+  omitGroups = [],
+}) {
   const reduceMotion = useReducedMotion();
   const shouldAnimate = !reduceMotion && (drawOnMount || drawOnHover);
+  const groups =
+    omitGroups.length > 0
+      ? logoGroups.filter((group) => !omitGroups.includes(group.id))
+      : logoGroups;
 
   return (
     <motion.svg
@@ -44,7 +53,7 @@ export function MainLogo({ className = "", drawOnMount = false, drawOnHover = fa
       whileHover={drawOnHover && !reduceMotion ? "hover" : undefined}
       aria-hidden="true"
     >
-      {logoGroups.map((group) => (
+      {groups.map((group) => (
         <motion.g
           key={group.id}
           custom={shouldAnimate ? group.delay : 0}

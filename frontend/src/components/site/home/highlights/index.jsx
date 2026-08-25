@@ -1,46 +1,42 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/motion/reveal";
+import { HighlightParallaxImage } from "./highlight-parallax-image";
 
 const HIGHLIGHTS = [
   {
     kicker: "İletişim",
-    badge: "01",
     title: "Açık iletişim",
     text: "Telefon, e-posta, adres, form ve harita bilgileri tek sayfada toplanır.",
     href: "/iletisim",
     cta: "İletişime git",
-    meta: "Doğrudan erişim",
-    footer: "İletişim bilgileri",
-    accent: "bg-primary",
-    imageSrc: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
+    accent: "bg-secondary",
+    imageSrc: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
+    parallaxRange: 10,
   },
   {
     kicker: "Başvuru",
-    badge: "02",
     title: "Başvuru rehberi",
     text: "Başvuru öncesi gerekli bilgiler, belgeler ve kanallar sade şekilde anlatılır.",
     href: "/basvuru-rehberi",
     cta: "Rehberi incele",
-    meta: "Adım adım süreç",
-    footer: "Başvuru adımları",
-    accent: "bg-ink",
-    imageSrc: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=900&q=80",
+    accent: "bg-wheat",
+    imageSrc: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=80",
+    parallaxRange: 18,
   },
   {
     kicker: "Rehber",
-    badge: "03",
     title: "Hak rehberleri",
     text: "Tüketicilerin en çok ihtiyaç duyduğu konular kategori bazlı yayınlanır.",
     href: "/hak-rehberleri",
     cta: "Rehberleri aç",
-    meta: "Kategori bazlı içerik",
-    footer: "Konu rehberleri",
-    accent: "bg-secondary",
-    imageSrc: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=900&q=80",
+    accent: "bg-teal",
+    imageSrc: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1200&q=80",
+    parallaxRange: 26,
   },
 ];
+
+const EASE = "ease-[cubic-bezier(0.23,1,0.32,1)]";
 
 export function HomeHighlights() {
   return (
@@ -51,58 +47,43 @@ export function HomeHighlights() {
 
       <div className="grid gap-4 sm:gap-5 md:grid-cols-3 md:gap-5 lg:gap-6 xl:gap-7">
         {HIGHLIGHTS.map((item, index) => (
-          <Reveal
-            key={item.title}
-            className="h-full"
-            delay={index * 0.08}
-            duration={0.6}
-            viewport={{ once: true, amount: "some" }}
-            y={12}
-          >
+          <Reveal key={item.title} className="h-full" delay={index * 0.08} duration={0.6} viewport={{ once: true, amount: "some" }} y={12}>
             <Link
               href={item.href}
-              className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line/70 bg-white shadow-[0_1px_0_rgba(26,33,62,0.02),0_12px_36px_-24px_rgba(26,33,62,0.14)] transition duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 hover:border-line hover:shadow-[0_2px_0_rgba(26,33,62,0.03),0_20px_48px_-24px_rgba(26,33,62,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/60"
+              className="group relative block h-full min-h-88 overflow-hidden rounded-2xl bg-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 sm:min-h-96 lg:min-h-104 xl:min-h-112"
             >
-              <div className="relative aspect-16/10 overflow-hidden bg-surface">
-                <Image
-                  alt=""
-                  className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.04]"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  src={item.imageSrc}
-                />
-                <span className="pointer-events-none absolute inset-0 bg-linear-to-t from-ink/25 via-transparent to-transparent" />
+              <HighlightParallaxImage
+                alt=""
+                range={item.parallaxRange}
+                sizes="(max-width: 768px) 100vw, 50vw"
+                src={item.imageSrc}
+              />
 
-                <span className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-white px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink shadow-[0_1px_0_rgba(26,33,62,0.06)] ring-1 ring-line/60">
-                  <span className={`size-1.5 rounded-full ${item.accent}`} aria-hidden="true" />
-                  {item.kicker}
-                </span>
+              <span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-black/15" />
 
-                <span className="absolute right-4 top-4 font-heading text-[11px] font-semibold tracking-[0.14em] text-white/90">
-                  {item.badge}
-                </span>
-              </div>
+              <span className="absolute left-5 top-5 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/90 [text-shadow:0_1px_10px_rgba(0,0,0,0.45)] sm:left-6 sm:top-6">
+                <span aria-hidden="true" className={`size-1.5 rounded-full ${item.accent}`} />
+                {item.kicker}
+              </span>
 
-              <div className="flex flex-1 flex-col gap-3 px-5 py-5 sm:px-6 sm:py-6">
-                <h3 className="text-balance font-heading text-[1.15rem] font-semibold leading-snug tracking-tight text-ink transition-colors duration-300 group-hover:text-ink lg:text-[1.2rem] xl:text-[1.3rem]">
-                  {item.title}
-                </h3>
-                <p className="text-[13.5px] leading-6 text-muted lg:text-sm lg:leading-6 xl:leading-7">
-                  {item.text}
-                </p>
-
-                <div className="mt-auto flex items-center justify-between gap-3 border-t border-line/60 pt-4">
-                  <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-muted">
-                    {item.footer}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-ink transition-colors duration-300 group-hover:text-secondary-dark">
-                    {item.cta}
-                    <ArrowUpRight
-                      aria-hidden="true"
-                      className="size-3.5 transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                    />
-                  </span>
+              <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 lg:p-7">
+                {/* Metin: hover'da sabit mesafe yukarı — layout yok, sadece transform */}
+                <div className={`flex flex-col gap-2.5 transition-transform duration-500 ${EASE} will-change-transform sm:gap-3 sm:group-hover:-translate-y-10 sm:group-focus-visible:-translate-y-10`}>
+                  <h3 className="text-balance font-heading text-[1.35rem] font-semibold leading-snug tracking-tight text-white sm:text-[1.45rem] lg:text-[1.55rem] xl:text-[1.65rem]">{item.title}</h3>
+                  <p className="max-w-[32ch] text-[13.5px] leading-6 text-white/78 sm:text-sm sm:leading-6 lg:leading-7">{item.text}</p>
                 </div>
+
+                {/* CTA: alttan fade+slide; mobilde her zaman görünür */}
+                <span
+                  className={`mt-3.5 inline-flex max-w-fit items-center gap-2 text-[12px] font-semibold text-white transition-[opacity,transform] duration-500 ${EASE} will-change-transform sm:pointer-events-none sm:absolute sm:bottom-6 sm:left-6 sm:mt-0 sm:translate-y-2 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 sm:group-focus-visible:translate-y-0 sm:group-focus-visible:opacity-100 lg:bottom-7 lg:left-7`}
+                >
+                  {item.cta}
+                  <span
+                    className={`inline-flex size-6 items-center justify-center rounded-full bg-white/15 transition-transform duration-500 ${EASE} group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:bg-white/22`}
+                  >
+                    <ArrowUpRight aria-hidden="true" className="size-3.5" strokeWidth={1.75} />
+                  </span>
+                </span>
               </div>
             </Link>
           </Reveal>

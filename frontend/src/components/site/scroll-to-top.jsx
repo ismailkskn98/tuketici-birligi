@@ -54,17 +54,17 @@ export function ScrollToTop() {
         ease: [0.22, 1, 0.36, 1],
       }}
       className={cn(
-        "fixed right-5 bottom-5 z-9999",
+        "group fixed right-5 bottom-5 z-9999",
         "flex size-12 items-center justify-center",
         "appearance-none border-0 bg-transparent p-0",
         "outline-none ring-0 shadow-none",
         "focus:outline-none focus:ring-0 focus:shadow-none",
-        "focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-none",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2",
         "sm:right-8 sm:bottom-8 sm:size-14",
         visible ? "pointer-events-auto" : "pointer-events-none",
       )}
     >
-      <ScrollTopLogo visible={visible} className="size-11 pointer-events-none" />
+      <ScrollTopLogo className="pointer-events-none size-11 sm:size-12" visible={visible} />
     </motion.button>
   );
 }

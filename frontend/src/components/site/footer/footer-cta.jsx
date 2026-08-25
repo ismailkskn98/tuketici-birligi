@@ -23,7 +23,7 @@ export function FooterCta({ t }) {
   return (
     <section aria-labelledby="footer-cta-title" className="relative gridContainer">
       <div className="py-5 sm:py-6 md:py-7 lg:py-8 2xl:py-10">
-        <div className="relative overflow-hidden rounded-2xl border border-line/80 bg-white/62 px-4 py-5 shadow-[0_18px_48px_rgba(22,32,51,0.07)] backdrop-blur-sm sm:rounded-none sm:border-x-0 sm:border-y sm:px-5 sm:py-5 md:px-6 md:py-5 lg:px-7 xl:px-8 2xl:px-9 2xl:py-6">
+        <div className="relative overflow-hidden rounded-2xl border border-line/80 bg-white px-4 py-5 shadow-[0_18px_48px_rgba(22,32,51,0.07)] sm:rounded-none sm:border-x-0 sm:border-y sm:px-5 sm:py-5 md:px-6 md:py-5 lg:px-7 xl:px-8 2xl:px-9 2xl:py-6">
           <div aria-hidden="true" className="absolute inset-0 footer-cta-sheen opacity-70" />
           <div className="relative flex flex-col items-stretch gap-4 sm:gap-5 md:flex-row md:items-center md:justify-between md:gap-5 lg:gap-8 xl:gap-10">
             <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:items-start sm:gap-3.5 sm:text-left md:max-w-xl lg:max-w-2xl xl:max-w-3xl">

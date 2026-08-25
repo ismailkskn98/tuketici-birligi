@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Send } from "lucide-react";
 import { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { CustomButton } from "@/components/common/custom-button";
@@ -12,7 +13,11 @@ import { getClientApiBaseUrl } from "@/lib/api";
 import { APPLICATION_CATEGORIES, createApplicationSchema } from "@/lib/form-schemas";
 import { cn } from "@/lib/utils";
 import { ApplicationFileUpload } from "./file-upload";
-import { KvkkDialog } from "./kvkk-dialog";
+
+const KvkkDialog = dynamic(
+  () => import("./kvkk-dialog").then((mod) => ({ default: mod.KvkkDialog })),
+  { ssr: false },
+);
 
 function FormSection({ index, title, children }) {
   return (

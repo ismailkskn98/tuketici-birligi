@@ -45,9 +45,9 @@ export function ProvinceMapClient({ compact = false, data }) {
           totalEntries={totalEntries}
         />
 
-        <div className="grid gap-3 sm:gap-4 md:gap-0">
+        <div className="grid">
           <ProvinceMapStage compact={compact} densityFilter={densityFilter} onProvinceOpen={openProvince} provinceByCode={provinceByCode} />
-          <ProvinceMapLegend className="justify-center px-1 md:hidden" />
+          <ProvinceMapLegend className="px-1" />
         </div>
 
         <ProvinceLatestCarousel compact={compact} entries={latestEntries} onProvinceOpen={openProvince} onSearchOpen={() => setSearchOpen(true)} />

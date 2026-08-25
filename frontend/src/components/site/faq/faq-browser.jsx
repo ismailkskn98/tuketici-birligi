@@ -2,7 +2,6 @@
 
 import { ArrowUpRight, Check, LinkIcon, Search, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { CutoutCorner } from "@/components/ui/cutout-card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
@@ -16,55 +15,78 @@ function FaqItem({ accordion, copiedLabel, copyLinkLabel, hideAnswerLabel, item,
   return (
     <article
       className={cn(
-        "group relative scroll-mt-24 overflow-hidden rounded-2xl border border-line/80 bg-white shadow-[0_12px_40px_rgba(22,32,51,0.05)] transition duration-300 md:rounded-[20px] 2xl:rounded-[24px]",
-        "hover:border-primary/35 hover:shadow-soft",
+        "group relative scroll-mt-24 overflow-hidden rounded-2xl border border-line/70 bg-white shadow-[0_1px_0_rgba(26,33,62,0.02),0_12px_36px_-24px_rgba(26,33,62,0.10)] transition duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] hover:border-line hover:shadow-[0_2px_0_rgba(26,33,62,0.03),0_20px_44px_-24px_rgba(26,33,62,0.16)]",
         accordion && open && "-translate-y-0.5",
       )}
       id={item.slug}
     >
-      {item.summary ? (
-        <span className="absolute right-0 top-0 z-10 rounded-bl-[14px] bg-ink px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-white md:rounded-bl-[16px] md:px-3 md:py-1.5 md:text-[10px] 2xl:rounded-bl-[18px] 2xl:px-3.5 2xl:py-2">
-          {item.summary}
-          <CutoutCorner className="absolute -bottom-[23px] right-0 -rotate-90 text-ink" size={24} />
-          <CutoutCorner className="absolute -left-[23px] top-0 -rotate-90 text-ink" size={24} />
-        </span>
-      ) : null}
-
       <div className="flex h-full flex-col">
-        <div className={cn("p-4 pb-0 md:p-5 md:pb-0 lg:p-5 xl:p-6 xl:pb-0 2xl:p-7 2xl:pb-0", item.summary && "pr-14 md:pr-20 xl:pr-22 2xl:pr-24")}>
-          {accordion ? (
-            <button aria-controls={`${item.slug}-answer`} aria-expanded={open} className="focus-ring text-left" onClick={onToggle} type="button">
-              <h2 className="font-heading text-base font-semibold leading-snug tracking-tight text-ink md:text-[1.05rem] lg:text-lg xl:text-lg 2xl:text-xl 2xl:leading-snug">{item.title}</h2>
-            </button>
-          ) : (
-            <h2 className="font-heading text-base font-semibold leading-snug tracking-tight text-ink md:text-[1.05rem] lg:text-lg xl:text-lg 2xl:text-xl 2xl:leading-snug">{item.title}</h2>
-          )}
+        <div className="flex items-start justify-between gap-3 px-5 pt-5 md:px-6 md:pt-6 xl:px-7 xl:pt-7">
+          <div className="min-w-0 flex-1">
+            {accordion ? (
+              <button aria-controls={`${item.slug}-answer`} aria-expanded={open} className="focus-ring block text-left" onClick={onToggle} type="button">
+                <h2 className="text-balance font-heading text-base font-semibold leading-snug tracking-tight text-ink md:text-[1.05rem] lg:text-lg xl:text-[1.15rem] 2xl:text-xl 2xl:leading-snug">
+                  {item.title}
+                </h2>
+              </button>
+            ) : (
+              <h2 className="text-balance font-heading text-base font-semibold leading-snug tracking-tight text-ink md:text-[1.05rem] lg:text-lg xl:text-[1.15rem] 2xl:text-xl 2xl:leading-snug">
+                {item.title}
+              </h2>
+            )}
+          </div>
 
-          <div className={cn("grid transition-[grid-template-rows,opacity] duration-300 ease-out", showBody ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0")} id={`${item.slug}-answer`}>
-            <div className="overflow-hidden">
-              {item.body ? <p className="mt-3 max-w-3xl text-sm leading-6 text-muted md:mt-3 md:text-[13px] md:leading-6 lg:leading-6 xl:mt-4 xl:text-sm xl:leading-7 2xl:text-[15px] 2xl:leading-8">{item.body}</p> : null}
-            </div>
+          {item.summary ? (
+            <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-line/70 bg-surface/60 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink/70">
+              <span aria-hidden="true" className="size-1.5 rounded-full bg-secondary" />
+              {item.summary}
+            </span>
+          ) : null}
+        </div>
+
+        <div
+          className={cn(
+            "grid px-5 transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] md:px-6 xl:px-7",
+            showBody ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
+          )}
+          id={`${item.slug}-answer`}
+        >
+          <div className="overflow-hidden">
+            {item.body ? (
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-muted md:mt-3 md:text-[13px] md:leading-6 xl:mt-4 xl:text-sm xl:leading-7 2xl:text-[15px] 2xl:leading-8">
+                {item.body}
+              </p>
+            ) : null}
           </div>
         </div>
 
-        <div className="mt-4 flex items-center justify-between gap-3 border-t border-line/80 px-4 py-3 md:mt-5 md:px-5 md:py-3.5 lg:mt-5 xl:mt-6 xl:px-6 xl:py-4 2xl:px-7">
-          <span className="text-[11px] font-medium text-ink/55 md:text-xs">{item.summary}</span>
+        <div className="mt-4 flex items-center justify-between gap-3 border-t border-line/60 px-5 py-3 md:mt-5 md:px-6 md:py-3.5 xl:mt-6 xl:px-7 xl:py-4">
+          <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-muted">
+            {item.summary || "Sık sorulan"}
+          </span>
 
           {accordion && !open ? (
-            <button className="focus-ring inline-flex items-center gap-1.5 text-[11px] font-semibold text-ink/60 transition group-hover:text-secondary md:text-xs" onClick={onToggle} type="button">
+            <button
+              className="focus-ring inline-flex items-center gap-1.5 text-[11px] font-semibold text-ink transition-colors duration-300 group-hover:text-secondary-dark md:text-xs"
+              onClick={onToggle}
+              type="button"
+            >
               {showAnswerLabel}
-              <ArrowUpRight aria-hidden="true" className="size-3.5 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              <ArrowUpRight
+                aria-hidden="true"
+                className="size-3.5 transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
             </button>
           ) : (
             <div className="flex items-center gap-3">
               {accordion ? (
-                <button className="focus-ring text-[11px] font-semibold text-ink/50 transition hover:text-ink md:text-xs" onClick={onToggle} type="button">
+                <button className="focus-ring text-[11px] font-semibold text-muted transition-colors duration-300 hover:text-ink md:text-xs" onClick={onToggle} type="button">
                   {hideAnswerLabel}
                 </button>
               ) : null}
               <button
                 aria-label={justCopied ? copiedLabel : copyLinkLabel}
-                className="focus-ring inline-flex items-center gap-2 text-[11px] font-semibold text-ink/60 transition hover:text-secondary md:text-xs"
+                className="focus-ring inline-flex items-center gap-2 text-[11px] font-semibold text-muted transition-colors duration-300 hover:text-secondary-dark md:text-xs"
                 onClick={(event) => {
                   event.stopPropagation();
                   onCopy(item.slug);
@@ -200,7 +222,7 @@ export function FaqBrowser({
           ))}
         </div>
       ) : (
-        <div className={cn("mx-auto w-full rounded-2xl border border-dashed border-line bg-white/80 px-5 py-10 text-center text-sm text-muted md:rounded-[24px] md:px-6 md:py-14", accordion && "max-w-2xl lg:max-w-3xl xl:max-w-3xl 2xl:max-w-4xl")}>{emptyText}</div>
+        <div className={cn("mx-auto w-full rounded-2xl border border-dashed border-line bg-white/80 px-5 py-10 text-center text-sm text-muted md:rounded-3xl md:px-6 md:py-14", accordion && "max-w-2xl lg:max-w-3xl xl:max-w-3xl 2xl:max-w-4xl")}>{emptyText}</div>
       )}
     </div>
   );

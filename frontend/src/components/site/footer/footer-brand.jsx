@@ -36,7 +36,7 @@ export function FooterBrand({ orgName, settings, t, year }) {
 
         <div aria-label={t("socialLabel")}>
           <SocialLinks
-            className="gap-2.5 rounded-full border border-line/80 bg-white/80 px-3.5 py-1.5 shadow-[0_14px_34px_rgba(22,32,51,0.07)] backdrop-blur-sm transition duration-200 hover:border-primary-dark/25 sm:gap-3 sm:px-4 sm:py-2"
+            className="gap-2.5 rounded-full border border-line/80 bg-white px-3.5 py-1.5 shadow-[0_14px_34px_rgba(22,32,51,0.07)] transition duration-200 hover:border-primary-dark/25 sm:gap-3 sm:px-4 sm:py-2"
             iconClassName="size-4 sm:size-4.5"
             settings={settings}
             tone="dark"

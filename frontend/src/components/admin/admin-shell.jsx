@@ -97,7 +97,7 @@ export function AdminShell({ children }) {
       </aside>
 
       <div className="lg:pl-72">
-        <header className="sticky top-0 z-30 border-b border-line bg-white/95 backdrop-blur">
+        <header className="sticky top-0 z-30 border-b border-line bg-white">
           <div className="flex min-h-16 items-center justify-between gap-3 px-4 md:px-8">
             <div className="flex min-w-0 items-center gap-3">
               <Button aria-expanded={mobileMenuOpen} aria-label="Admin menüsünü aç" className="lg:hidden" onClick={() => setMobileMenuOpen(true)} size="icon-sm" variant="outline">

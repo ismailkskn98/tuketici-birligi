@@ -126,7 +126,12 @@ export function FloatingPanelContent({ children, className }) {
     <AnimatePresence>
       {isOpen && (
         <>
-          <motion.div initial={{ backdropFilter: "blur(0px)" }} animate={{ backdropFilter: "blur(4px)" }} exit={{ backdropFilter: "blur(0px)" }} className="fixed inset-0 z-40" />
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-40 bg-black/30"
+          />
           <motion.div
             ref={contentRef}
             layoutId={`floating-panel-${uniqueId}`}

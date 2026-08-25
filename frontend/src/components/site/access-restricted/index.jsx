@@ -21,7 +21,7 @@ export async function AccessRestrictedPageContent() {
       />
 
       <div className="gridContainer flex min-h-screen items-center py-8 sm:py-10 md:py-12">
-        <div className="mx-auto w-full max-w-5xl rounded-[28px] border border-line/70 bg-white/92 p-6 shadow-[0_28px_100px_rgba(15,23,42,0.08)] backdrop-blur sm:p-8 md:p-10 lg:p-12">
+        <div className="mx-auto w-full max-w-5xl rounded-[28px] border border-line/70 bg-white p-6 shadow-[0_28px_100px_rgba(15,23,42,0.08)] sm:p-8 md:p-10 lg:p-12">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
             <div className="inline-flex size-16 shrink-0 items-center justify-center rounded-[22px] bg-secondary/10 text-secondary md:size-20">
               <ShieldAlert aria-hidden="true" className="size-8 md:size-10" />

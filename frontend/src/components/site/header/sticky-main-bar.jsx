@@ -33,7 +33,7 @@ export function StickyMainBar({ children, className }) {
   }, []);
 
   return (
-    <div ref={barRef} className={cn("sticky top-0 z-40 border-b border-line/80 bg-white/95 backdrop-blur-sm", className)}>
+    <div ref={barRef} className={cn("sticky top-0 z-40 border-b border-line/80 bg-white", className)}>
       <motion.div layoutRoot>{children}</motion.div>
     </div>
   );

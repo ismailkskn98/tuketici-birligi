@@ -14,7 +14,7 @@ export function FooterBrand({ orgName, settings, t, year }) {
           src="/main-logo-yazisiz.svg"
           width={96}
         />
-        <span className="max-w-[15ch] text-center font-heading text-[clamp(1.75rem,5.2vw,2.75rem)] font-semibold leading-[0.98] tracking-normal text-ink transition-colors duration-300 group-hover:text-primary sm:max-w-none sm:text-left md:text-[clamp(2rem,4vw,3.25rem)] xl:text-[clamp(2.35rem,3.8vw,3.75rem)] 2xl:text-[clamp(2.75rem,3.5vw,4.4rem)]">
+        <span className="max-w-[15ch] text-center font-heading text-[clamp(1.75rem,5.2vw,2.75rem)] font-semibold leading-[0.98] tracking-normal text-ink transition-colors duration-300 group-hover:text-secondary-dark sm:max-w-none sm:text-left md:text-[clamp(2rem,4vw,3.25rem)] xl:text-[clamp(2.35rem,3.8vw,3.75rem)] 2xl:text-[clamp(2.75rem,3.5vw,4.4rem)]">
           {settings.shortName || orgName}
         </span>
       </Link>
@@ -36,7 +36,7 @@ export function FooterBrand({ orgName, settings, t, year }) {
 
         <div aria-label={t("socialLabel")}>
           <SocialLinks
-            className="gap-2.5 rounded-full border border-line/80 bg-white px-3.5 py-1.5 shadow-[0_14px_34px_rgba(22,32,51,0.07)] transition duration-200 hover:border-primary-dark/25 sm:gap-3 sm:px-4 sm:py-2"
+            className="gap-2.5 rounded-full border border-line/80 bg-white px-3.5 py-1.5 shadow-[0_14px_34px_rgba(17,17,17,0.07)] transition duration-200 hover:border-ink/20 sm:gap-3 sm:px-4 sm:py-2"
             iconClassName="size-4 sm:size-4.5"
             settings={settings}
             tone="dark"

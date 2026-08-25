@@ -8,7 +8,7 @@ function FooterCtaLink({ children, href, variant = "primary" }) {
       className={cn(
         "focus-ring inline-flex min-h-10 w-full items-center justify-center gap-1.5 rounded-full px-3.5 text-[13px] font-semibold transition duration-200 sm:w-auto sm:min-h-10 sm:px-4 sm:text-sm md:min-h-9 md:px-3.5 md:text-[13px] lg:min-h-10 lg:px-4 lg:text-sm 2xl:min-h-11",
         variant === "secondary"
-          ? "border border-line/80 bg-white/70 text-ink shadow-[0_10px_24px_rgba(22,32,51,0.05)] hover:-translate-y-0.5 hover:border-primary-dark/30 hover:text-primary-dark"
+          ? "border border-line/80 bg-white/70 text-ink shadow-[0_10px_24px_rgba(17,17,17,0.05)] hover:-translate-y-0.5 hover:border-ink/20 hover:text-ink"
           : "bg-secondary text-white shadow-[0_14px_32px_rgba(236,99,22,0.22)] hover:-translate-y-0.5 hover:bg-secondary-dark",
       )}
       href={href}
@@ -27,7 +27,7 @@ export function FooterCta({ t }) {
           <div aria-hidden="true" className="absolute inset-0 footer-cta-sheen opacity-70" />
           <div className="relative flex flex-col items-stretch gap-4 sm:gap-5 md:flex-row md:items-center md:justify-between md:gap-5 lg:gap-8 xl:gap-10">
             <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:items-start sm:gap-3.5 sm:text-left md:max-w-xl lg:max-w-2xl xl:max-w-3xl">
-              <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-primary-dark/15 bg-primary-soft text-primary-dark shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] sm:mt-0.5 sm:size-10 md:size-9 lg:size-10 2xl:size-11">
+              <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-line/70 bg-surface text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] sm:mt-0.5 sm:size-10 md:size-9 lg:size-10 2xl:size-11">
                 <MessageCircleQuestion aria-hidden="true" className="size-4.5 md:size-4 lg:size-5" strokeWidth={1.8} />
               </span>
               <div className="min-w-0">

@@ -12,7 +12,7 @@ import { DENSITY_FILTERS } from "./province-map-utils";
 
 const densityMeta = {
   all: { color: "bg-secondary" },
-  high: { color: "bg-primary-dark" },
+  high: { color: "bg-secondary" },
   medium: { color: "bg-primary" },
   empty: { color: "bg-line" },
 };
@@ -49,7 +49,7 @@ function ProvinceSearchRow({ isActive, onHover, onSelect, province }) {
       <span
         className={cn(
           "whitespace-nowrap text-xs font-medium tabular-nums",
-          province.count > 0 ? "text-primary-dark" : "text-muted",
+          province.count > 0 ? "text-ink" : "text-muted",
         )}
       >
         {province.count} kayıt

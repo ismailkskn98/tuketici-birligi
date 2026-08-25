@@ -214,7 +214,7 @@ export function ApplicationForm({ className }) {
             <p>
               {t("fields.privacyBefore") ? `${t("fields.privacyBefore")} ` : null}
               <button
-                className="font-medium text-ink underline decoration-line underline-offset-4 transition hover:text-primary-dark"
+                className="font-medium text-ink underline decoration-line underline-offset-4 transition hover:text-secondary-dark"
                 onClick={() => setKvkkOpen(true)}
                 type="button"
               >

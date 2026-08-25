@@ -11,22 +11,22 @@
     sans-serif;
 
   --color-primary: #1a3863;
-  --color-primary-dark: #1a213e;
-  --color-primary-soft: #e8eef5;
+  --color-primary-dark: #111111;
+  --color-primary-soft: #f4f4f4;
   --color-primary-foreground: #ffffff;
 
   --color-secondary: #ec6316;
   --color-secondary-dark: #c95212;
   --color-secondary-soft: #fff1e8;
-  --color-secondary-foreground: #1a213e;
+  --color-secondary-foreground: #111111;
 
-  --color-ink: #1a213e;
+  --color-ink: #111111;
 
-  --color-muted: #5a6b7d;
-  --color-muted-foreground: #5a6b7d;
+  --color-muted: #666666;
+  --color-muted-foreground: #666666;
 
-  --color-line: #d5dde8;
-  --color-surface: #f5f7fa;
+  --color-line: #e8e8e8;
+  --color-surface: #f7f7f7;
   --color-wheat: #5d9331;
   --color-teal: #10878e;
 
@@ -52,7 +52,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
-  --shadow-soft: 0 18px 50px rgba(26, 33, 62, 0.08);
+  --shadow-soft: 0 18px 50px rgba(17, 17, 17, 0.08);
 }
 
 /*
@@ -82,20 +82,20 @@ button {
   --site-header-height: 5.5rem;
   --hero-stage-height: 85vh;
   --background: #ffffff;
-  --foreground: #1a213e;
+  --foreground: #111111;
   --card: #ffffff;
-  --card-foreground: #1a213e;
+  --card-foreground: #111111;
   --popover: #ffffff;
-  --popover-foreground: #1a213e;
+  --popover-foreground: #111111;
   --destructive: #dc2626;
   --destructive-foreground: #ffffff;
-  --border: #d5dde8;
-  --input: #d5dde8;
-  --ring: #1a3863;
-  --accent: #e8eef5;
-  --accent-foreground: #1a213e;
-  --ui-muted: #e8eef5;
-  --ui-muted-foreground: #5a6b7d;
+  --border: #e8e8e8;
+  --input: #e8e8e8;
+  --ring: #111111;
+  --accent: #f4f4f4;
+  --accent-foreground: #111111;
+  --ui-muted: #f4f4f4;
+  --ui-muted-foreground: #666666;
 }
 
 @media (min-width: 640px) {
@@ -137,7 +137,7 @@ button {
     overflow-x: clip;
     margin: 0;
     background: #ffffff;
-    color: #1a213e;
+    color: #111111;
     font-family: var(--font-sans);
   }
 
@@ -165,7 +165,7 @@ button {
 
   ::selection {
     background: #cfe0c0;
-    color: #1a213e;
+    color: #111111;
   }
 }
 
@@ -175,13 +175,13 @@ button {
 }
 
 .focus-ring:focus-visible {
-  outline-color: #1a3863;
+  outline-color: #111111;
 }
 
 .content-grid {
   background-image:
-    linear-gradient(rgba(26, 56, 99, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(26, 56, 99, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(17, 17, 17, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 17, 17, 0.06) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 

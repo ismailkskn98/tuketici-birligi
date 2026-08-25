@@ -3,7 +3,7 @@ export const BRAND_COLORS = {
   globeBlue: "#1A3863",
   green: "#5D9331",
   orange: "#EC6316",
-  textBlue: "#1A213E",
+  textBlue: "#111111",
   teal: "#10878E",
   continent: "#27406A",
 };

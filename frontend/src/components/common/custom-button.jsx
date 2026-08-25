@@ -7,9 +7,9 @@ const customButtonVariants = cva(
   {
     variants: {
       variant: {
-        primary: "bg-ink text-white shadow-soft hover:bg-primary-dark",
+        primary: "bg-ink text-white shadow-soft hover:bg-black/85",
         secondary: "bg-secondary text-white hover:bg-secondary-dark hover:text-white",
-        outline: "border border-line bg-white text-ink hover:border-primary-dark hover:text-primary-dark",
+        outline: "border border-line bg-white text-ink hover:border-ink/30 hover:text-ink",
         ghost: "text-ink hover:bg-primary-soft",
       },
       size: {

@@ -20,7 +20,7 @@ export function FeedItem({ categoryLabel, ctaLabel, date, href, image, locale = 
 
       <div className={hasCardLayout ? "p-5" : "flex items-start justify-between gap-4"}>
         <div className="min-w-0">
-          {categoryLabel ? <Badge className="rounded-full bg-primary-soft px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary-dark">{categoryLabel}</Badge> : null}
+          {categoryLabel ? <Badge className="rounded-full bg-primary-soft px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink">{categoryLabel}</Badge> : null}
           {date ? (
             <time className="mt-3 block text-[11px] font-semibold uppercase tracking-[0.14em] text-muted" dateTime={date}>
               {formatDate(date, locale)}

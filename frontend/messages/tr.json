@@ -37,6 +37,7 @@
   },
   "Search": {
     "placeholder": "Sayfa veya içerik ara...",
+    "description": "Sayfalar ve içerikler arasında hızlıca arama yapın.",
     "empty": "Sonuç bulunamadı.",
     "title": "Site araması",
     "trigger": "Ara",

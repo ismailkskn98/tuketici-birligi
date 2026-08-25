@@ -37,6 +37,7 @@
   },
   "Search": {
     "placeholder": "Search pages or content...",
+    "description": "Quickly search across pages and published content.",
     "empty": "No results found.",
     "title": "Site search",
     "trigger": "Search",

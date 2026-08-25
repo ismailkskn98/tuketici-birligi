@@ -9,23 +9,19 @@ function useParallaxEnabled() {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
-    if (prefersReducedMotion) {
-      setEnabled(false);
-      return;
-    }
-
     const mobileQuery = window.matchMedia("(max-width: 767px)");
     const coarseQuery = window.matchMedia("(pointer: coarse)");
 
     const update = () => {
-      setEnabled(!mobileQuery.matches && !coarseQuery.matches);
+      setEnabled(!prefersReducedMotion && !mobileQuery.matches && !coarseQuery.matches);
     };
 
-    update();
+    const frameId = window.requestAnimationFrame(update);
     mobileQuery.addEventListener("change", update);
     coarseQuery.addEventListener("change", update);
 
     return () => {
+      window.cancelAnimationFrame(frameId);
       mobileQuery.removeEventListener("change", update);
       coarseQuery.removeEventListener("change", update);
     };
@@ -52,22 +48,14 @@ export function HighlightParallaxImage({ alt, priority, range = 16, sizes, src }
   const yRange = useMemo(() => [`-${selfTravel}%`, `${selfTravel}%`], [selfTravel]);
   const y = useTransform(scrollYProgress, [0, 1], yRange);
 
-  if (!parallaxEnabled) {
-    return (
-      <div className="absolute inset-0 bg-ink">
-        <Image alt={alt} className="object-cover" fill priority={priority} sizes={sizes} src={src} />
-      </div>
-    );
-  }
-
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-hidden bg-ink">
       <motion.div
         className="absolute inset-x-0 w-full"
         style={{
-          top: `-${travel}%`,
-          height: `${heightPercent}%`,
-          y,
+          top: parallaxEnabled ? `-${travel}%` : 0,
+          height: parallaxEnabled ? `${heightPercent}%` : "100%",
+          y: parallaxEnabled ? y : 0,
         }}
       >
         <Image alt={alt} className="object-cover" fill priority={priority} sizes={sizes} src={src} />

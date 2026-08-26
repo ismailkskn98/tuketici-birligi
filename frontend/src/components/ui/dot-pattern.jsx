@@ -73,8 +73,8 @@ export function DotPattern({
     return {
       x: col * width + cx + x,
       y: row * height + cy + y,
-      delay: Math.random() * 5,
-      duration: Math.random() * 3 + 2,
+      delay: ((Math.sin((i + 1) * 12.9898) * 43758.5453) % 1 + 1) % 1 * 5,
+      duration: (((Math.sin((i + 1) * 78.233) * 24634.6345) % 1 + 1) % 1) * 3 + 2,
     };
   })
 

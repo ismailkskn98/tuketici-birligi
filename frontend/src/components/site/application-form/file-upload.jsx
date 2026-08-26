@@ -21,17 +21,13 @@ function formatFileSize(bytes) {
 }
 
 function FilePreviewItem({ file, onRemove }) {
-  const [previewUrl, setPreviewUrl] = useState("");
   const isImage = file.type.startsWith("image/");
+  const [previewUrl] = useState(() => (isImage ? URL.createObjectURL(file) : ""));
 
   useEffect(() => {
-    if (!isImage) return undefined;
-
-    const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
-
-    return () => URL.revokeObjectURL(url);
-  }, [file, isImage]);
+    if (!previewUrl) return undefined;
+    return () => URL.revokeObjectURL(previewUrl);
+  }, [previewUrl]);
 
   return (
     <li className="flex items-center gap-3 rounded-xl border border-line/60 bg-white px-3 py-2.5">

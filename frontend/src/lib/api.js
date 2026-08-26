@@ -72,6 +72,11 @@ export async function getProvinceMap(locale = "tr") {
   return data || getFallbackProvinceMap();
 }
 
+export async function getBoardMembers(locale = "tr") {
+  const data = await request(`/api/public/board-members?locale=${locale}`);
+  return data?.items || [];
+}
+
 export function getClientApiBaseUrl() {
   return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3402";
 }

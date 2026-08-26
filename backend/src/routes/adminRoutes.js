@@ -1,6 +1,7 @@
 const express = require("express");
 const adminContentController = require("../controllers/adminContentController");
 const adminHeroController = require("../controllers/adminHeroController");
+const boardMemberController = require("../controllers/boardMemberController");
 const formSubmissionController = require("../controllers/formSubmissionController");
 const mediaController = require("../controllers/mediaController");
 const provinceMapController = require("../controllers/provinceMapController");
@@ -23,6 +24,11 @@ router.post("/hero-slides", adminHeroController.createHeroSlide);
 router.post("/hero-slides/translate", adminHeroController.translateHeroSlide);
 router.patch("/hero-slides/:id", adminHeroController.updateHeroSlide);
 router.delete("/hero-slides/:id", adminHeroController.deleteHeroSlide);
+
+router.get("/board-members", boardMemberController.listBoardMembers);
+router.post("/board-members", boardMemberController.createBoardMember);
+router.patch("/board-members/:id", boardMemberController.updateBoardMember);
+router.delete("/board-members/:id", boardMemberController.deleteBoardMember);
 
 router.get("/province-map", provinceMapController.listProvinceMapEntries);
 router.post("/province-map", provinceMapController.createProvinceMapEntry);

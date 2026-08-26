@@ -133,23 +133,17 @@ export function FaqBrowser({
       }),
     [activeCategory, items, normalizedQuery],
   );
+  const resolvedOpenSlug = useMemo(() => {
+    if (!accordion || !filteredItems.length) return "";
+    if (filteredItems.some((item) => item.slug === openSlug)) return openSlug;
+    return filteredItems[0].slug || "";
+  }, [accordion, filteredItems, openSlug]);
 
   useEffect(() => {
     if (!copiedSlug) return undefined;
     const timer = window.setTimeout(() => setCopiedSlug(""), 1800);
     return () => window.clearTimeout(timer);
   }, [copiedSlug]);
-
-  useEffect(() => {
-    if (!accordion) return;
-    if (!filteredItems.length) {
-      setOpenSlug("");
-      return;
-    }
-    if (!filteredItems.some((item) => item.slug === openSlug)) {
-      setOpenSlug(filteredItems[0].slug || "");
-    }
-  }, [accordion, filteredItems, openSlug]);
 
   function copyLink(slug) {
     if (!slug || typeof window === "undefined" || !navigator.clipboard) return;
@@ -216,7 +210,7 @@ export function FaqBrowser({
               key={item.slug || item.id}
               onCopy={copyLink}
               onToggle={() => toggleItem(item.slug)}
-              open={!accordion || openSlug === item.slug}
+              open={!accordion || resolvedOpenSlug === item.slug}
               showAnswerLabel={showAnswerLabel}
             />
           ))}

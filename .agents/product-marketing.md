@@ -1,12 +1,12 @@
 # Product Marketing Context
 
 **Belge türü:** Kurumsal mesajlaşma bağlamı (ticari ürün pazarlama dökümanı değil)
-**Document version:** v1
-**Last updated:** 2026-08-17
+**Document version:** v2
+**Last updated:** 2026-08-26
 
 Bu belge, Tüketiciler Birliği’nin web sitesi ve dijital iletişiminde kullanılacak ortak konumlandırma, dil ve dönüşüm çerçevesidir. Kaynaklar: `tüzük28072026.pdf` (TÜKETİCİLER BİRLİĞİ STATÜSÜ), mevcut frontend/backend metinleri ve canlı kullanıcı yolları.
 
-Tüzükte açıkça yer almayan nicel sonuç, güncel yönetim kadrosu, iletişim bilgisi, üye sayısı veya resmi “kamu yararına çalışan dernek” statüsü bu belgede iddia edilmez. Site seed/placeholder metinleri kurum gerçeği sayılmaz.
+Tüzükte açıkça yer almayan nicel sonuç, iletişim bilgisi, üye sayısı veya resmi “kamu yararına çalışan dernek” statüsü bu belgede iddia edilmez. Müşterinin web yayını için sağladığı güncel yönetim kurulu listesi, bağımsız bir resmi dönem doğrulaması olarak değil müşteri onaylı yayın girdisi olarak kullanılır. Site seed/placeholder metinleri kurum gerçeği sayılmaz.
 
 ---
 
@@ -32,6 +32,14 @@ Tüketici hakları, tüketici şikayeti / başvuru yönlendirmesi, tüketici bil
 
 **Mevcut sitedeki ad farkı:**  
 Canlı arayüz ve meta metinler şu an “Tüketici Birliği” / İngilizce “Consumers Union” kullanıyor. Statüdeki resmi biçim “Tüketiciler Birliği” / “CONSUMERS ASSOCIATION”tir. Yayına alınmadan önce hangi adın kamuya kullanılacağı netleştirilmelidir.
+
+### Yönetim Kurulu İçerik İlkesi
+
+Müşteri tarafından 26 Ağustos 2026 tarihinde web yayını için sağlanan yedi kişilik liste alfabetik ve hiyerarşi iddiası taşımayan sırayla şöyledir: Alpay Korkmaz, Hakan Akçam, İsmail Çağlar, Muhammed Emin Yeşil, Murat Kahya, Mustafa Başer ve Uğuralp Coşkun.
+
+Public profilde yalnızca kişinin adı, müşterinin sağladığı mesleki unvan, kısa kurumsal özgeçmiş özeti ve portre yayımlanır. Telefon, e-posta, açık adres, doğum tarihi, medeni durum, aile bilgisi ve parti görevleri yayımlanmaz. Kaynak CV’lerde bulunan bu bilgiler özet metne taşınmaz; kaynak belgeler web tarafından sunulmayan korumalı proje alanında tutulur.
+
+Bu liste, statüdeki ilk genel kurula kadar görevli geçici yönetim kaydıyla aynı şey değildir. Resmi görev dönemi, kurul içi unvanlar ve ilk genel kurul durumu ayrıca doğrulanmalıdır.
 
 ---
 
@@ -173,7 +181,7 @@ Navigasyondaki Mevzuat / Stratejik Plan / Performans Programı / Kariyer kurgusu
 **Kullanım kuralı:**  
 Geçici yönetim, seçilmiş kalıcı kadro gibi sunulmamalıdır. “Bakanlık onaylı devlet kurumu” denmemelidir; doğru ifade “İçişleri Bakanlığı Sivil Toplumla İlişkiler Genel Müdürlüğü nezdinde statüsü incelenmiş / tescile konu sivil toplum kuruluşu”dur.
 
-**Henüz kanıtlanmayanlar:** üye sayısı, sonuçlanan başvuru adedi, test raporu, emsal dava, basında yer alma, güncel seçilmiş yönetim, adres/telefon. Bunlar proof point olarak kullanılmaz.
+**Henüz kanıtlanmayanlar:** üye sayısı, sonuçlanan başvuru adedi, test raporu, emsal dava, basında yer alma, müşteri tarafından sağlanan kurul listesinin resmi dönem ve kurul içi görev unvanları, adres/telefon. Bunlar proof point olarak kullanılmaz.
 
 ---
 
@@ -283,7 +291,7 @@ Canlı liste + detay. Menüde ayıplı mal, cayma, mesafeli satış, garanti/iad
 **Boşluk:** Seed rehberler yer tutucu. Tüzükteki reklam, ürün güvenliği, gizli ücret, KVKK, sınır ötesi işlem başlıkları henüz rehber olarak yok.
 
 ### Kurumsal
-`/kurumsal` yer tutucu. Menüde Hakkımızda canlı; Misyon-Vizyon, Yönetim Kurulu, Organizasyon, Mevzuat, Stratejik Yönetim, Kariyer `#`.  
+`/kurumsal` yer tutucu. Yönetim Kurulu ayrı bir canlı rota olarak hazırlanmıştır; Misyon-Vizyon, Organizasyon, Mevzuat, Stratejik Yönetim ve Kariyer hâlen `#`.
 **Mesaj:** Bağımsız birlik kimliği, amaç, organlar, statü.  
 **Risk:** Stratejik plan / performans programı / kariyer, kamu idaresi bilgi mimarisine yakın. Tüzükte asıl ihtiyaç: amaç, faaliyet, organlar, üyelik, yayınlar, şube/temsilcilik.
 
@@ -361,7 +369,7 @@ SSS, başvuru rehberi, tüketici haritası, KVKK / aydınlatma / gizlilik. Harit
 - Logo şeridindeki kamu kurumlarıyla resmi ortaklık iddiası  
 - Seed haber, duyuru ve rehber metinleri  
 - İletişim bilgileri  
-- Kalıcı seçilmiş yönetim listesi  
+- Kurul listesinin resmi görev dönemi ve kurul içi görev unvanları
 - Yayımlanmış test raporu veya emsal dava özeti  
 
 **Değer temaları**
@@ -403,7 +411,7 @@ Aşağıdakiler tahminle doldurulmadı. İçerik ve hukuk ekibi netleştirmeden 
 
 1. **Kamuya açık ad:** Tüketiciler Birliği mi, Tüketici Birliği mi? İngilizce CONSUMERS ASSOCIATION mı, Consumers Union mı?  
 2. **Kuruluş / tescil tarihi** ve varsa dernek / teşekkül sicil numarası.  
-3. **Güncel yönetim:** İlk genel kurul yapıldı mı? Geçici kadro hâlâ geçerli mi?  
+3. **Yönetim kurulunun resmi statüsü:** Müşterinin sağladığı yedi kişilik liste hangi görev dönemine ait? İlk genel kurul yapıldı mı; kurul içi resmi unvanlar ve geçici kadronun sona erdiği tarih nedir?
 4. **Açık adres, telefon, KEP, e-posta, çalışma saatleri.**  
 5. **Ön başvuru ile üyelik ilişkisi:** Üyeliksiz yardımın sınırı; danışmanlığın üye/üye değil ayrımı; ücret.  
 6. **Ön başvurunun hukuki niteliği:** Yönlendirme mi, vekâlet/dava hazırlığı mı, yalnızca kayıt mı?  
@@ -422,4 +430,5 @@ Aşağıdakiler tahminle doldurulmadı. İçerik ve hukuk ekibi netleştirmeden 
 ## Changelog
 
 *Newest first. One line per revision: what changed and why.*
+- v2 (2026-08-26) — Müşteri tarafından sağlanan yedi kişilik yönetim kurulu listesi ve CV özetleri eklendi; kişisel veri yayınlamama ilkesi netleştirildi.
 - v1 (2026-08-17) — Statü ve mevcut site yollarından ilk kurumsal mesajlaşma bağlamı; ticari SaaS kalıpları çıkarılıp doğrulanamayan iddialar ayrı tutuldu.

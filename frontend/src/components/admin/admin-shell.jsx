@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 const navigationIcons = {
   "/admin": LayoutDashboard,
   "/admin/hero": Home,
+  "/admin/yonetim-kurulu": Users,
   "/admin/harita": MapPinned,
   "/admin/sss": HelpCircle,
   "/admin/icerikler": FileText,

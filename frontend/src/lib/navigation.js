@@ -12,7 +12,7 @@ export const navigationMenu = [
     links: [
       { label: "Hakkımızda", href: "/kurumsal" },
       { label: "Misyon ve Vizyon", href: "#" },
-      { label: "Yönetim Kurulu", href: "#" },
+      { label: "Yönetim Kurulu", href: "/yonetim-kurulu" },
       { label: "Organizasyon Şeması", href: "#" },
       {
         label: "Mevzuat",
@@ -88,6 +88,7 @@ export const navigationMenu = [
 export const publicNavigation = [
   { key: "home", href: "/", title: "Anasayfa" },
   { key: "corporate", href: "/kurumsal", title: "Kurumsal" },
+  { key: "boardMembers", href: "/yonetim-kurulu", title: "Yönetim Kurulu" },
   { key: "guides", href: "/hak-rehberleri", title: "Hak Rehberleri" },
   { key: "news", href: "/haberler", title: "Haberler" },
   { key: "announcements", href: "/duyurular", title: "Duyurular" },
@@ -154,6 +155,7 @@ export function getFooterColumns(menu = navigationMenu) {
 export const adminNavigation = [
   { title: "Özet", href: "/admin" },
   { title: "Hero", href: "/admin/hero" },
+  { title: "Yönetim Kurulu", href: "/admin/yonetim-kurulu" },
   { title: "Harita", href: "/admin/harita" },
   { title: "SSS", href: "/admin/sss" },
   { title: "İçerikler", href: "/admin/icerikler" },

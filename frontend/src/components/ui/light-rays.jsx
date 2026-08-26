@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { motion } from "motion/react"
 
 import { cn } from "@/lib/utils"
@@ -8,13 +8,17 @@ const createRays = (count, cycle) => {
   if (count <= 0) return []
 
   return Array.from({ length: count }, (_, index) => {
-    const left = 8 + Math.random() * 84
-    const rotate = -28 + Math.random() * 56
-    const width = 160 + Math.random() * 160
-    const swing = 0.8 + Math.random() * 1.8
-    const delay = Math.random() * cycle
-    const duration = cycle * (0.75 + Math.random() * 0.5)
-    const intensity = 0.6 + Math.random() * 0.5
+    const randomValue = (salt) => {
+      const value = Math.sin((index + 1) * 12.9898 + salt * 78.233) * 43758.5453
+      return value - Math.floor(value)
+    }
+    const left = 8 + randomValue(1) * 84
+    const rotate = -28 + randomValue(2) * 56
+    const width = 160 + randomValue(3) * 160
+    const swing = 0.8 + randomValue(4) * 1.8
+    const delay = randomValue(5) * cycle
+    const duration = cycle * (0.75 + randomValue(6) * 0.5)
+    const intensity = 0.6 + randomValue(7) * 0.5
 
     return {
       id: `${index}-${Math.round(left * 10)}`,
@@ -73,12 +77,8 @@ export function LightRays({
   ref,
   ...props
 }) {
-  const [rays, setRays] = useState([])
   const cycleDuration = Math.max(speed, 0.1)
-
-  useEffect(() => {
-    setRays(createRays(count, cycleDuration))
-  }, [count, cycleDuration])
+  const rays = useMemo(() => createRays(count, cycleDuration), [count, cycleDuration])
 
   return (
     <div

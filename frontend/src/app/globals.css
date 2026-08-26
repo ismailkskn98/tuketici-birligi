@@ -9,6 +9,7 @@
   --font-sans: var(--font-sans-family), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-heading-family), var(--font-sans-family), ui-sans-serif,
     sans-serif;
+  --font-editorial: var(--font-editorial-family), Georgia, serif;
 
   --color-primary: #1a3863;
   --color-primary-dark: #111111;

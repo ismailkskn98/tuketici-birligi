@@ -1,4 +1,4 @@
-import { Geist, Inter_Tight } from "next/font/google";
+import { Geist, Inter_Tight, Newsreader } from "next/font/google";
 
 export const interTight = Inter_Tight({
   subsets: ["latin", "latin-ext"],
@@ -12,4 +12,10 @@ export const geist = Geist({
   display: "swap"
 });
 
-export const fontVariables = `${interTight.variable} ${geist.variable}`;
+export const newsreader = Newsreader({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-editorial-family",
+  display: "swap"
+});
+
+export const fontVariables = `${interTight.variable} ${geist.variable} ${newsreader.variable}`;

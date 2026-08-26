@@ -4,6 +4,7 @@ export default function sitemap() {
   return [
     "",
     "/kurumsal",
+    "/yonetim-kurulu",
     "/hak-rehberleri",
     "/haberler",
     "/duyurular",

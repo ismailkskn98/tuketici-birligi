@@ -21,6 +21,7 @@
   "Nav": {
     "home": "Home",
     "corporate": "About",
+    "boardMembers": "Board of Directors",
     "guides": "Consumer Guides",
     "news": "News",
     "announcements": "Announcements",
@@ -125,6 +126,17 @@
     "clearSearch": "Clear search",
     "copyLink": "Copy link",
     "copied": "Copied"
+  },
+  "BoardMembers": {
+    "eyebrow": "Institutional governance",
+    "title": "Board of Directors",
+    "titleLineOne": "Board of",
+    "titleLineTwo": "Directors",
+    "description": "Meet the members of the Consumers Association Board of Directors and the professional experience they bring from different fields.",
+    "membersTitle": "Board members",
+    "memberCount": "{count} board members",
+    "portraitAlt": "Portrait of {name}",
+    "empty": "Board of Directors information is being updated."
   },
   "AccessRestricted": {
     "eyebrow": "Temporary access",

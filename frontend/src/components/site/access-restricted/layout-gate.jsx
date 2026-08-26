@@ -2,7 +2,7 @@
 
 import { usePathname } from "@/i18n/navigation";
 
-const ALLOWED_ROUTES = new Set(["/", "/sss", "/basvuru-yap", "/iletisim"]);
+const ALLOWED_ROUTES = new Set(["/", "/sss", "/basvuru-yap", "/iletisim", "/yonetim-kurulu"]);
 
 function normalizePathname(pathname) {
   if (!pathname) return "/";

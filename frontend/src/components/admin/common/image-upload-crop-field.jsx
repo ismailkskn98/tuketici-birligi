@@ -15,8 +15,14 @@ export function ImageUploadCropField({
   helperText,
   initialPreview = "",
   label = "Görsel",
+  maxOutputHeight,
+  maxOutputWidth,
   onChange,
+  outputExtension = "jpg",
+  outputMimeType = "image/jpeg",
+  outputQuality = 0.92,
   previewLabel,
+  cropInstruction = "Carousel oranı için kadrajı seçin.",
   value,
 }) {
   const [sourceImage, setSourceImage] = useState("");
@@ -84,7 +90,17 @@ export function ImageUploadCropField({
       setProcessing(true);
       setCropError("");
 
-      const file = await getCroppedImageFile(sourceImage, croppedAreaPixels, `${sourceFileName}.jpg`);
+      const file = await getCroppedImageFile(
+        sourceImage,
+        croppedAreaPixels,
+        `${sourceFileName}.${outputExtension}`,
+        {
+          mimeType: outputMimeType,
+          quality: outputQuality,
+          maxWidth: maxOutputWidth,
+          maxHeight: maxOutputHeight,
+        },
+      );
       const nextPreviewUrl = URL.createObjectURL(file);
 
       if (localPreviewUrl.startsWith("blob:")) {
@@ -187,7 +203,7 @@ export function ImageUploadCropField({
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="font-semibold text-ink">Görseli kırp</p>
-              <p className="mt-1 text-xs font-normal leading-5 text-muted">Carousel oranı için kadrajı seçin.</p>
+              <p className="mt-1 text-xs font-normal leading-5 text-muted">{cropInstruction}</p>
             </div>
             <Button disabled={processing} onClick={open} size="sm" type="button" variant="outline">
               Başka görsel seç

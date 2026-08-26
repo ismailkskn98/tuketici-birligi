@@ -21,6 +21,7 @@
   "Nav": {
     "home": "Anasayfa",
     "corporate": "Kurumsal",
+    "boardMembers": "Yönetim Kurulu",
     "guides": "Hak Rehberleri",
     "news": "Haberler",
     "announcements": "Duyurular",
@@ -125,6 +126,17 @@
     "clearSearch": "Aramayı temizle",
     "copyLink": "Bağlantıyı kopyala",
     "copied": "Kopyalandı"
+  },
+  "BoardMembers": {
+    "eyebrow": "Kurumsal yönetim",
+    "title": "Yönetim Kurulu",
+    "titleLineOne": "Yönetim",
+    "titleLineTwo": "Kurulu",
+    "description": "Tüketiciler Birliği Yönetim Kurulu üyelerini ve farklı alanlardan gelen mesleki birikimlerini tanıyın.",
+    "membersTitle": "Kurul üyeleri",
+    "memberCount": "{count} kurul üyesi",
+    "portraitAlt": "{name} portresi",
+    "empty": "Yönetim kurulu bilgileri güncelleniyor."
   },
   "AccessRestricted": {
     "eyebrow": "Geçici erişim",

@@ -8,12 +8,27 @@ function createImage(url) {
   });
 }
 
-export async function getCroppedImageFile(imageSrc, cropPixels, fileName = "hero-image.jpg") {
+export async function getCroppedImageFile(
+  imageSrc,
+  cropPixels,
+  fileName = "hero-image.jpg",
+  {
+    mimeType = "image/jpeg",
+    quality = 0.92,
+    maxWidth,
+    maxHeight,
+  } = {},
+) {
   const image = await createImage(imageSrc);
   const canvas = document.createElement("canvas");
+  const scale = Math.min(
+    1,
+    maxWidth ? maxWidth / cropPixels.width : 1,
+    maxHeight ? maxHeight / cropPixels.height : 1,
+  );
 
-  canvas.width = cropPixels.width;
-  canvas.height = cropPixels.height;
+  canvas.width = Math.max(1, Math.round(cropPixels.width * scale));
+  canvas.height = Math.max(1, Math.round(cropPixels.height * scale));
 
   const context = canvas.getContext("2d");
 
@@ -25,12 +40,12 @@ export async function getCroppedImageFile(imageSrc, cropPixels, fileName = "hero
     cropPixels.height,
     0,
     0,
-    cropPixels.width,
-    cropPixels.height
+    canvas.width,
+    canvas.height
   );
 
   const blob = await new Promise((resolve) => {
-    canvas.toBlob(resolve, "image/jpeg", 0.92);
+    canvas.toBlob(resolve, mimeType, quality);
   });
 
   if (!blob) {
@@ -38,6 +53,6 @@ export async function getCroppedImageFile(imageSrc, cropPixels, fileName = "hero
   }
 
   return new File([blob], fileName, {
-    type: "image/jpeg"
+    type: mimeType
   });
 }

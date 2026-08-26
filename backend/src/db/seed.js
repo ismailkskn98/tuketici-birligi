@@ -1,4 +1,6 @@
 const bcrypt = require("bcryptjs");
+const fs = require("fs/promises");
+const path = require("path");
 const env = require("../config/env");
 const pool = require("./pool");
 const { slugify } = require("../utils/clean");
@@ -252,6 +254,72 @@ const provinceMapEntries = [
   },
 ];
 
+const boardMembers = [
+  {
+    fullName: "Alpay Korkmaz",
+    titleTr: "Avukat",
+    titleEn: "Attorney",
+    summaryTr: "Ankara Sosyal Bilimler Üniversitesi Hukuk Fakültesi mezunu olan Alpay Korkmaz, Ankara 2 No’lu Barosu’na kayıtlı serbest avukat ve Tüketiciler Birliği Kurucu Genel Başkan Yardımcısıdır.",
+    summaryEn: "Alpay Korkmaz graduated from Ankara Social Sciences University Faculty of Law and is an independent attorney registered with Ankara Bar Association No. 2, as well as the Founding Vice President of the Consumers Association.",
+    imageFileName: "alpay-korkmaz.webp",
+    sortOrder: 10,
+  },
+  {
+    fullName: "Hakan Akçam",
+    titleTr: "Yönetici ve Girişimci",
+    titleEn: "Executive and Entrepreneur",
+    summaryTr: "Gayrimenkul, mesleki örgütlenme ve sivil toplum alanlarında yönetim sorumlulukları üstlenen Hakan Akçam, Tüketiciler Birliği Genel Başkan Vekili olarak görev yapmaktadır.",
+    summaryEn: "Hakan Akçam has held leadership responsibilities in real estate, professional organisations and civil society, and serves as Deputy President of the Consumers Association.",
+    imageFileName: "hakan-akcam.webp",
+    sortOrder: 20,
+  },
+  {
+    fullName: "İsmail Çağlar",
+    titleTr: "Gayrimenkul Danışmanı",
+    titleEn: "Real Estate Consultant",
+    summaryTr: "2011’den bu yana gayrimenkul sektöründe çalışan İsmail Çağlar, Ankara ve özellikle Keçiören’de konut, arsa ve ticari gayrimenkul danışmanlığı yürütmektedir.",
+    summaryEn: "İsmail Çağlar has worked in real estate since 2011, providing residential, land and commercial property consultancy in Ankara, particularly in Keçiören.",
+    imageFileName: "ismail-caglar.webp",
+    sortOrder: 30,
+  },
+  {
+    fullName: "Muhammed Emin Yeşil",
+    titleTr: "Avukat",
+    titleEn: "Attorney",
+    summaryTr: "Marmara Üniversitesi Hukuk Fakültesi mezunu olan Muhammed Emin Yeşil; ticaret, şirketler, iş, gayrimenkul, yabancılar ve tüketici hukuku alanlarında çalışmaktadır.",
+    summaryEn: "Muhammed Emin Yeşil graduated from Marmara University Faculty of Law and works across commercial, corporate, labour, real estate, immigration and consumer law.",
+    imageFileName: "muhammed-emin-yesil.webp",
+    sortOrder: 40,
+  },
+  {
+    fullName: "Murat Kahya",
+    titleTr: "Gayrimenkul Danışmanı",
+    titleEn: "Real Estate Consultant",
+    summaryTr: "Müteahhitlik deneyiminin ardından 2013’ten bu yana gayrimenkul danışmanlığı yapan Murat Kahya, mesleki ve sivil toplum kuruluşlarında çeşitli görevler üstlenmiştir.",
+    summaryEn: "Following his experience as a contractor, Murat Kahya has worked in real estate consultancy since 2013 and has held roles in professional and civil society organisations.",
+    imageFileName: "murat-kahya.webp",
+    sortOrder: 50,
+  },
+  {
+    fullName: "Mustafa Başer",
+    titleTr: "Yönetici",
+    titleEn: "Executive",
+    summaryTr: "Adalet ile Çalışma Ekonomisi ve Endüstri İlişkileri eğitimi alan Mustafa Başer, yerel yönetimler, spor ve sivil toplum alanlarında çeşitli yönetim görevleri üstlenmiştir.",
+    summaryEn: "Mustafa Başer studied Justice as well as Labour Economics and Industrial Relations, and has held various leadership roles in local government, sports and civil society.",
+    imageFileName: "mustafa-baser.webp",
+    sortOrder: 60,
+  },
+  {
+    fullName: "Uğuralp Coşkun",
+    titleTr: "İnşaat Mühendisi",
+    titleEn: "Civil Engineer",
+    summaryTr: "İnşaat mühendisliği eğitimini London South Bank University’de tamamlayan Uğuralp Coşkun, inşaat ve gayrimenkul alanlarında çalışmakta; mesleki standartların geliştirilmesine katkı sunmaktadır.",
+    summaryEn: "Uğuralp Coşkun completed his civil engineering education at London South Bank University and works in construction and real estate, contributing to the development of professional standards.",
+    imageFileName: "uguralp-coskun.webp",
+    sortOrder: 70,
+  },
+];
+
 async function upsertUser({ name, email, password, role }) {
   const passwordHash = await bcrypt.hash(password, 12);
 
@@ -357,6 +425,91 @@ async function seedProvinceMapEntries() {
   }
 }
 
+async function ensureBoardMemberMedia(item, createdBy) {
+  const publicUrl = `/yonetim-kurulu/${item.imageFileName}`;
+  const [existingRows] = await pool.execute(
+    `SELECT id
+     FROM media_assets
+     WHERE public_url = ?
+     ORDER BY id ASC
+     LIMIT 1`,
+    [publicUrl],
+  );
+
+  if (existingRows[0]) {
+    return existingRows[0].id;
+  }
+
+  const relativePath = `yonetim-kurulu/${item.imageFileName}`;
+  const publicFilePath = path.resolve(
+    __dirname,
+    "../../../frontend/public",
+    relativePath,
+  );
+  const fileStats = await fs.stat(publicFilePath);
+  const [result] = await pool.execute(
+    `INSERT INTO media_assets
+      (file_name, original_name, mime_type, size_bytes, storage_driver, path,
+       public_url, alt_text, created_by)
+     VALUES (?, ?, 'image/webp', ?, 'public', ?, ?, ?, ?)`,
+    [
+      item.imageFileName,
+      item.imageFileName,
+      fileStats.size,
+      relativePath,
+      publicUrl,
+      `${item.fullName} portresi`,
+      createdBy,
+    ],
+  );
+
+  return result.insertId;
+}
+
+async function seedBoardMembers() {
+  const [existingRows] = await pool.execute(
+    `SELECT id
+     FROM board_members
+     ORDER BY id ASC
+     LIMIT 1`,
+  );
+
+  if (existingRows[0]) {
+    return;
+  }
+
+  const [adminRows] = await pool.execute(
+    `SELECT id
+     FROM admin_users
+     WHERE email = ?
+     LIMIT 1`,
+    [env.seed.adminEmail],
+  );
+  const createdBy = adminRows[0]?.id || null;
+
+  for (const item of boardMembers) {
+    const mediaId = await ensureBoardMemberMedia(item, createdBy);
+
+    await pool.execute(
+      `INSERT INTO board_members
+        (full_name, title_tr, title_en, summary_tr, summary_en, media_id, category_id,
+         is_active, sort_order, created_by, updated_by)
+       VALUES (?, ?, ?, ?, ?, ?, NULL, 1, ?, ?, ?)`,
+      [
+        item.fullName,
+        item.titleTr,
+        item.titleEn,
+        item.summaryTr,
+        item.summaryEn,
+        mediaId,
+        item.sortOrder,
+        createdBy,
+        createdBy,
+      ],
+    );
+  }
+}
+
 async function seed() {
   await upsertUser({
     name: "Sistem Yöneticisi",
@@ -376,6 +529,7 @@ async function seed() {
   await seedContent();
   await seedHeroSlides();
   await seedProvinceMapEntries();
+  await seedBoardMembers();
 }
 
 if (require.main === module) {
@@ -392,3 +546,5 @@ if (require.main === module) {
 }
 
 module.exports = seed;
+module.exports.boardMembers = boardMembers;
+module.exports.seedBoardMembers = seedBoardMembers;

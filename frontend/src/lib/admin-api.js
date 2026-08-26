@@ -97,6 +97,30 @@ export function deleteHeroSlide(id) {
   });
 }
 
+export function listBoardMembers() {
+  return adminRequest("/api/admin/board-members");
+}
+
+export function createBoardMember(values) {
+  return adminRequest("/api/admin/board-members", {
+    method: "POST",
+    body: JSON.stringify(values)
+  });
+}
+
+export function updateBoardMember(id, values) {
+  return adminRequest(`/api/admin/board-members/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(values)
+  });
+}
+
+export function deleteBoardMember(id) {
+  return adminRequest(`/api/admin/board-members/${id}`, {
+    method: "DELETE"
+  });
+}
+
 export function listProvinceMapEntries({ locale = "tr" } = {}) {
   const params = new URLSearchParams({ locale });
   return adminRequest(`/api/admin/province-map?${params.toString()}`);

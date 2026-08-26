@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import NumberFlow, { continuous } from "@number-flow/react";
 import { Filter, Search } from "lucide-react";
 import { useInView, useReducedMotion } from "motion/react";
@@ -13,13 +13,8 @@ function AnimatedCount({ value }) {
   const reduceMotion = useReducedMotion();
   const ref = useRef(null);
   const inView = useInView(ref, { amount: 0.6, once: true });
-  const [displayValue, setDisplayValue] = useState(0);
   const digits = String(value).length;
-
-  useEffect(() => {
-    if (!inView) return;
-    setDisplayValue(value);
-  }, [inView, value]);
+  const displayValue = inView ? value : 0;
 
   return (
     <span

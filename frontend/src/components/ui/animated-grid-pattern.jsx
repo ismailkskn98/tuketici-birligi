@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { motion } from "motion/react"
 
 import { cn } from "@/lib/utils"
@@ -20,44 +20,35 @@ export function AnimatedGridPattern({
   const id = useId()
   const containerRef = useRef(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
-  const [squares, setSquares] = useState([])
+  const [iterations, setIterations] = useState({})
+  const squares = useMemo(() => {
+    if (!dimensions.width || !dimensions.height) return []
 
-  const getPos = useCallback(() => {
-    return [
-      Math.floor((Math.random() * dimensions.width) / width),
-      Math.floor((Math.random() * dimensions.height) / height),
-    ];
-  }, [dimensions.height, dimensions.width, height, width])
+    const columns = Math.max(1, Math.floor(dimensions.width / width))
+    const rows = Math.max(1, Math.floor(dimensions.height / height))
 
-  const generateSquares = useCallback((count) => {
-    return Array.from({ length: count }, (_, i) => ({
-      id: i,
-      pos: getPos(),
-      iteration: 0,
-    }));
-  }, [getPos])
+    return Array.from({ length: numSquares }, (_, squareId) => {
+      const iteration = iterations[squareId] || 0
+      const xSeed = Math.sin((squareId + 1) * 12.9898 + iteration * 31.4159) * 43758.5453
+      const ySeed = Math.sin((squareId + 1) * 78.233 + iteration * 19.19) * 24634.6345
+
+      return {
+        id: squareId,
+        iteration,
+        pos: [
+          Math.floor((xSeed - Math.floor(xSeed)) * columns),
+          Math.floor((ySeed - Math.floor(ySeed)) * rows),
+        ],
+      }
+    })
+  }, [dimensions.height, dimensions.width, height, iterations, numSquares, width])
 
   const updateSquarePosition = useCallback((squareId) => {
-    setSquares((currentSquares) => {
-      const current = currentSquares[squareId]
-      if (!current || current.id !== squareId) return currentSquares
-
-      const nextSquares = currentSquares.slice()
-      nextSquares[squareId] = {
-        ...current,
-        pos: getPos(),
-        iteration: current.iteration + 1,
-      }
-
-      return nextSquares
-    })
-  }, [getPos])
-
-  useEffect(() => {
-    if (dimensions.width && dimensions.height) {
-      setSquares(generateSquares(numSquares))
-    }
-  }, [dimensions.width, dimensions.height, generateSquares, numSquares])
+    setIterations((current) => ({
+      ...current,
+      [squareId]: (current[squareId] || 0) + 1,
+    }))
+  }, [])
 
   useEffect(() => {
     const element = containerRef.current

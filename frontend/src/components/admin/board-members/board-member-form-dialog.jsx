@@ -8,14 +8,15 @@ import { AdminAlert } from "@/components/admin/common/admin-alert";
 import { AdminFormField } from "@/components/admin/common/admin-form-field";
 import { AdminSelect } from "@/components/admin/common/admin-select";
 import { ImageUploadCropField } from "@/components/admin/common/image-upload-crop-field";
+import {
+  ResponsiveFormPanel,
+  ResponsiveFormPanelHeader,
+} from "@/components/admin/common/responsive-form-panel";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import {
-  ResponsiveModal,
-  ResponsiveModalHeader,
-} from "@/components/ui/responsive-modal";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/toast";
 import {
   createBoardMember,
   updateBoardMember,
@@ -98,9 +99,16 @@ export function BoardMemberFormDialog({ categories, item, onOpenChange, onSaved,
       }
 
       await onSaved?.();
+      toast.add({
+        title: isEditMode ? "Kurul üyesi güncellendi" : "Kurul üyesi eklendi",
+        description: `${values.fullName} kaydı başarıyla ${isEditMode ? "güncellendi" : "oluşturuldu"}.`,
+        type: "success",
+      });
       onOpenChange(false);
     } catch (error) {
-      setSubmitError(error.message || "Yönetim kurulu kaydı kaydedilemedi.");
+      const message = error.message || "Yönetim kurulu kaydı kaydedilemedi.";
+      setSubmitError(message);
+      toast.add({ title: "Kayıt kaydedilemedi", description: message, type: "error", priority: "high" });
     }
   }
 
@@ -109,27 +117,27 @@ export function BoardMemberFormDialog({ categories, item, onOpenChange, onSaved,
   }
 
   return (
-    <ResponsiveModal
+    <ResponsiveFormPanel
       description="Portreyi, iki dilli profil metnini, kategoriyi ve yayın durumunu yönetin."
-      dialogClassName="max-h-[calc(100dvh-2rem)] overflow-hidden p-0 sm:max-w-6xl"
       drawerClassName="max-h-[calc(100dvh-0.5rem)] overflow-hidden"
       onOpenChange={handleOpenChange}
       open={open}
+      panelClassName="max-w-[68rem]"
       title={isEditMode ? "Kurul üyesini düzenle" : "Yeni kurul üyesi"}
     >
-      <form className="flex max-h-[calc(100dvh-0.5rem)] min-h-0 flex-col sm:max-h-[calc(100dvh-2rem)]" onSubmit={handleSubmit(onSubmit)}>
-        <ResponsiveModalHeader
-          className="border-b border-line pb-5"
+      <form className="flex min-h-0 min-w-0 flex-1 flex-col" onSubmit={handleSubmit(onSubmit)}>
+        <ResponsiveFormPanelHeader
           description="Portreyi, iki dilli profil metnini, kategoriyi ve yayın durumunu tek kayıtta yönetin."
           title={isEditMode ? "Kurul üyesini düzenle" : "Yeni kurul üyesi"}
         />
 
-        <div className="min-h-0 flex-1 overflow-y-auto bg-surface/60">
-          <div className="grid gap-5 px-4 py-5 sm:px-7 sm:py-6">
-            <section className="grid gap-5 rounded-lg border border-line bg-white p-4 sm:p-5">
+        <div className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto bg-surface/60">
+          <div className="grid min-w-0 gap-5 px-4 py-5 sm:px-7 sm:py-6">
+            <section className="grid min-w-0 gap-5 rounded-lg border border-line bg-white p-4 sm:p-5 lg:grid-cols-[18rem_minmax(0,1fr)]">
               <ImageUploadCropField
                 aspect={4 / 5}
                 aspectClassName="aspect-[4/5]"
+                compactPreview
                 cropInstruction="Portreyi 4:5 oranında kadrajlayın. Şeffaf arka plan WebP çıktısında korunur."
                 error={errors.mediaId?.message}
                 helperText="PNG, WEBP, JPG veya AVIF yükleyin. Çıktı en fazla 1080 × 1350 px WebP olur."
@@ -146,49 +154,51 @@ export function BoardMemberFormDialog({ categories, item, onOpenChange, onSaved,
                 value={mediaId}
               />
 
-              <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_12rem]">
-                <AdminFormField error={errors.fullName?.message} label="Ad ve soyad">
-                  <Input
-                    aria-invalid={Boolean(errors.fullName)}
-                    autoComplete="name"
-                    maxLength={160}
-                    placeholder="Ad Soyad"
-                    {...register("fullName")}
-                  />
-                </AdminFormField>
+              <div className="grid min-w-0 content-start gap-4">
+                <div className="grid min-w-0 gap-4 md:grid-cols-[minmax(0,1fr)_12rem]">
+                  <AdminFormField error={errors.fullName?.message} label="Ad ve soyad">
+                    <Input
+                      aria-invalid={Boolean(errors.fullName)}
+                      autoComplete="name"
+                      maxLength={160}
+                      placeholder="Ad Soyad"
+                      {...register("fullName")}
+                    />
+                  </AdminFormField>
+                  <AdminFormField
+                    error={errors.sortOrder?.message}
+                    hint="Küçük değer önce gösterilir."
+                    label="Görüntülenme sırası"
+                  >
+                    <Input
+                      aria-invalid={Boolean(errors.sortOrder)}
+                      inputMode="numeric"
+                      max="9999"
+                      min="0"
+                      type="number"
+                      {...register("sortOrder")}
+                    />
+                  </AdminFormField>
+                </div>
+
                 <AdminFormField
-                  error={errors.sortOrder?.message}
-                  hint="Küçük değer önce gösterilir."
-                  label="Görüntülenme sırası"
+                  error={errors.categoryId?.message}
+                  hint="Üye public sayfada seçilen kurul başlığı altında yer alır."
+                  label="Kategori"
                 >
-                  <Input
-                    aria-invalid={Boolean(errors.sortOrder)}
-                    inputMode="numeric"
-                    max="9999"
-                    min="0"
-                    type="number"
-                    {...register("sortOrder")}
+                  <AdminSelect
+                    aria-invalid={Boolean(errors.categoryId)}
+                    options={categories.map((category) => ({
+                      label: `${category.titleTr}${category.isActive ? "" : " (pasif)"}`,
+                      value: String(category.id),
+                    }))}
+                    placeholder="Genel kurul üyeleri"
+                    {...register("categoryId", {
+                      setValueAs: (value) => (value ? Number(value) : null),
+                    })}
                   />
                 </AdminFormField>
               </div>
-
-              <AdminFormField
-                error={errors.categoryId?.message}
-                hint="Üye public sayfada seçilen kurul başlığı altında yer alır."
-                label="Kategori"
-              >
-                <AdminSelect
-                  aria-invalid={Boolean(errors.categoryId)}
-                  options={categories.map((category) => ({
-                    label: `${category.titleTr}${category.isActive ? "" : " (pasif)"}`,
-                    value: String(category.id),
-                  }))}
-                  placeholder="Genel kurul üyeleri"
-                  {...register("categoryId", {
-                    setValueAs: (value) => (value ? Number(value) : null),
-                  })}
-                />
-              </AdminFormField>
             </section>
 
             <div className="grid gap-5 lg:grid-cols-2">
@@ -318,6 +328,6 @@ export function BoardMemberFormDialog({ categories, item, onOpenChange, onSaved,
           </div>
         </div>
       </form>
-    </ResponsiveModal>
+    </ResponsiveFormPanel>
   );
 }

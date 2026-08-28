@@ -33,7 +33,7 @@ function StatusBadge({ isActive, isComplete }) {
 
   return (
     <Badge className={`gap-1.5 ${isActive ? "bg-emerald-50 text-emerald-700" : "bg-surface text-muted"}`}>
-      <span aria-hidden="true" className={`size-1.5 rounded-full ${isActive ? "bg-emerald-500" : "bg-muted"}`} />
+      <span aria-hidden="true" className={`size-1.5 rounded-full ${isActive ? "bg-emerald-500" : "bg-line"}`} />
       {isActive ? "Yayında" : "Askıda"}
     </Badge>
   );

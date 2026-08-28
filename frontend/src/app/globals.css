@@ -99,6 +99,47 @@ button {
   --ui-muted-foreground: #666666;
 }
 
+.admin-theme {
+  --background: #fbfcfd;
+  --foreground: #0f1726;
+  --card: #ffffff;
+  --card-foreground: #0f1726;
+  --popover: #ffffff;
+  --popover-foreground: #0f1726;
+  --border: #e5e7eb;
+  --input: #d9dde3;
+  --ring: #17375e;
+  --accent: #f3f5f7;
+  --accent-foreground: #17375e;
+  --ui-muted: #f4f6f8;
+  --ui-muted-foreground: #667085;
+  --radius: 7px;
+  --color-primary: #17375e;
+  --color-primary-dark: #0f1726;
+  --color-primary-soft: #f0f3f7;
+  --color-secondary: #d95d19;
+  --color-secondary-dark: #b9470c;
+  --color-secondary-soft: #fff4ed;
+  --color-ink: #0f1726;
+  --color-muted: #667085;
+  --color-muted-foreground: #667085;
+  --color-line: #e5e7eb;
+  --color-surface: #f6f7f9;
+  color: var(--foreground);
+}
+
+.admin-login-grid {
+  background-image:
+    linear-gradient(rgba(26, 56, 99, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 56, 99, 0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(to bottom right, black, transparent 72%);
+}
+
+.admin-theme button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
 @media (min-width: 640px) {
   :root {
     --hero-stage-height: 85vh;

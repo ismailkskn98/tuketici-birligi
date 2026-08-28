@@ -7,12 +7,16 @@ import { AdminEmptyState } from "@/components/admin/common/admin-empty-state";
 import { AdminPage } from "@/components/admin/common/admin-page";
 import { AdminSelect } from "@/components/admin/common/admin-select";
 import { AdminStatCard } from "@/components/admin/common/admin-stat-card";
+import {
+  ResponsiveFormPanel,
+  ResponsiveFormPanelHeader,
+} from "@/components/admin/common/responsive-form-panel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { toast } from "@/components/ui/toast";
 import { listFormSubmissions, updateFormSubmission } from "@/lib/admin-api";
 import { formatDate } from "@/lib/utils";
 
@@ -105,8 +109,18 @@ export function FormSubmissionsAdmin() {
       await updateFormSubmission(item.id, { status });
       setItems((current) => current.map((entry) => (entry.id === item.id ? { ...entry, status } : entry)));
       setSelectedItem((current) => (current?.id === item.id ? { ...current, status } : current));
+      toast.add({
+        title: "Başvuru durumu güncellendi",
+        description: `Kayıt “${statusLabels[status]}” olarak işaretlendi.`,
+        type: "success",
+      });
     } catch (updateError) {
-      setError(updateError.message);
+      toast.add({
+        title: "Durum güncellenemedi",
+        description: updateError.message || "Lütfen yeniden deneyin.",
+        type: "error",
+        priority: "high",
+      });
     } finally {
       setSavingId(null);
     }
@@ -171,7 +185,7 @@ export function FormSubmissionsAdmin() {
             <TableBody>
               {items.map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell className="font-medium">{item.applicationNumber || "—"}</TableCell>
+                  <TableCell className="font-medium">{item.applicationNumber || "-"}</TableCell>
                   <TableCell>
                     <div className="grid gap-0.5">
                       <span>{item.fullName}</span>
@@ -200,17 +214,22 @@ export function FormSubmissionsAdmin() {
         )}
       </section>
 
-      <Dialog onOpenChange={(open) => !open && setSelectedItem(null)} open={Boolean(selectedItem)}>
-        <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>{selectedItem?.applicationNumber || selectedItem?.subject || "Form detayı"}</DialogTitle>
-            <DialogDescription>
-              {selectedItem?.formType === "pre_application" ? "Tüketici başvurusu" : "İletişim formu"} · {formatDate(selectedItem?.createdAt)}
-            </DialogDescription>
-          </DialogHeader>
+      <ResponsiveFormPanel
+        description="Başvuru ayrıntılarını inceleyin ve durumunu güncelleyin."
+        onOpenChange={(open) => !open && setSelectedItem(null)}
+        open={Boolean(selectedItem)}
+        panelClassName="max-w-[44rem]"
+        title={selectedItem?.applicationNumber || selectedItem?.subject || "Form detayı"}
+      >
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+          <ResponsiveFormPanelHeader
+            description={`${selectedItem?.formType === "pre_application" ? "Tüketici başvurusu" : "İletişim formu"} · ${formatDate(selectedItem?.createdAt)}`}
+            eyebrow="Başvuru kaydı"
+            title={selectedItem?.applicationNumber || selectedItem?.subject || "Form detayı"}
+          />
 
           {selectedItem ? (
-            <div className="grid gap-5">
+            <div className="grid min-h-0 min-w-0 flex-1 gap-5 overflow-x-hidden overflow-y-auto px-5 py-6 sm:px-7">
               <dl className="grid gap-4 sm:grid-cols-2">
                 <DetailRow label="Ad Soyad" value={selectedItem.fullName} />
                 <DetailRow label="E-posta" value={selectedItem.email} />
@@ -258,8 +277,8 @@ export function FormSubmissionsAdmin() {
               </div>
             </div>
           ) : null}
-        </DialogContent>
-      </Dialog>
+        </div>
+      </ResponsiveFormPanel>
     </AdminPage>
   );
 }

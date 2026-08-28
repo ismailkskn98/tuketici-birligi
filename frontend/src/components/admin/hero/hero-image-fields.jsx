@@ -3,7 +3,6 @@
 import { Monitor, Smartphone, Tablet } from "lucide-react";
 import { ImageUploadCropField } from "@/components/admin/common/image-upload-crop-field";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 
 export const HERO_IMAGE_VARIANTS = [
   {
@@ -55,14 +54,14 @@ function VariantHeader({ variant }) {
 
   return (
     <div className="flex items-start gap-3">
-      <div className="grid size-10 shrink-0 place-items-center rounded-lg bg-primary-soft text-primary-dark">
+      <div className="grid size-9 shrink-0 place-items-center rounded-md border border-line bg-surface text-primary">
         <Icon aria-hidden="true" className="size-5" />
       </div>
       <div className="min-w-0 flex-1 grid gap-1">
         <div className="flex flex-wrap items-center gap-2">
           <h4 className="text-sm font-semibold text-ink">{variant.title}</h4>
-          <Badge className="bg-surface text-muted">{variant.badge}</Badge>
-          <Badge>{variant.ratioLabel}</Badge>
+          <Badge className="border border-line bg-white text-muted">{variant.badge}</Badge>
+          <Badge className="bg-primary-soft text-primary">{variant.ratioLabel}</Badge>
         </div>
         <p className="text-xs font-normal leading-5 text-muted">{variant.description}</p>
       </div>
@@ -79,8 +78,8 @@ export function HeroImageFields({
   setValue,
 }) {
   return (
-    <section className="grid gap-4 rounded-lg border border-line bg-white p-4">
-      <div className="grid gap-1">
+    <section className="overflow-hidden rounded-lg border border-line bg-white">
+      <div className="grid gap-1 px-4 py-5 sm:px-5">
         <h3 className="text-base font-semibold text-ink">Hero görselleri</h3>
         <p className="text-sm leading-6 text-muted">
           Her cihaz boyutu için ayrı görsel yükleyin. Kırpma oranları ana sayfa carousel ölçüleriyle aynıdır.
@@ -88,7 +87,7 @@ export function HeroImageFields({
         </p>
       </div>
 
-      <div className="grid gap-4">
+      <div className="divide-y divide-line border-t border-line">
         {HERO_IMAGE_VARIANTS.map((variant) => {
           const mediaId = mediaIds[variant.fieldName] || 0;
           const initialPreview =
@@ -97,10 +96,7 @@ export function HeroImageFields({
             "";
 
           return (
-            <div
-              key={variant.key}
-              className={cn("grid gap-3 rounded-lg border border-line bg-surface/40 p-3 sm:p-4")}
-            >
+            <div key={variant.key} className="grid min-w-0 gap-4 p-4 sm:p-5 lg:grid-cols-[13rem_minmax(0,1fr)]">
               <VariantHeader variant={variant} />
 
               <ImageUploadCropField

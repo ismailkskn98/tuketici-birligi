@@ -1,5 +1,17 @@
 import { z } from "zod";
 
+export const adminLoginSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, "E-posta adresinizi girin.")
+    .email("Geçerli bir e-posta adresi girin."),
+  password: z
+    .string()
+    .min(1, "Şifrenizi girin.")
+    .max(200, "Şifre en fazla 200 karakter olabilir."),
+});
+
 const phoneSchema = z
   .string()
   .trim()
@@ -236,3 +248,47 @@ export const boardMemberCategorySchema = z.object({
     .max(9999, "Görüntülenme sırası en fazla 9999 olabilir."),
   isActive: z.boolean(),
 });
+
+export const faqAdminSchema = z.object({
+  locale: z.enum(["tr", "en"], { errorMap: () => ({ message: "Geçerli bir dil seçin." }) }),
+  status: z.enum(["published", "draft"], { errorMap: () => ({ message: "Geçerli bir durum seçin." }) }),
+  sortOrder: z.coerce.number().int("Sıra tam sayı olmalı.").min(0, "Sıra 0 veya daha büyük olmalı.").max(9999),
+  title: z.string().trim().min(2, "Soru en az 2 karakter olmalı.").max(500, "Soru en fazla 500 karakter olabilir."),
+  summary: z.string().trim().min(2, "Kategori etiketi en az 2 karakter olmalı.").max(160),
+  body: z.string().trim().min(10, "Cevap en az 10 karakter olmalı.").max(10000),
+});
+
+export const provinceMapAdminSchema = z
+  .object({
+    locale: z.enum(["tr", "en"]),
+    provinceCode: z.coerce.number().int().positive("İl seçmelisiniz."),
+    category: z.enum(["news", "announcement", "guide", "activity"]),
+    title: z.string().trim().min(2, "Başlık en az 2 karakter olmalı.").max(220),
+    summary: z.string().trim().max(2000).optional().or(z.literal("")),
+    contentItemId: z.preprocess(
+      (value) => (value === "" || value == null ? null : Number(value)),
+      z.number().int().positive().nullable(),
+    ),
+    linkLabel: z.string().trim().max(80).optional().or(z.literal("")),
+    linkHref: z.string().trim().max(500).optional().or(z.literal("")),
+    eventDate: z.string().optional().or(z.literal("")),
+    status: z.enum(["published", "draft"]),
+    sortOrder: z.coerce.number().int("Sıra tam sayı olmalı.").min(0, "Sıra 0 veya daha büyük olmalı.").max(9999),
+  })
+  .superRefine((values, context) => {
+    if (!values.contentItemId && !values.linkHref) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Bağlı içerik seçin veya manuel link girin.",
+        path: ["linkHref"],
+      });
+    }
+
+    if (values.linkHref && !values.linkHref.startsWith("/") && !values.linkHref.startsWith("http")) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Link / ile başlayan site yolu veya http ile başlayan tam adres olmalı.",
+        path: ["linkHref"],
+      });
+    }
+  });

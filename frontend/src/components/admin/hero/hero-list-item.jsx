@@ -11,7 +11,7 @@ function StatusBadge({ active }) {
     <span
       className={cn(
         "inline-flex w-fit items-center rounded-full px-2.5 py-1 text-xs font-semibold",
-        active ? "bg-secondary-soft text-secondary-dark" : "bg-surface text-muted",
+        active ? "bg-emerald-50 text-emerald-700" : "bg-surface text-muted",
       )}
     >
       {active ? "Aktif" : "Pasif"}
@@ -47,7 +47,7 @@ function HeroDeviceBadges({ item }) {
           key={key}
           className={cn(
             "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-semibold",
-            ready ? "bg-secondary-soft text-secondary-dark" : "bg-surface text-muted",
+            ready ? "bg-primary-soft text-primary" : "bg-surface text-muted",
           )}
           title={label}
         >

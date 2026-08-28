@@ -43,7 +43,7 @@ export function HeroPublishFields({ control, errors, register }) {
               className={cn(
                 "focus-ring flex w-full items-center justify-between gap-4 rounded-lg border px-4 py-3 text-left transition",
                 active
-                  ? "border-secondary/40 bg-secondary-soft/80"
+                  ? "border-primary/25 bg-primary-soft"
                   : "border-line bg-surface hover:bg-primary-soft/50",
               )}
               onClick={() => field.onChange(!active)}
@@ -53,7 +53,7 @@ export function HeroPublishFields({ control, errors, register }) {
                 <span
                   className={cn(
                     "mt-0.5 grid size-9 shrink-0 place-items-center rounded-md",
-                    active ? "bg-white text-secondary-dark" : "bg-white text-muted",
+                    active ? "bg-white text-primary" : "bg-white text-muted",
                   )}
                 >
                   <StatusIcon aria-hidden="true" className="size-4" />

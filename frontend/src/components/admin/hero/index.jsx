@@ -3,10 +3,12 @@
 import { AlertCircle, ImageIcon, Layers3, Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AdminAlert } from "@/components/admin/common/admin-alert";
+import { AdminConfirmDialog } from "@/components/admin/common/admin-confirm-dialog";
 import { AdminPage } from "@/components/admin/common/admin-page";
 import { AdminStatCard } from "@/components/admin/common/admin-stat-card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "@/components/ui/toast";
 import { deleteHeroSlide, listHeroSlides } from "@/lib/admin-api";
 import { HeroFormDialog } from "./hero-form-dialog";
 import { HeroList } from "./hero-list";
@@ -18,6 +20,8 @@ export function HeroAdmin() {
   const [error, setError] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const activeItemCount = useMemo(
     () => items.filter((item) => item.isActive).length,
@@ -68,16 +72,25 @@ export function HeroAdmin() {
     };
   }, []);
 
-  async function handleDelete(item) {
-    const confirmed = window.confirm(`"${item.titleTr}" hero kaydını silmek istiyor musunuz?`);
-
-    if (!confirmed) return;
+  async function confirmDelete() {
+    if (!deleteTarget) return;
 
     try {
-      await deleteHeroSlide(item.id);
+      setDeleting(true);
+      await deleteHeroSlide(deleteTarget.id);
       await loadItems();
+      toast.add({
+        title: "Hero kaydı silindi",
+        description: `${deleteTarget.titleTr} kaydı kalıcı olarak kaldırıldı.`,
+        type: "success",
+      });
+      setDeleteTarget(null);
     } catch (deleteError) {
-      setError(deleteError.message || "Hero kaydı silinemedi.");
+      const message = deleteError.message || "Hero kaydı silinemedi.";
+      toast.add({ title: "Hero kaydı silinemedi", description: message, type: "error", priority: "high" });
+      setDeleteTarget(null);
+    } finally {
+      setDeleting(false);
     }
   }
 
@@ -139,7 +152,7 @@ export function HeroAdmin() {
                 <Skeleton className="h-12 w-full" />
               </div>
             ) : (
-              <HeroList items={items} onDelete={handleDelete} onEdit={handleEdit} />
+              <HeroList items={items} onDelete={setDeleteTarget} onEdit={handleEdit} />
             )}
           </section>
         </div>
@@ -153,6 +166,16 @@ export function HeroAdmin() {
         onOpenChange={setDialogOpen}
         onSaved={loadItems}
         open={dialogOpen}
+      />
+
+      <AdminConfirmDialog
+        confirmLabel="Hero kaydını sil"
+        description={deleteTarget ? `“${deleteTarget.titleTr}” hero kaydı kalıcı olarak silinecek.` : ""}
+        onConfirm={confirmDelete}
+        onOpenChange={(nextOpen) => !nextOpen && setDeleteTarget(null)}
+        open={Boolean(deleteTarget)}
+        pending={deleting}
+        title="Hero kaydı silinsin mi?"
       />
     </>
   );

@@ -3,10 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { FileText, HelpCircle, Home, ImageIcon, LayoutDashboard, LogOut, MapPinned, Menu, MessageSquareText, Settings, Shield, Users, X } from "lucide-react";
+import { FileText, HelpCircle, Home, ImageIcon, LayoutDashboard, LogOut, MapPinned, Menu, MessageSquareText, Settings, Shield, Users } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { adminNavigation } from "@/lib/navigation";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerTitle,
+} from "@/components/ui/drawer";
+import { toast } from "@/components/ui/toast";
+import { adminNavigation, pathMatchesHref } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
 const navigationIcons = {
@@ -28,12 +35,25 @@ export function AdminShell({ children }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   async function logout() {
-    await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3402"}/api/auth/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
-    router.replace("/admin/login");
-    router.refresh();
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3402"}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!response.ok) throw new Error("Oturum kapatılamadı.");
+
+      toast.add({ title: "Oturum kapatıldı", description: "Güvenli şekilde çıkış yaptınız.", type: "success" });
+      router.replace("/admin/login");
+      router.refresh();
+    } catch (error) {
+      toast.add({
+        title: "Çıkış yapılamadı",
+        description: error.message || "Lütfen yeniden deneyin.",
+        type: "error",
+        priority: "high",
+      });
+    }
   }
 
   if (pathname === "/admin/login") {
@@ -50,13 +70,13 @@ export function AdminShell({ children }) {
       <nav className={cn("grid gap-1", mobile && "gap-2")} aria-label="Admin menü">
         {navigation.map((item) => {
           const Icon = item.icon;
-          const active = pathname === item.href;
+          const active = item.href === "/admin" ? pathname === item.href : pathMatchesHref(pathname, item.href);
 
           return (
             <Link
               className={cn(
-                "focus-ring flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-muted transition hover:bg-surface hover:text-ink",
-                active && "bg-ink text-white hover:bg-ink hover:text-white",
+                "focus-ring group relative flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-muted transition-colors hover:bg-surface hover:text-ink",
+                active && "bg-primary/[0.07] text-primary hover:bg-primary/[0.09] hover:text-primary before:absolute before:inset-y-2 before:left-0 before:w-0.5 before:rounded-full before:bg-primary",
               )}
               href={item.href}
               key={item.href}
@@ -72,10 +92,10 @@ export function AdminShell({ children }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#fafafa]">
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r border-line bg-white p-4 lg:flex lg:flex-col">
+    <div className="min-h-svh bg-background">
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r border-line bg-white px-3 py-4 lg:flex lg:flex-col">
         <Link className="focus-ring flex items-center gap-3 rounded-md" href="/admin">
-          <span className="grid size-10 place-items-center rounded-md border border-line bg-white">
+          <span className="grid size-10 place-items-center rounded-md border border-line bg-white shadow-xs">
             <Image alt="" height={32} src="/main-logo-yazisiz.svg" width={32} />
           </span>
           <span className="grid min-w-0">
@@ -84,11 +104,14 @@ export function AdminShell({ children }) {
           </span>
         </Link>
 
-        <div className="mt-7">{renderNavigation()}</div>
+        <div className="mt-7 border-t border-line pt-4">
+          <p className="mb-2 px-3 font-mono text-[0.625rem] font-semibold uppercase tracking-[0.14em] text-muted">Çalışma alanı</p>
+          {renderNavigation()}
+        </div>
 
-        <div className="mt-auto rounded-lg border border-line bg-surface p-4">
+        <div className="mt-auto border-t border-line px-1 pt-4">
           <div className="flex items-center gap-3">
-            <div className="grid size-9 place-items-center rounded-md border border-line bg-white text-muted">
+            <div className="grid size-9 place-items-center rounded-md bg-surface text-muted">
               <Shield aria-hidden="true" className="size-4" />
             </div>
             <div className="min-w-0">
@@ -100,15 +123,15 @@ export function AdminShell({ children }) {
       </aside>
 
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-30 border-b border-line bg-white">
+        <header className="sticky top-0 z-30 border-b border-line bg-white/95 supports-backdrop-filter:backdrop-blur-md">
           <div className="flex min-h-16 items-center justify-between gap-3 px-4 md:px-8">
             <div className="flex min-w-0 items-center gap-3">
               <Button aria-expanded={mobileMenuOpen} aria-label="Admin menüsünü aç" className="lg:hidden" onClick={() => setMobileMenuOpen(true)} size="icon-sm" variant="outline">
                 <Menu aria-hidden="true" className="size-4" />
               </Button>
               <div className="min-w-0">
-                <p className="text-xs font-medium text-muted">Tüketici Birliği</p>
-                <p className="truncate text-base font-semibold tracking-[-0.02em] text-ink md:text-lg">İçerik ve başvuru yönetimi</p>
+                <p className="font-mono text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-muted">Tüketici Birliği</p>
+                <p className="truncate text-base font-semibold tracking-[-0.025em] text-ink md:text-lg">İçerik ve başvuru yönetimi</p>
               </div>
             </div>
             <Button onClick={logout} type="button" variant="outline">
@@ -117,13 +140,14 @@ export function AdminShell({ children }) {
             </Button>
           </div>
         </header>
-        <div className="px-4 py-6 md:px-8 md:py-8">{children}</div>
+        <div className="mx-auto w-full max-w-[96rem] px-4 py-6 md:px-8 md:py-8 xl:px-10">{children}</div>
       </div>
 
-      {mobileMenuOpen ? (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <button aria-label="Admin menüsünü kapat" className="absolute inset-0 bg-ink/25" onClick={() => setMobileMenuOpen(false)} type="button" />
-          <div className="relative flex h-full w-[min(22rem,calc(100vw-2rem))] flex-col border-r border-line bg-white p-5 shadow-soft">
+      <Drawer onOpenChange={setMobileMenuOpen} open={mobileMenuOpen} swipeDirection="left">
+        <DrawerContent className="w-[min(21rem,calc(100vw-1.5rem))] bg-white lg:hidden">
+          <DrawerTitle className="sr-only">Admin menüsü</DrawerTitle>
+          <DrawerDescription className="sr-only">Yönetim paneli bölümleri arasında gezinin.</DrawerDescription>
+          <div className="flex min-h-0 flex-1 flex-col p-4">
             <div className="flex items-center justify-between gap-3">
               <Link className="focus-ring flex items-center gap-3 rounded-md" href="/admin">
                 <Image alt="" height={40} src="/main-logo-yazisiz.svg" width={40} />
@@ -132,15 +156,16 @@ export function AdminShell({ children }) {
                   <span className="text-xs text-muted">Tüketici Birliği</span>
                 </span>
               </Link>
-              <Button aria-label="Menüyü kapat" onClick={() => setMobileMenuOpen(false)} size="icon-sm" type="button" variant="ghost">
-                <X aria-hidden="true" className="size-4" />
-              </Button>
             </div>
 
-            <div className="mt-8">{renderNavigation({ mobile: true })}</div>
+            <div className="mt-7 min-h-0 overflow-y-auto border-t border-line pt-4">{renderNavigation({ mobile: true })}</div>
+            <Button className="mt-auto justify-start" onClick={logout} type="button" variant="outline">
+              <LogOut aria-hidden="true" className="size-4" />
+              Güvenli çıkış
+            </Button>
           </div>
-        </div>
-      ) : null}
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }

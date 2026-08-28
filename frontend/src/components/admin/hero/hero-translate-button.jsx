@@ -3,6 +3,7 @@
 import { Languages, LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/toast";
 import { translateHeroSlide } from "@/lib/admin-api";
 
 export function HeroTranslateButton({ getValues, setValue }) {
@@ -39,8 +40,15 @@ export function HeroTranslateButton({ getValues, setValue }) {
         shouldDirty: true,
         shouldValidate: true
       });
+      toast.add({
+        title: "Çeviri tamamlandı",
+        description: "İngilizce hero alanları otomatik çeviriyle güncellendi.",
+        type: "success",
+      });
     } catch (translateError) {
-      setError(translateError.message || "Otomatik çeviri yapılamadı.");
+      const message = translateError.message || "Otomatik çeviri yapılamadı.";
+      setError(message);
+      toast.add({ title: "Çeviri yapılamadı", description: message, type: "error", priority: "high" });
     } finally {
       setLoading(false);
     }

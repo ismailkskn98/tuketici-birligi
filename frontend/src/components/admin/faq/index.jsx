@@ -3,6 +3,7 @@
 import { AlertCircle, Edit3, HelpCircle, Plus, Search, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AdminAlert } from "@/components/admin/common/admin-alert";
+import { AdminConfirmDialog } from "@/components/admin/common/admin-confirm-dialog";
 import { AdminEmptyState } from "@/components/admin/common/admin-empty-state";
 import { AdminFormField } from "@/components/admin/common/admin-form-field";
 import { AdminPage } from "@/components/admin/common/admin-page";
@@ -13,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { toast } from "@/components/ui/toast";
 import { deleteContentItem, listContentItems } from "@/lib/admin-api";
 import { FaqFormDialog } from "./faq-form-dialog";
 
@@ -42,6 +44,8 @@ export function FaqAdmin() {
   const [error, setError] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
   const [filters, setFilters] = useState({
     locale: "",
     query: "",
@@ -121,16 +125,25 @@ export function FaqAdmin() {
     setDialogOpen(true);
   }
 
-  async function handleDelete(item) {
-    const confirmed = window.confirm(`"${item.title}" SSS kaydını silmek istiyor musunuz?`);
-
-    if (!confirmed) return;
+  async function confirmDelete() {
+    if (!deleteTarget) return;
 
     try {
-      await deleteContentItem(item.id);
+      setDeleting(true);
+      await deleteContentItem(deleteTarget.id);
       await loadItems();
+      toast.add({
+        title: "SSS kaydı silindi",
+        description: `${deleteTarget.title} kaydı kalıcı olarak kaldırıldı.`,
+        type: "success",
+      });
+      setDeleteTarget(null);
     } catch (deleteError) {
-      setError(deleteError.message || "SSS kaydı silinemedi.");
+      const message = deleteError.message || "SSS kaydı silinemedi.";
+      toast.add({ title: "SSS kaydı silinemedi", description: message, type: "error", priority: "high" });
+      setDeleteTarget(null);
+    } finally {
+      setDeleting(false);
     }
   }
 
@@ -241,7 +254,7 @@ export function FaqAdmin() {
                               <Button aria-label="Düzenle" onClick={() => handleEdit(item)} size="icon-sm" variant="outline">
                                 <Edit3 aria-hidden="true" className="size-4" />
                               </Button>
-                              <Button aria-label="Sil" onClick={() => handleDelete(item)} size="icon-sm" variant="outline">
+                              <Button aria-label="Sil" onClick={() => setDeleteTarget(item)} size="icon-sm" variant="outline">
                                 <Trash2 aria-hidden="true" className="size-4" />
                               </Button>
                             </div>
@@ -269,7 +282,7 @@ export function FaqAdmin() {
                           <Edit3 aria-hidden="true" className="size-4" />
                           Düzenle
                         </Button>
-                        <Button className="flex-1" onClick={() => handleDelete(item)} size="sm" variant="outline">
+                        <Button className="flex-1" onClick={() => setDeleteTarget(item)} size="sm" variant="outline">
                           <Trash2 aria-hidden="true" className="size-4" />
                           Sil
                         </Button>
@@ -297,6 +310,16 @@ export function FaqAdmin() {
         onOpenChange={setDialogOpen}
         onSaved={loadItems}
         open={dialogOpen}
+      />
+
+      <AdminConfirmDialog
+        confirmLabel="SSS kaydını sil"
+        description={deleteTarget ? `“${deleteTarget.title}” SSS kaydı kalıcı olarak silinecek.` : ""}
+        onConfirm={confirmDelete}
+        onOpenChange={(nextOpen) => !nextOpen && setDeleteTarget(null)}
+        open={Boolean(deleteTarget)}
+        pending={deleting}
+        title="SSS kaydı silinsin mi?"
       />
     </>
   );

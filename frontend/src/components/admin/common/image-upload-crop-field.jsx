@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 export function ImageUploadCropField({
   aspect = 16 / 9,
   aspectClassName = "aspect-video",
+  compactPreview = false,
   error,
   helperText,
   initialPreview = "",
@@ -199,12 +200,23 @@ export function ImageUploadCropField({
 
       {hasPreview && !isCropping ? (
         <div className="rounded-lg border border-line bg-white p-3">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <div className={cn("w-full max-w-[360px] overflow-hidden rounded-md border border-line bg-surface sm:w-72", aspectClassName)}>
+          <div
+            className={cn(
+              "grid min-w-0 gap-4",
+              !compactPreview && "md:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] md:items-center",
+            )}
+          >
+            <div
+              className={cn(
+                "w-full overflow-hidden rounded-md border border-line bg-surface",
+                compactPreview ? "max-w-56" : "max-w-[22rem] md:max-w-none",
+                aspectClassName,
+              )}
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img alt={previewLabel || "Görsel önizlemesi"} className="h-full w-full object-cover" src={previewUrl} />
             </div>
-            <div className="grid min-w-0 flex-1 gap-2">
+            <div className="grid min-w-0 content-center gap-2">
               <p className="text-sm font-semibold text-ink">{resolvedPreviewLabel}</p>
               <p className="text-xs font-normal leading-5 text-muted">
                 Görsel kaydetme sırasında yüklenecek. Oranı kontrol edip gerekirse değiştirebilirsiniz.

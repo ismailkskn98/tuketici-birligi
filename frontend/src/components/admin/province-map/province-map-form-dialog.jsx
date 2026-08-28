@@ -1,15 +1,22 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, LoaderCircle } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { useForm } from "react-hook-form";
 import { AdminAlert } from "@/components/admin/common/admin-alert";
 import { AdminFormField } from "@/components/admin/common/admin-form-field";
 import { AdminSelect } from "@/components/admin/common/admin-select";
+import {
+  ResponsiveFormPanel,
+  ResponsiveFormPanelHeader,
+} from "@/components/admin/common/responsive-form-panel";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/toast";
 import { createProvinceMapEntry, updateProvinceMapEntry } from "@/lib/admin-api";
+import { provinceMapAdminSchema } from "@/lib/form-schemas";
 import { getProvinceOptions } from "@/lib/provinces";
 
 const categories = [
@@ -46,9 +53,6 @@ function getDefaultValues(item) {
 }
 
 export function ProvinceMapFormDialog({ contentItems = [], item, onOpenChange, onSaved, open }) {
-  const [values, setValues] = useState(() => getDefaultValues(item));
-  const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
   const provinceOptions = useMemo(() => getProvinceOptions(), []);
   const contentOptions = useMemo(
     () => [
@@ -62,113 +66,106 @@ export function ProvinceMapFormDialog({ contentItems = [], item, onOpenChange, o
     [contentItems]
   );
   const isEditMode = Boolean(item?.id);
+  const {
+    handleSubmit,
+    register,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: getDefaultValues(item),
+    resolver: zodResolver(provinceMapAdminSchema),
+  });
 
-  function updateField(field, value) {
-    setValues((current) => ({
-      ...current,
-      [field]: value
-    }));
-  }
-
-  function validate() {
-    if (!values.provinceCode) return "İl seçmelisiniz.";
-    if (!values.title.trim()) return "Başlık yazmalısınız.";
-    if (!values.contentItemId && !values.linkHref.trim()) {
-      return "Bağlı içerik seçin veya manuel link girin.";
-    }
-    if (values.linkHref && !values.linkHref.startsWith("/") && !values.linkHref.startsWith("http")) {
-      return "Manuel link / ile başlayan site içi yol veya http ile başlayan tam adres olmalı.";
-    }
-    return "";
-  }
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    const validationError = validate();
-
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
+  async function onSubmit(values) {
 
     const payload = {
       ...values,
       provinceCode: Number(values.provinceCode),
-      contentItemId: values.contentItemId ? Number(values.contentItemId) : null,
+      contentItemId: values.contentItemId || null,
       sortOrder: Number(values.sortOrder || 0)
     };
 
     try {
-      setSubmitting(true);
-      setError("");
-
       if (isEditMode) {
         await updateProvinceMapEntry(item.id, payload);
       } else {
         await createProvinceMapEntry(payload);
       }
 
-      onSaved?.();
+      await onSaved?.();
+      toast.add({
+        title: isEditMode ? "Harita kaydı güncellendi" : "Harita kaydı eklendi",
+        description: `${values.title} başarıyla ${isEditMode ? "güncellendi" : "oluşturuldu"}.`,
+        type: "success",
+      });
       onOpenChange(false);
     } catch (submitError) {
-      setError(submitError.message || "Harita kaydı kaydedilemedi.");
-    } finally {
-      setSubmitting(false);
+      const message = submitError.message || "Harita kaydı kaydedilemedi.";
+      setError("root", { message });
+      toast.add({ title: "Harita kaydı kaydedilemedi", description: message, type: "error", priority: "high" });
     }
   }
 
-  return (
-    <Dialog onOpenChange={onOpenChange} open={open}>
-      <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-hidden p-0 sm:max-w-4xl">
-        <form className="flex max-h-[calc(100dvh-2rem)] flex-col" onSubmit={handleSubmit}>
-          <DialogHeader className="border-b border-line bg-white px-5 py-4 sm:px-6">
-            <DialogTitle>{isEditMode ? "Harita kaydını düzenle" : "Yeni harita kaydı"}</DialogTitle>
-            <DialogDescription>
-              İle bağlı haber, duyuru, rehber veya faaliyet kaydını harita üzerinde yayınlayın.
-            </DialogDescription>
-          </DialogHeader>
+  function handleOpenChange(nextOpen) {
+    if (!isSubmitting) onOpenChange(nextOpen);
+  }
 
-          <div className="min-h-0 flex-1 overflow-y-auto bg-surface/70">
-            <div className="grid gap-5 px-5 py-5 sm:px-6">
+  return (
+    <ResponsiveFormPanel
+      description="İle bağlı yayın ve faaliyet kaydını yönetin."
+      onOpenChange={handleOpenChange}
+      open={open}
+      panelClassName="max-w-[56rem]"
+      title={isEditMode ? "Harita kaydını düzenle" : "Yeni harita kaydı"}
+    >
+        <form className="flex min-h-0 min-w-0 flex-1 flex-col" onSubmit={handleSubmit(onSubmit)}>
+          <ResponsiveFormPanelHeader
+            description="İle bağlı haber, duyuru, rehber veya faaliyet kaydını harita üzerinde yayınlayın."
+            title={isEditMode ? "Harita kaydını düzenle" : "Yeni harita kaydı"}
+          />
+
+          <div className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto bg-surface/70">
+            <div className="grid min-w-0 gap-5 px-4 py-5 sm:px-6">
+              <input type="hidden" {...register("locale")} />
               <section className="grid gap-4 rounded-lg border border-line bg-white p-4">
                 <div className="grid gap-4 md:grid-cols-3">
-                  <AdminFormField label="İl">
+                  <AdminFormField error={errors.provinceCode?.message} label="İl">
                     <AdminSelect
-                      onChange={(event) => updateField("provinceCode", event.target.value)}
+                      aria-invalid={Boolean(errors.provinceCode)}
                       options={provinceOptions}
                       placeholder="İl seçin"
-                      value={values.provinceCode}
+                      {...register("provinceCode")}
                     />
                   </AdminFormField>
-                  <AdminFormField label="Kategori">
+                  <AdminFormField error={errors.category?.message} label="Kategori">
                     <AdminSelect
-                      onChange={(event) => updateField("category", event.target.value)}
+                      aria-invalid={Boolean(errors.category)}
                       options={categories}
-                      value={values.category}
+                      {...register("category")}
                     />
                   </AdminFormField>
-                  <AdminFormField label="Durum">
+                  <AdminFormField error={errors.status?.message} label="Durum">
                     <AdminSelect
-                      onChange={(event) => updateField("status", event.target.value)}
+                      aria-invalid={Boolean(errors.status)}
                       options={statuses}
-                      value={values.status}
+                      {...register("status")}
                     />
                   </AdminFormField>
                 </div>
 
-                <AdminFormField label="Başlık">
+                <AdminFormField error={errors.title?.message} label="Başlık">
                   <Input
-                    onChange={(event) => updateField("title", event.target.value)}
+                    aria-invalid={Boolean(errors.title)}
                     placeholder="Örn. Ankara tüketici bilgilendirme çalışması"
-                    value={values.title}
+                    {...register("title")}
                   />
                 </AdminFormField>
 
-                <AdminFormField label="Özet">
+                <AdminFormField error={errors.summary?.message} label="Özet">
                   <Textarea
-                    onChange={(event) => updateField("summary", event.target.value)}
+                    aria-invalid={Boolean(errors.summary)}
                     placeholder="Harita modalında görünecek kısa açıklama"
-                    value={values.summary}
+                    {...register("summary")}
                   />
                 </AdminFormField>
               </section>
@@ -176,58 +173,60 @@ export function ProvinceMapFormDialog({ contentItems = [], item, onOpenChange, o
               <section className="grid gap-4 rounded-lg border border-line bg-white p-4">
                 <div className="grid gap-4 md:grid-cols-2">
                   <AdminFormField
+                    error={errors.contentItemId?.message}
                     hint="Mevcut haber/duyuru/rehber seçilirse link otomatik üretilebilir."
                     label="Bağlı içerik"
                   >
                     <AdminSelect
-                      onChange={(event) => updateField("contentItemId", event.target.value)}
+                      aria-invalid={Boolean(errors.contentItemId)}
                       options={contentOptions}
                       placeholder="Bağlı içerik yok"
-                      value={values.contentItemId}
+                      {...register("contentItemId")}
                     />
                   </AdminFormField>
-                  <AdminFormField hint="Örn. Habere git, Rehbere git" label="Link metni">
+                  <AdminFormField error={errors.linkLabel?.message} hint="Örn. Habere git, Rehbere git" label="Link metni">
                     <Input
-                      onChange={(event) => updateField("linkLabel", event.target.value)}
+                      aria-invalid={Boolean(errors.linkLabel)}
                       placeholder="İçeriğe git"
-                      value={values.linkLabel}
+                      {...register("linkLabel")}
                     />
                   </AdminFormField>
                 </div>
 
                 <AdminFormField
+                  error={errors.linkHref?.message}
                   hint="Bağlı içerik seçmediğiniz durumlarda /haberler/... gibi manuel link girin."
                   label="Manuel link"
                 >
                   <Input
-                    onChange={(event) => updateField("linkHref", event.target.value)}
+                    aria-invalid={Boolean(errors.linkHref)}
                     placeholder="/haberler/ornek-haber"
-                    value={values.linkHref}
+                    {...register("linkHref")}
                   />
                 </AdminFormField>
               </section>
 
               <section className="grid gap-4 rounded-lg border border-line bg-white p-4 md:grid-cols-2">
-                <AdminFormField label="Tarih">
+                <AdminFormField error={errors.eventDate?.message} label="Tarih">
                   <Input
-                    onChange={(event) => updateField("eventDate", event.target.value)}
+                    aria-invalid={Boolean(errors.eventDate)}
                     type="date"
-                    value={values.eventDate}
+                    {...register("eventDate")}
                   />
                 </AdminFormField>
-                <AdminFormField hint="Küçük sayı daha önce listelenir." label="Sıra">
+                <AdminFormField error={errors.sortOrder?.message} hint="Küçük sayı daha önce listelenir." label="Sıra">
                   <Input
+                    aria-invalid={Boolean(errors.sortOrder)}
                     min="0"
-                    onChange={(event) => updateField("sortOrder", event.target.value)}
                     type="number"
-                    value={values.sortOrder}
+                    {...register("sortOrder")}
                   />
                 </AdminFormField>
               </section>
 
-              {error ? (
+              {errors.root?.message ? (
                 <AdminAlert icon={AlertCircle} title="Kayıt kaydedilemedi" variant="destructive">
-                  {error}
+                  {errors.root.message}
                 </AdminAlert>
               ) : null}
             </div>
@@ -237,13 +236,12 @@ export function ProvinceMapFormDialog({ contentItems = [], item, onOpenChange, o
             <p className="text-sm leading-6 text-muted">
               Yayındaki kayıtlar public haritada il seçildiğinde görünür.
             </p>
-            <Button className="w-full sm:w-auto" disabled={submitting} type="submit">
-              {submitting ? <LoaderCircle aria-hidden="true" className="size-4 animate-spin" /> : null}
-              {submitting ? "Kaydediliyor" : isEditMode ? "Değişiklikleri kaydet" : "Harita kaydı oluştur"}
+            <Button className="w-full sm:w-auto" disabled={isSubmitting} type="submit">
+              {isSubmitting ? <LoaderCircle aria-hidden="true" className="size-4 animate-spin" /> : null}
+              {isSubmitting ? "Kaydediliyor" : isEditMode ? "Değişiklikleri kaydet" : "Harita kaydı oluştur"}
             </Button>
           </div>
         </form>
-      </DialogContent>
-    </Dialog>
+    </ResponsiveFormPanel>
   );
 }

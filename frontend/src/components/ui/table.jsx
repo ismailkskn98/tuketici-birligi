@@ -19,7 +19,7 @@ function TableBody({ className, ...props }) {
 function TableFooter({ className, ...props }) {
   return (
     <tfoot
-      className={cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className)}
+      className={cn("border-t bg-surface font-medium [&>tr]:last:border-b-0", className)}
       data-slot="table-footer"
       {...props}
     />
@@ -29,7 +29,7 @@ function TableFooter({ className, ...props }) {
 function TableRow({ className, ...props }) {
   return (
     <tr
-      className={cn("border-b transition-colors hover:bg-muted/40 data-[state=selected]:bg-muted", className)}
+      className={cn("border-b transition-colors hover:bg-surface/70 data-[state=selected]:bg-surface", className)}
       data-slot="table-row"
       {...props}
     />

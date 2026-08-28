@@ -7,14 +7,15 @@ import { Controller, useForm } from "react-hook-form";
 import { AdminAlert } from "@/components/admin/common/admin-alert";
 import { AdminConfirmDialog } from "@/components/admin/common/admin-confirm-dialog";
 import { AdminFormField } from "@/components/admin/common/admin-form-field";
+import {
+  ResponsiveFormPanel,
+  ResponsiveFormPanelHeader,
+} from "@/components/admin/common/responsive-form-panel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import {
-  ResponsiveModal,
-  ResponsiveModalHeader,
-} from "@/components/ui/responsive-modal";
+import { toast } from "@/components/ui/toast";
 import {
   createBoardMemberCategory,
   deleteBoardMemberCategory,
@@ -74,9 +75,16 @@ export function BoardMemberCategoryDialog({ categories, onChanged, onOpenChange,
       }
 
       await onChanged?.();
+      toast.add({
+        title: editingId ? "Kategori güncellendi" : "Kategori eklendi",
+        description: `${values.titleTr} başarıyla ${editingId ? "güncellendi" : "oluşturuldu"}.`,
+        type: "success",
+      });
       resetForm();
     } catch (error) {
-      setSubmitError(error.message || "Kategori kaydedilemedi.");
+      const message = error.message || "Kategori kaydedilemedi.";
+      setSubmitError(message);
+      toast.add({ title: "Kategori kaydedilemedi", description: message, type: "error", priority: "high" });
     }
   }
 
@@ -89,9 +97,16 @@ export function BoardMemberCategoryDialog({ categories, onChanged, onOpenChange,
       await deleteBoardMemberCategory(deleteTarget.id);
       if (editingId === deleteTarget.id) resetForm();
       await onChanged?.();
+      toast.add({
+        title: "Kategori silindi",
+        description: `${deleteTarget.titleTr} kategorisi kaldırıldı.`,
+        type: "success",
+      });
       setDeleteTarget(null);
     } catch (error) {
-      setSubmitError(error.message || "Kategori silinemedi.");
+      const message = error.message || "Kategori silinemedi.";
+      setSubmitError(message);
+      toast.add({ title: "Kategori silinemedi", description: message, type: "error", priority: "high" });
       setDeleteTarget(null);
     } finally {
       setDeleting(false);
@@ -106,23 +121,22 @@ export function BoardMemberCategoryDialog({ categories, onChanged, onOpenChange,
 
   return (
     <>
-      <ResponsiveModal
+      <ResponsiveFormPanel
         description="Kurul gruplarını, public görünürlüğünü ve sırasını yönetin."
-        dialogClassName="max-h-[calc(100dvh-2rem)] overflow-hidden p-0 sm:max-w-5xl"
         drawerClassName="max-h-[calc(100dvh-0.5rem)] overflow-hidden"
         onOpenChange={handleOpenChange}
         open={open}
+        panelClassName="max-w-[62rem]"
         title="Kurul kategorileri"
       >
-        <div className="flex max-h-[calc(100dvh-0.5rem)] min-h-0 flex-col sm:max-h-[calc(100dvh-2rem)]">
-          <ResponsiveModalHeader
-            className="border-b border-line pb-5"
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+          <ResponsiveFormPanelHeader
             description="Kategoriler public sayfadaki sekmeleri ve bölüm sırasını belirler. Üyeyi kategoriye üye formundan bağlayabilirsiniz."
             title="Kurul kategorileri"
           />
 
-          <div className="min-h-0 flex-1 overflow-y-auto bg-surface/60 p-4 sm:p-6">
-            <div className="grid gap-5 lg:grid-cols-[minmax(18rem,0.8fr)_minmax(0,1.2fr)]">
+          <div className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto bg-surface/60 p-4 sm:p-6">
+            <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(18rem,0.8fr)_minmax(0,1.2fr)]">
               <form className="grid content-start gap-4 rounded-lg border border-line bg-white p-4 sm:p-5" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex items-center justify-between gap-3 border-b border-line pb-3">
                   <div>
@@ -248,7 +262,7 @@ export function BoardMemberCategoryDialog({ categories, onChanged, onOpenChange,
             ) : null}
           </div>
         </div>
-      </ResponsiveModal>
+      </ResponsiveFormPanel>
 
       <AdminConfirmDialog
         confirmLabel="Kategoriyi sil"

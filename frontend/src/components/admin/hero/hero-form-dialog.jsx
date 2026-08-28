@@ -5,8 +5,12 @@ import { AlertCircle, LoaderCircle } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { AdminAlert } from "@/components/admin/common/admin-alert";
+import {
+  ResponsiveFormPanel,
+  ResponsiveFormPanelHeader,
+} from "@/components/admin/common/responsive-form-panel";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { toast } from "@/components/ui/toast";
 import { createHeroSlide, updateHeroSlide, uploadAdminMedia } from "@/lib/admin-api";
 import { heroSlideSchema } from "@/lib/form-schemas";
 import { HeroImageFields } from "./hero-image-fields";
@@ -133,26 +137,40 @@ export function HeroFormDialog({ item, itemCount, maxItems, onOpenChange, onSave
         await createHeroSlide(payload);
       }
 
-      onSaved?.();
+      await onSaved?.();
+      toast.add({
+        title: isEditMode ? "Hero güncellendi" : "Hero eklendi",
+        description: `${values.titleTr} kaydı başarıyla ${isEditMode ? "güncellendi" : "oluşturuldu"}.`,
+        type: "success",
+      });
       onOpenChange(false);
     } catch (error) {
-      setSubmitError(error.message || "Hero kaydı kaydedilemedi.");
+      const message = error.message || "Hero kaydı kaydedilemedi.";
+      setSubmitError(message);
+      toast.add({ title: "Hero kaydedilemedi", description: message, type: "error", priority: "high" });
     }
   }
 
-  return (
-    <Dialog onOpenChange={onOpenChange} open={open}>
-      <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-hidden p-0 sm:max-w-5xl">
-        <form className="flex max-h-[calc(100dvh-2rem)] flex-col" onSubmit={handleSubmit(onSubmit)}>
-          <DialogHeader className="border-b border-line bg-white px-5 py-4 sm:px-6">
-            <DialogTitle>{isEditMode ? "Hero kaydını düzenle" : "Yeni hero kaydı"}</DialogTitle>
-            <DialogDescription>
-              Hero içeriklerini Türkçe ve İngilizce olarak tek kayıtta yönetin. Mobil, tablet ve masaüstü için ayrı görsel yükleyin. En fazla {maxItems} kayıt eklenebilir.
-            </DialogDescription>
-          </DialogHeader>
+  function handleOpenChange(nextOpen) {
+    if (!isSubmitting) onOpenChange(nextOpen);
+  }
 
-          <div className="min-h-0 flex-1 overflow-y-auto bg-surface/70">
-            <div className="grid gap-5 px-5 py-5 sm:px-6">
+  return (
+    <ResponsiveFormPanel
+      description="Hero içeriklerini, görsellerini ve yayın durumunu yönetin."
+      onOpenChange={handleOpenChange}
+      open={open}
+      panelClassName="max-w-[64rem]"
+      title={isEditMode ? "Hero kaydını düzenle" : "Yeni hero kaydı"}
+    >
+        <form className="flex min-h-0 min-w-0 flex-1 flex-col" onSubmit={handleSubmit(onSubmit)}>
+          <ResponsiveFormPanelHeader
+            description={`Hero içeriklerini iki dilde yönetin. Mobil, tablet ve masaüstü için ayrı görsel yükleyin. En fazla ${maxItems} kayıt eklenebilir.`}
+            title={isEditMode ? "Hero kaydını düzenle" : "Yeni hero kaydı"}
+          />
+
+          <div className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto bg-surface/70">
+            <div className="grid min-w-0 gap-5 px-4 py-5 sm:px-6">
               <input type="hidden" {...register("mediaId", { valueAsNumber: true })} />
               <input type="hidden" {...register("mediaMobileId", { valueAsNumber: true })} />
               <input type="hidden" {...register("mediaTabletId", { valueAsNumber: true })} />
@@ -208,7 +226,6 @@ export function HeroFormDialog({ item, itemCount, maxItems, onOpenChange, onSave
             </Button>
           </div>
         </form>
-      </DialogContent>
-    </Dialog>
+    </ResponsiveFormPanel>
   );
 }

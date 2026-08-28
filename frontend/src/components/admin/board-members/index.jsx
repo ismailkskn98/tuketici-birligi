@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertCircle, CircleCheck, FolderTree, Plus, UserRoundCheck, UserRoundX, UsersRound } from "lucide-react";
+import { AlertCircle, FolderTree, Plus, UserRoundCheck, UserRoundX, UsersRound } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AdminAlert } from "@/components/admin/common/admin-alert";
 import { AdminConfirmDialog } from "@/components/admin/common/admin-confirm-dialog";
@@ -11,6 +11,7 @@ import { AdminStatCard } from "@/components/admin/common/admin-stat-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "@/components/ui/toast";
 import {
   deleteBoardMember,
   listBoardMemberCategories,
@@ -32,7 +33,6 @@ export function BoardMembersAdmin() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
@@ -127,13 +127,17 @@ export function BoardMembersAdmin() {
     try {
       setDeleting(true);
       setError("");
-      setNotice("");
       await deleteBoardMember(deleteTarget.id);
       await loadItems();
-      setNotice(`${deleteTarget.fullName} kaydı silindi.`);
+      toast.add({
+        title: "Kurul üyesi silindi",
+        description: `${deleteTarget.fullName} kaydı kalıcı olarak kaldırıldı.`,
+        type: "success",
+      });
       setDeleteTarget(null);
     } catch (deleteError) {
-      setError(deleteError.message || "Yönetim kurulu kaydı silinemedi.");
+      const message = deleteError.message || "Yönetim kurulu kaydı silinemedi.";
+      toast.add({ title: "Kayıt silinemedi", description: message, type: "error", priority: "high" });
       setDeleteTarget(null);
     } finally {
       setDeleting(false);
@@ -149,15 +153,19 @@ export function BoardMembersAdmin() {
     try {
       setUpdatingId(item.id);
       setError("");
-      setNotice("");
       const nextActive = !item.isActive;
       await updateBoardMember(item.id, { isActive: nextActive });
       setItems((current) => current.map((member) => (
         member.id === item.id ? { ...member, isActive: nextActive } : member
       )));
-      setNotice(`${item.fullName} ${nextActive ? "yayına alındı" : "askıya alındı"}.`);
+      toast.add({
+        title: nextActive ? "Üye yayına alındı" : "Üye askıya alındı",
+        description: `${item.fullName} public görünümde ${nextActive ? "yayınlandı" : "gizlendi"}.`,
+        type: "success",
+      });
     } catch (statusError) {
-      setError(statusError.message || "Yayın durumu güncellenemedi.");
+      const message = statusError.message || "Yayın durumu güncellenemedi.";
+      toast.add({ title: "Durum güncellenemedi", description: message, type: "error", priority: "high" });
     } finally {
       setUpdatingId(null);
     }
@@ -210,12 +218,6 @@ export function BoardMembersAdmin() {
           {error ? (
             <AdminAlert icon={AlertCircle} title="İşlem tamamlanamadı" variant="destructive">
               {error}
-            </AdminAlert>
-          ) : null}
-
-          {notice ? (
-            <AdminAlert icon={CircleCheck} title="İşlem tamamlandı">
-              {notice}
             </AdminAlert>
           ) : null}
 

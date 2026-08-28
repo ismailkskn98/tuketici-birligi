@@ -3,6 +3,7 @@
 import { AlertCircle, MapPinned, Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AdminAlert } from "@/components/admin/common/admin-alert";
+import { AdminConfirmDialog } from "@/components/admin/common/admin-confirm-dialog";
 import { AdminFormField } from "@/components/admin/common/admin-form-field";
 import { AdminPage } from "@/components/admin/common/admin-page";
 import { AdminSelect } from "@/components/admin/common/admin-select";
@@ -10,6 +11,7 @@ import { AdminStatCard } from "@/components/admin/common/admin-stat-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "@/components/ui/toast";
 import {
   deleteProvinceMapEntry,
   listProvinceMapEntries,
@@ -38,6 +40,8 @@ export function ProvinceMapAdmin() {
   const [error, setError] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
   const [filters, setFilters] = useState({
     category: "",
     provinceCode: "",
@@ -132,16 +136,25 @@ export function ProvinceMapAdmin() {
     setDialogOpen(true);
   }
 
-  async function handleDelete(item) {
-    const confirmed = window.confirm(`"${item.title}" harita kaydını silmek istiyor musunuz?`);
-
-    if (!confirmed) return;
+  async function confirmDelete() {
+    if (!deleteTarget) return;
 
     try {
-      await deleteProvinceMapEntry(item.id);
+      setDeleting(true);
+      await deleteProvinceMapEntry(deleteTarget.id);
       await loadItems();
+      toast.add({
+        title: "Harita kaydı silindi",
+        description: `${deleteTarget.title} kaydı kalıcı olarak kaldırıldı.`,
+        type: "success",
+      });
+      setDeleteTarget(null);
     } catch (deleteError) {
-      setError(deleteError.message || "Harita kaydı silinemedi.");
+      const message = deleteError.message || "Harita kaydı silinemedi.";
+      toast.add({ title: "Harita kaydı silinemedi", description: message, type: "error", priority: "high" });
+      setDeleteTarget(null);
+    } finally {
+      setDeleting(false);
     }
   }
 
@@ -236,7 +249,7 @@ export function ProvinceMapAdmin() {
                 <Skeleton className="h-12 w-full" />
               </div>
             ) : (
-              <ProvinceMapList items={filteredItems} onDelete={handleDelete} onEdit={handleEdit} />
+              <ProvinceMapList items={filteredItems} onDelete={setDeleteTarget} onEdit={handleEdit} />
             )}
           </section>
         </div>
@@ -249,6 +262,16 @@ export function ProvinceMapAdmin() {
         onOpenChange={setDialogOpen}
         onSaved={loadItems}
         open={dialogOpen}
+      />
+
+      <AdminConfirmDialog
+        confirmLabel="Harita kaydını sil"
+        description={deleteTarget ? `“${deleteTarget.title}” harita kaydı kalıcı olarak silinecek.` : ""}
+        onConfirm={confirmDelete}
+        onOpenChange={(nextOpen) => !nextOpen && setDeleteTarget(null)}
+        open={Boolean(deleteTarget)}
+        pending={deleting}
+        title="Harita kaydı silinsin mi?"
       />
     </>
   );

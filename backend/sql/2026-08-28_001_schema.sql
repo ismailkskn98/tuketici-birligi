@@ -1,10 +1,7 @@
-SET NAMES utf8mb4;
+SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE DATABASE IF NOT EXISTS `tuketiciler_birligi`
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-
-USE `tuketiciler_birligi`;
+-- Bu dosya, bağlantıda seçili olan mevcut veritabanında çalışır.
+-- Veritabanı oluşturmaz ve başka bir veritabanına geçiş yapmaz.
 
 CREATE TABLE IF NOT EXISTS `admin_users` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -241,3 +238,150 @@ CREATE TABLE IF NOT EXISTS `audit_logs` (
   CONSTRAINT `fk_audit_admin_user`
     FOREIGN KEY (`admin_user_id`) REFERENCES `admin_users` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- CREATE TABLE IF NOT EXISTS mevcut tabloların yapısını değiştirmez.
+-- Aşağıdaki kontroller, önceki bir sürüm kurulmuşsa yeni kolon ve indeksleri
+-- aynı dosya tekrar çalıştırıldığında güvenle tamamlar.
+
+SET @schema_sql = (
+  SELECT IF(
+    COUNT(*) = 0,
+    'ALTER TABLE `form_submissions` ADD COLUMN `application_number` VARCHAR(30) NULL AFTER `form_type`',
+    'SELECT 1'
+  )
+  FROM information_schema.COLUMNS
+  WHERE TABLE_SCHEMA = DATABASE()
+    AND TABLE_NAME = 'form_submissions'
+    AND COLUMN_NAME = 'application_number'
+);
+PREPARE schema_statement FROM @schema_sql;
+EXECUTE schema_statement;
+DEALLOCATE PREPARE schema_statement;
+
+SET @schema_sql = (
+  SELECT IF(
+    COUNT(*) = 0,
+    'ALTER TABLE `form_submissions` ADD UNIQUE KEY `uq_submission_application_number` (`application_number`)',
+    'SELECT 1'
+  )
+  FROM information_schema.STATISTICS
+  WHERE TABLE_SCHEMA = DATABASE()
+    AND TABLE_NAME = 'form_submissions'
+    AND INDEX_NAME = 'uq_submission_application_number'
+);
+PREPARE schema_statement FROM @schema_sql;
+EXECUTE schema_statement;
+DEALLOCATE PREPARE schema_statement;
+
+SET @schema_sql = (
+  SELECT IF(
+    COUNT(*) = 0,
+    'ALTER TABLE `hero_slides` ADD COLUMN `media_mobile_id` BIGINT UNSIGNED NULL AFTER `media_id`',
+    'SELECT 1'
+  )
+  FROM information_schema.COLUMNS
+  WHERE TABLE_SCHEMA = DATABASE()
+    AND TABLE_NAME = 'hero_slides'
+    AND COLUMN_NAME = 'media_mobile_id'
+);
+PREPARE schema_statement FROM @schema_sql;
+EXECUTE schema_statement;
+DEALLOCATE PREPARE schema_statement;
+
+SET @schema_sql = (
+  SELECT IF(
+    COUNT(*) = 0,
+    'ALTER TABLE `hero_slides` ADD COLUMN `media_tablet_id` BIGINT UNSIGNED NULL AFTER `media_mobile_id`',
+    'SELECT 1'
+  )
+  FROM information_schema.COLUMNS
+  WHERE TABLE_SCHEMA = DATABASE()
+    AND TABLE_NAME = 'hero_slides'
+    AND COLUMN_NAME = 'media_tablet_id'
+);
+PREPARE schema_statement FROM @schema_sql;
+EXECUTE schema_statement;
+DEALLOCATE PREPARE schema_statement;
+
+UPDATE `hero_slides`
+SET `media_mobile_id` = `media_id`
+WHERE `media_mobile_id` IS NULL;
+
+UPDATE `hero_slides`
+SET `media_tablet_id` = `media_id`
+WHERE `media_tablet_id` IS NULL;
+
+ALTER TABLE `hero_slides`
+  MODIFY COLUMN `media_mobile_id` BIGINT UNSIGNED NOT NULL,
+  MODIFY COLUMN `media_tablet_id` BIGINT UNSIGNED NOT NULL;
+
+SET @schema_sql = (
+  SELECT IF(
+    COUNT(*) = 0,
+    'ALTER TABLE `hero_slides` ADD CONSTRAINT `fk_hero_media_mobile` FOREIGN KEY (`media_mobile_id`) REFERENCES `media_assets` (`id`) ON DELETE RESTRICT',
+    'SELECT 1'
+  )
+  FROM information_schema.TABLE_CONSTRAINTS
+  WHERE CONSTRAINT_SCHEMA = DATABASE()
+    AND TABLE_NAME = 'hero_slides'
+    AND CONSTRAINT_NAME = 'fk_hero_media_mobile'
+    AND CONSTRAINT_TYPE = 'FOREIGN KEY'
+);
+PREPARE schema_statement FROM @schema_sql;
+EXECUTE schema_statement;
+DEALLOCATE PREPARE schema_statement;
+
+SET @schema_sql = (
+  SELECT IF(
+    COUNT(*) = 0,
+    'ALTER TABLE `hero_slides` ADD CONSTRAINT `fk_hero_media_tablet` FOREIGN KEY (`media_tablet_id`) REFERENCES `media_assets` (`id`) ON DELETE RESTRICT',
+    'SELECT 1'
+  )
+  FROM information_schema.TABLE_CONSTRAINTS
+  WHERE CONSTRAINT_SCHEMA = DATABASE()
+    AND TABLE_NAME = 'hero_slides'
+    AND CONSTRAINT_NAME = 'fk_hero_media_tablet'
+    AND CONSTRAINT_TYPE = 'FOREIGN KEY'
+);
+PREPARE schema_statement FROM @schema_sql;
+EXECUTE schema_statement;
+DEALLOCATE PREPARE schema_statement;
+
+SET @schema_sql = (
+  SELECT IF(
+    COUNT(*) = 0,
+    'ALTER TABLE `board_members` ADD COLUMN `role_tr` VARCHAR(160) NULL AFTER `full_name`',
+    'SELECT 1'
+  )
+  FROM information_schema.COLUMNS
+  WHERE TABLE_SCHEMA = DATABASE()
+    AND TABLE_NAME = 'board_members'
+    AND COLUMN_NAME = 'role_tr'
+);
+PREPARE schema_statement FROM @schema_sql;
+EXECUTE schema_statement;
+DEALLOCATE PREPARE schema_statement;
+
+SET @schema_sql = (
+  SELECT IF(
+    COUNT(*) = 0,
+    'ALTER TABLE `board_members` ADD COLUMN `role_en` VARCHAR(160) NULL AFTER `role_tr`',
+    'SELECT 1'
+  )
+  FROM information_schema.COLUMNS
+  WHERE TABLE_SCHEMA = DATABASE()
+    AND TABLE_NAME = 'board_members'
+    AND COLUMN_NAME = 'role_en'
+);
+PREPARE schema_statement FROM @schema_sql;
+EXECUTE schema_statement;
+DEALLOCATE PREPARE schema_statement;
+
+ALTER TABLE `board_members`
+  MODIFY COLUMN `title_tr` VARCHAR(160) NULL,
+  MODIFY COLUMN `title_en` VARCHAR(160) NULL,
+  MODIFY COLUMN `summary_tr` TEXT NULL,
+  MODIFY COLUMN `summary_en` TEXT NULL,
+  MODIFY COLUMN `media_id` BIGINT UNSIGNED NULL;
+
+SET @schema_sql = NULL;

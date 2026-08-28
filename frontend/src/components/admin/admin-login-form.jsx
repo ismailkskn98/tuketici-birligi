@@ -1,11 +1,13 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AdminFormField } from "@/components/admin/common/admin-form-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export function AdminLoginForm() {
+  const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -35,11 +37,12 @@ export function AdminLoginForm() {
       return;
     }
 
-    window.location.href = "/admin";
+    router.replace("/admin");
+    router.refresh();
   }
 
   return (
-    <form className="grid gap-4 rounded-lg border border-line bg-white p-6 shadow-soft" onSubmit={onSubmit}>
+    <form className="grid gap-4 rounded-lg border border-line bg-white p-6" onSubmit={onSubmit}>
       <AdminFormField label="E-posta">
         <Input name="email" type="email" autoComplete="email" required />
       </AdminFormField>

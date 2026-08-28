@@ -1,13 +1,18 @@
-# Navicat SQL kurulumu
+# Mevcut veritabanına SQL kurulumu
 
-Navicat'te MySQL bağlantısını açıp dosyaları aşağıdaki sırayla çalıştırın:
+Navicat veya phpMyAdmin içinde önce kullanacağınız mevcut veritabanını seçin. Ardından
+dosyaları aşağıdaki sırayla çalıştırın:
 
 1. `2026-08-28_001_schema.sql`
 2. `2026-08-28_002_seed.sql`
 
-Şema dosyası `tuketiciler_birligi` veritabanını ve API'nin kullandığı tabloları oluşturur.
-Seed dosyası tekrar çalıştırılabilir; geliştirme admin hesaplarını, başlangıç ayarlarını,
-içerikleri, hero kayıtlarını, il haritasını ve yönetim kurulu kayıtlarını ekler.
+Dosyalar `CREATE DATABASE`, `DROP DATABASE` veya `USE` çalıştırmaz. Şema dosyası seçili
+veritabanında eksik tabloları oluşturur; önceki sürümden kalan tablolara yeni kolon ve
+indeksleri tekrar çalıştırılabilir kontrollerle ekler.
+
+Seed dosyası tekrar çalıştırılabilir. Aynı kayıtları çoğaltmaz; doğal anahtarları eşleşen
+başlangıç kayıtlarını güncel SQL içeriğiyle günceller, bulunmayanları ekler. Admin panelinden
+oluşturulmuş ve seed listesinde bulunmayan kayıtlar etkilenmez.
 
 Varsayılan geliştirme hesapları:
 
@@ -18,5 +23,5 @@ Bu hesapları yalnızca yerel geliştirmede kullanın. Production ortamında
 `npm run seed:production` komutunu tercih edin; bilgiler `backend/.env.production`
 dosyasındaki `SEED_*` değerlerinden alınır.
 
-Veritabanı adını değiştirecekseniz iki SQL dosyasındaki `CREATE DATABASE` / `USE`
-satırlarını ve ilgili backend env dosyasındaki `DB_NAME` değerini birlikte güncelleyin.
+Backend'in aynı veritabanına bağlanması için ilgili env dosyasındaki `DB_NAME` değerinin,
+SQL dosyalarını çalıştırırken seçtiğiniz veritabanıyla aynı olduğundan emin olun.

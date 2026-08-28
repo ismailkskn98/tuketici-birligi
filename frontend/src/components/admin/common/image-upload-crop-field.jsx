@@ -3,7 +3,7 @@
 import Cropper from "react-easy-crop";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { ImagePlus, LoaderCircle, RotateCcw, UploadCloud } from "lucide-react";
+import { ImagePlus, LoaderCircle, RotateCcw, Trash2, UploadCloud } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getCroppedImageFile } from "@/lib/crop-image";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,7 @@ export function ImageUploadCropField({
   maxOutputHeight,
   maxOutputWidth,
   onChange,
+  onRemove,
   outputExtension = "jpg",
   outputMimeType = "image/jpeg",
   outputQuality = 0.92,
@@ -31,6 +32,7 @@ export function ImageUploadCropField({
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [localPreviewUrl, setLocalPreviewUrl] = useState("");
+  const [previewRemoved, setPreviewRemoved] = useState(false);
   const [cropError, setCropError] = useState("");
   const [processing, setProcessing] = useState(false);
 
@@ -57,6 +59,7 @@ export function ImageUploadCropField({
       }
 
       setCropError("");
+      setPreviewRemoved(false);
       setSourceFileName(file.name.replace(/\.[^.]+$/, "") || "image");
       setSourceImage(URL.createObjectURL(file));
       setCrop({ x: 0, y: 0 });
@@ -111,6 +114,7 @@ export function ImageUploadCropField({
       }
 
       setLocalPreviewUrl(nextPreviewUrl);
+      setPreviewRemoved(false);
       setSourceImage("");
       onChange?.({ file, imageUrl: nextPreviewUrl, mediaId: value || 0 });
     } catch (applyError) {
@@ -131,7 +135,25 @@ export function ImageUploadCropField({
     setCroppedAreaPixels(null);
   }
 
-  const previewUrl = localPreviewUrl || initialPreview;
+  function removePreview() {
+    if (sourceImage.startsWith("blob:")) {
+      URL.revokeObjectURL(sourceImage);
+    }
+    if (localPreviewUrl.startsWith("blob:")) {
+      URL.revokeObjectURL(localPreviewUrl);
+    }
+
+    setSourceImage("");
+    setLocalPreviewUrl("");
+    setPreviewRemoved(true);
+    setCropError("");
+    setCrop({ x: 0, y: 0 });
+    setZoom(1);
+    setCroppedAreaPixels(null);
+    onRemove?.();
+  }
+
+  const previewUrl = localPreviewUrl || (previewRemoved ? "" : initialPreview);
   const hasPreview = Boolean(previewUrl);
   const isCropping = Boolean(sourceImage);
   const resolvedPreviewLabel = previewLabel || "Önizleme hazır";
@@ -180,18 +202,24 @@ export function ImageUploadCropField({
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <div className={cn("w-full max-w-[360px] overflow-hidden rounded-md border border-line bg-surface sm:w-72", aspectClassName)}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="h-full w-full object-cover" src={previewUrl} />
+              <img alt={previewLabel || "Görsel önizlemesi"} className="h-full w-full object-cover" src={previewUrl} />
             </div>
             <div className="grid min-w-0 flex-1 gap-2">
               <p className="text-sm font-semibold text-ink">{resolvedPreviewLabel}</p>
               <p className="text-xs font-normal leading-5 text-muted">
                 Görsel kaydetme sırasında yüklenecek. Oranı kontrol edip gerekirse değiştirebilirsiniz.
               </p>
-              <div>
+              <div className="flex flex-wrap gap-2">
                 <Button onClick={open} size="sm" type="button" variant="outline">
                   <UploadCloud aria-hidden="true" className="size-4" />
                   Görseli değiştir
                 </Button>
+                {onRemove ? (
+                  <Button className="text-destructive hover:text-destructive" onClick={removePreview} size="sm" type="button" variant="ghost">
+                    <Trash2 aria-hidden="true" className="size-4" />
+                    Görseli kaldır
+                  </Button>
+                ) : null}
               </div>
             </div>
           </div>

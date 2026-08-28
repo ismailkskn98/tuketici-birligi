@@ -77,11 +77,6 @@ export async function BoardMembersPageContent({ locale }) {
             <p className="max-w-[34rem] text-sm leading-7 text-[#657083] sm:text-[15px]">
               {t("description")}
             </p>
-            {groups.length ? (
-              <p className="mt-7 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8a93a2]">
-                {t("memberCount", { count: members.length })}
-              </p>
-            ) : null}
           </div>
         </div>
       </header>
@@ -93,7 +88,6 @@ export async function BoardMembersPageContent({ locale }) {
             allMembers: t("allMembers"),
             categoryIndex: t("categoryIndex"),
             categoryNavLabel: t("categoryNavLabel"),
-            groupCount: t.raw("groupCount"),
             portraitAlt: t.raw("portraitAlt"),
           }}
         />

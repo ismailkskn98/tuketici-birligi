@@ -1,8 +1,9 @@
 "use client";
 
-import { AlertCircle, FolderTree, Plus, UserRoundCheck, UserRoundX, UsersRound } from "lucide-react";
+import { AlertCircle, CircleCheck, FolderTree, Plus, UserRoundCheck, UserRoundX, UsersRound } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AdminAlert } from "@/components/admin/common/admin-alert";
+import { AdminConfirmDialog } from "@/components/admin/common/admin-confirm-dialog";
 import { AdminFormField } from "@/components/admin/common/admin-form-field";
 import { AdminPage } from "@/components/admin/common/admin-page";
 import { AdminSelect } from "@/components/admin/common/admin-select";
@@ -14,6 +15,7 @@ import {
   deleteBoardMember,
   listBoardMemberCategories,
   listBoardMembers,
+  updateBoardMember,
 } from "@/lib/admin-api";
 import { BoardMemberCategoryDialog } from "./board-member-category-dialog";
 import { BoardMemberFormDialog } from "./board-member-form-dialog";
@@ -21,7 +23,7 @@ import { BoardMemberList } from "./board-member-list";
 
 const statusOptions = [
   { label: "Yayında", value: "active" },
-  { label: "Pasif", value: "inactive" },
+  { label: "Askıda", value: "inactive" },
   { label: "Bilgisi eksik", value: "incomplete" },
 ];
 
@@ -30,9 +32,13 @@ export function BoardMembersAdmin() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+  const [updatingId, setUpdatingId] = useState(null);
   const [filters, setFilters] = useState({ categoryId: "", query: "", status: "" });
 
   const activeCount = useMemo(
@@ -105,28 +111,55 @@ export function BoardMembersAdmin() {
   }, []);
 
   function handleCreate() {
+    setError("");
     setEditingItem(null);
     setDialogOpen(true);
   }
 
   function handleEdit(item) {
+    setError("");
     setEditingItem(item);
     setDialogOpen(true);
   }
 
-  async function handleDelete(item) {
-    const confirmed = window.confirm(
-      `"${item.fullName}" kaydını kalıcı olarak silmek istiyor musunuz? Yalnızca public görünümden kaldırmak için kaydı pasif yapabilirsiniz.`,
-    );
-
-    if (!confirmed) return;
-
+  async function confirmDelete() {
+    if (!deleteTarget) return;
     try {
+      setDeleting(true);
       setError("");
-      await deleteBoardMember(item.id);
+      setNotice("");
+      await deleteBoardMember(deleteTarget.id);
       await loadItems();
+      setNotice(`${deleteTarget.fullName} kaydı silindi.`);
+      setDeleteTarget(null);
     } catch (deleteError) {
       setError(deleteError.message || "Yönetim kurulu kaydı silinemedi.");
+      setDeleteTarget(null);
+    } finally {
+      setDeleting(false);
+    }
+  }
+
+  async function handleToggleStatus(item) {
+    if (!item.isActive && !item.isComplete) {
+      handleEdit(item);
+      return;
+    }
+
+    try {
+      setUpdatingId(item.id);
+      setError("");
+      setNotice("");
+      const nextActive = !item.isActive;
+      await updateBoardMember(item.id, { isActive: nextActive });
+      setItems((current) => current.map((member) => (
+        member.id === item.id ? { ...member, isActive: nextActive } : member
+      )));
+      setNotice(`${item.fullName} ${nextActive ? "yayına alındı" : "askıya alındı"}.`);
+    } catch (statusError) {
+      setError(statusError.message || "Yayın durumu güncellenemedi.");
+    } finally {
+      setUpdatingId(null);
     }
   }
 
@@ -180,7 +213,13 @@ export function BoardMembersAdmin() {
             </AdminAlert>
           ) : null}
 
-          <section className="grid gap-4 rounded-lg border border-line bg-white p-4 shadow-xs">
+          {notice ? (
+            <AdminAlert icon={CircleCheck} title="İşlem tamamlandı">
+              {notice}
+            </AdminAlert>
+          ) : null}
+
+          <section className="grid gap-4 rounded-lg border border-line bg-white p-4">
             <div className="grid gap-3 md:grid-cols-3">
               <AdminFormField label="Arama">
                 <Input
@@ -211,7 +250,7 @@ export function BoardMembersAdmin() {
             </div>
           </section>
 
-          <section className="rounded-lg border border-line bg-white shadow-xs">
+          <section className="overflow-hidden rounded-lg border border-line bg-white">
             {loading ? (
               <div className="grid gap-3 p-4">
                 <Skeleton className="h-20 w-full" />
@@ -221,8 +260,10 @@ export function BoardMembersAdmin() {
             ) : (
               <BoardMemberList
                 items={filteredItems}
-                onDelete={handleDelete}
+                onDelete={setDeleteTarget}
                 onEdit={handleEdit}
+                onToggleStatus={handleToggleStatus}
+                updatingId={updatingId}
               />
             )}
           </section>
@@ -243,6 +284,16 @@ export function BoardMembersAdmin() {
         onChanged={loadItems}
         onOpenChange={setCategoryDialogOpen}
         open={categoryDialogOpen}
+      />
+
+      <AdminConfirmDialog
+        confirmLabel="Üyeyi sil"
+        description={deleteTarget ? `“${deleteTarget.fullName}” kaydı kalıcı olarak silinecek. Yalnızca public görünümden kaldırmak istiyorsanız silmek yerine askıya alın.` : ""}
+        onConfirm={confirmDelete}
+        onOpenChange={(nextOpen) => !nextOpen && setDeleteTarget(null)}
+        open={Boolean(deleteTarget)}
+        pending={deleting}
+        title="Kurul üyesi silinsin mi?"
       />
     </>
   );

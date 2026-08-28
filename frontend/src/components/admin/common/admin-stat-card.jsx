@@ -2,14 +2,14 @@ import { cn } from "@/lib/utils";
 
 export function AdminStatCard({ title, value, description, icon: Icon, className }) {
   return (
-    <div className={cn("rounded-lg border border-line bg-white p-4 shadow-xs", className)}>
+    <div className={cn("rounded-lg border border-line bg-white p-4", className)}>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-muted">{title}</p>
-          <p className="mt-2 text-2xl font-bold tracking-normal text-ink">{value}</p>
+          <p className="text-xs font-medium text-muted">{title}</p>
+          <p className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-ink">{value}</p>
         </div>
         {Icon ? (
-          <div className="grid size-10 place-items-center rounded-md bg-primary-soft text-primary-dark">
+          <div className="grid size-9 place-items-center rounded-md border border-line bg-surface text-muted">
             <Icon aria-hidden="true" className="size-5" />
           </div>
         ) : null}

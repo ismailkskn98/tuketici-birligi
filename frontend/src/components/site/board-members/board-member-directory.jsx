@@ -21,12 +21,10 @@ export function BoardMemberDirectory({ groups, labels }) {
     {
       id: allMembersKey,
       title: labels.allMembers,
-      count: members.length,
     },
     ...groups.map((group) => ({
       id: group.id,
       title: group.title,
-      count: group.members.length,
     })),
   ];
   const activeTab = tabs.find((tab) => tab.id === selectedGroup) || tabs[0];
@@ -47,14 +45,14 @@ export function BoardMemberDirectory({ groups, labels }) {
             className="mt-5 flex snap-x gap-0 overflow-x-auto border-b border-[#dfe3e8] lg:block lg:overflow-visible lg:border-b-0 lg:border-l"
             role="tablist"
           >
-            {tabs.map((tab, index) => {
+            {tabs.map((tab) => {
               const isActive = tab.id === selectedGroup;
 
               return (
                 <button
                   aria-controls="board-member-panel"
                   aria-selected={isActive}
-                  className={`relative flex shrink-0 snap-start items-center gap-3 px-4 py-3 text-left text-sm transition-colors focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-inset lg:w-full lg:py-3.5 ${
+                  className={`relative flex shrink-0 snap-start items-center px-4 py-3 text-left text-sm transition-colors focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-inset lg:w-full lg:py-3.5 ${
                     isActive
                       ? "font-semibold text-[#14213d] before:absolute before:bottom-[-1px] before:left-0 before:h-0.5 before:w-full before:bg-[#14213d] lg:before:-left-px lg:before:bottom-auto lg:before:top-0 lg:before:h-full lg:before:w-0.5"
                       : "font-medium text-[#8a93a2] hover:text-[#39465d]"
@@ -65,13 +63,7 @@ export function BoardMemberDirectory({ groups, labels }) {
                   role="tab"
                   type="button"
                 >
-                  <span className={`font-mono text-[9px] tracking-[0.1em] ${isActive ? "text-secondary" : "text-[#aab0ba]"}`}>
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
                   <span className="whitespace-nowrap">{tab.title}</span>
-                  <span className="ml-auto font-mono text-[9px] text-[#aab0ba]">
-                    {String(tab.count).padStart(2, "0")}
-                  </span>
                 </button>
               );
             })}
@@ -83,15 +75,10 @@ export function BoardMemberDirectory({ groups, labels }) {
           id="board-member-panel"
           role="tabpanel"
         >
-          <div className="mb-8 flex items-end justify-between gap-5 border-b border-[#e8ebef] pb-5 sm:mb-10">
-            <div>
-              <p className="font-heading text-2xl font-medium tracking-[-0.04em] text-[#14213d] sm:text-[1.75rem]">
-                {activeTab.title}
-              </p>
-              <p className="mt-2 text-xs text-[#7a8493]">
-                {labels.groupCount.replace("{count}", String(activeTab.count))}
-              </p>
-            </div>
+          <div className="mb-8 border-b border-[#e8ebef] pb-5 sm:mb-10">
+            <p className="font-heading text-2xl font-medium tracking-[-0.04em] text-[#14213d] sm:text-[1.75rem]">
+              {activeTab.title}
+            </p>
           </div>
 
           <div

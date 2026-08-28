@@ -35,7 +35,7 @@ Canlı arayüz ve meta metinler şu an “Tüketici Birliği” / İngilizce “
 
 ### Yönetim Kurulu İçerik İlkesi
 
-Müşteri tarafından 28 Ağustos 2026 tarihinde iletilen görev dağılımı, ilk genel kurula kadar görevli **Geçici Yönetim Kurulu**nu şöyle belirtir: Hasan Oğuz Altınkaynak (Geçici Yönetim Kurulu Başkanı), Ali Selek (Geçici Başkan Yardımcısı), Hüseyin Taşer (Geçici Sekreter), Mustafa Başer (Geçici Sayman) ve Uğuralp Coşkun (Kurucu Üye). Public sayfada bu görevler mesleki unvanlardan ayrı ve “geçici” niteliği korunarak yayımlanır.
+Müşteri tarafından 28 Ağustos 2026 tarihinde iletilen görev dağılımında **Geçici Yönetim Kurulu** Hasan Oğuz Altınkaynak (Geçici Yönetim Kurulu Başkanı), Ali Selek (Geçici Başkan Yardımcısı), Hüseyin Taşer (Geçici Sekreter) ve Mustafa Başer’den (Geçici Sayman) oluşur. Uğuralp Coşkun’un “Kurucu Üye” statüsü kurul görevinden ayrıştırılarak **Kurucu Üyeler** kategorisinde yayımlanır. Public sayfada görevler mesleki unvanlardan ayrı ve “geçici” niteliği korunarak gösterilir.
 
 26 Ağustos 2026 tarihinde sağlanan Alpay Korkmaz, Hakan Akçam, İsmail Çağlar, Muhammed Emin Yeşil, Murat Kahya, Mustafa Başer ve Uğuralp Coşkun profilleri korunur. 28 Ağustos kaynağıyla Ali Selek ve İrem Eskici için portre ve CV metni eklenmiştir. İrem Eskici’ye ait CV ve portre mevcut olsa da iletilen geçici görev dağılımında adı bulunmadığı için resmi kurul görevi yazılmaz; görev teyidi gelene kadar genel kurul üyesi grubunda sunulur.
 

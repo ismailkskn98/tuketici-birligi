@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FileText, HelpCircle, Home, ImageIcon, LayoutDashboard, LogOut, MapPinned, Menu, MessageSquareText, Settings, Shield, Users, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,7 @@ const navigationIcons = {
 
 export function AdminShell({ children }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   async function logout() {
@@ -31,7 +32,8 @@ export function AdminShell({ children }) {
       method: "POST",
       credentials: "include",
     });
-    window.location.href = "/admin/login";
+    router.replace("/admin/login");
+    router.refresh();
   }
 
   if (pathname === "/admin/login") {
@@ -53,8 +55,8 @@ export function AdminShell({ children }) {
           return (
             <Link
               className={cn(
-                "focus-ring flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-muted transition hover:bg-primary-soft hover:text-ink",
-                active && "bg-primary-soft text-primary-dark shadow-xs",
+                "focus-ring flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-muted transition hover:bg-surface hover:text-ink",
+                active && "bg-ink text-white hover:bg-ink hover:text-white",
               )}
               href={item.href}
               key={item.href}
@@ -70,23 +72,23 @@ export function AdminShell({ children }) {
   }
 
   return (
-    <div className="min-h-screen bg-surface">
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 border-r border-line bg-white p-5 lg:flex lg:flex-col">
+    <div className="min-h-screen bg-[#fafafa]">
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r border-line bg-white p-4 lg:flex lg:flex-col">
         <Link className="focus-ring flex items-center gap-3 rounded-md" href="/admin">
-          <span className="grid size-12 place-items-center rounded-lg border border-line bg-white shadow-xs">
-            <Image alt="" height={38} src="/main-logo-yazisiz.svg" width={38} />
+          <span className="grid size-10 place-items-center rounded-md border border-line bg-white">
+            <Image alt="" height={32} src="/main-logo-yazisiz.svg" width={32} />
           </span>
           <span className="grid min-w-0">
-            <span className="truncate text-sm font-bold text-ink">Yönetim Paneli</span>
+            <span className="truncate text-sm font-semibold text-ink">Yönetim Paneli</span>
             <span className="truncate text-xs text-muted">Tüketici Birliği</span>
           </span>
         </Link>
 
-        <div className="mt-8">{renderNavigation()}</div>
+        <div className="mt-7">{renderNavigation()}</div>
 
         <div className="mt-auto rounded-lg border border-line bg-surface p-4">
           <div className="flex items-center gap-3">
-            <div className="grid size-9 place-items-center rounded-md bg-primary-soft text-primary-dark">
+            <div className="grid size-9 place-items-center rounded-md border border-line bg-white text-muted">
               <Shield aria-hidden="true" className="size-4" />
             </div>
             <div className="min-w-0">
@@ -97,7 +99,7 @@ export function AdminShell({ children }) {
         </div>
       </aside>
 
-      <div className="lg:pl-72">
+      <div className="lg:pl-64">
         <header className="sticky top-0 z-30 border-b border-line bg-white">
           <div className="flex min-h-16 items-center justify-between gap-3 px-4 md:px-8">
             <div className="flex min-w-0 items-center gap-3">
@@ -105,8 +107,8 @@ export function AdminShell({ children }) {
                 <Menu aria-hidden="true" className="size-4" />
               </Button>
               <div className="min-w-0">
-                <p className="text-xs font-bold uppercase tracking-[0.14em] text-primary-dark">Admin</p>
-                <h1 className="truncate text-base font-bold tracking-normal text-ink md:text-lg">İçerik ve başvuru yönetimi</h1>
+                <p className="text-xs font-medium text-muted">Tüketici Birliği</p>
+                <p className="truncate text-base font-semibold tracking-[-0.02em] text-ink md:text-lg">İçerik ve başvuru yönetimi</p>
               </div>
             </div>
             <Button onClick={logout} type="button" variant="outline">
@@ -115,7 +117,7 @@ export function AdminShell({ children }) {
             </Button>
           </div>
         </header>
-        <div className="px-4 py-6 md:px-8">{children}</div>
+        <div className="px-4 py-6 md:px-8 md:py-8">{children}</div>
       </div>
 
       {mobileMenuOpen ? (

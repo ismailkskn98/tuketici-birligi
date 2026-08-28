@@ -131,3 +131,108 @@ export const heroSlideSchema = z.object({
     .min(0, "Sıra 0 veya daha büyük olmalı.")
     .max(999, "Sıra en fazla 999 olabilir.")
 });
+
+const boardShortText = z
+  .string()
+  .trim()
+  .max(160, "Bu alan en fazla 160 karakter olabilir.");
+
+const boardSummary = z
+  .string()
+  .trim()
+  .max(2000, "Özet en fazla 2000 karakter olabilir.");
+
+export const boardMemberSchema = z
+  .object({
+    fullName: z
+      .string()
+      .trim()
+      .min(2, "Ad ve soyad en az 2 karakter olmalı.")
+      .max(160, "Ad ve soyad en fazla 160 karakter olabilir."),
+    roleTr: boardShortText,
+    roleEn: boardShortText,
+    titleTr: boardShortText,
+    titleEn: boardShortText,
+    summaryTr: boardSummary,
+    summaryEn: boardSummary,
+    mediaId: z.number().int().positive().nullable(),
+    categoryId: z.number().int().positive().nullable(),
+    isActive: z.boolean(),
+    sortOrder: z.coerce
+      .number()
+      .int("Görüntülenme sırası tam sayı olmalı.")
+      .min(0, "Görüntülenme sırası 0 veya daha büyük olmalı.")
+      .max(9999, "Görüntülenme sırası en fazla 9999 olabilir."),
+    hasPortrait: z.boolean(),
+  })
+  .superRefine((values, context) => {
+    if (Boolean(values.roleTr) !== Boolean(values.roleEn)) {
+      const missingField = values.roleTr ? "roleEn" : "roleTr";
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Yönetim görevi iki dilde birlikte girilmelidir.",
+        path: [missingField],
+      });
+    }
+
+    if (!values.isActive) return;
+
+    if (!values.titleTr) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Yayın için Türkçe mesleki unvan zorunludur.",
+        path: ["titleTr"],
+      });
+    }
+
+    if (!values.titleEn) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Yayın için İngilizce mesleki unvan zorunludur.",
+        path: ["titleEn"],
+      });
+    }
+
+    if (values.summaryTr.length < 10) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Yayın için Türkçe özet en az 10 karakter olmalı.",
+        path: ["summaryTr"],
+      });
+    }
+
+    if (values.summaryEn.length < 10) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Yayın için İngilizce özet en az 10 karakter olmalı.",
+        path: ["summaryEn"],
+      });
+    }
+
+    if (!values.hasPortrait) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Yayın için 4:5 oranında bir portre seçmelisiniz.",
+        path: ["mediaId"],
+      });
+    }
+  });
+
+export const boardMemberCategorySchema = z.object({
+  titleTr: z
+    .string()
+    .trim()
+    .min(2, "Türkçe kategori adı en az 2 karakter olmalı.")
+    .max(160, "Türkçe kategori adı en fazla 160 karakter olabilir."),
+  titleEn: z
+    .string()
+    .trim()
+    .min(2, "İngilizce kategori adı en az 2 karakter olmalı.")
+    .max(160, "İngilizce kategori adı en fazla 160 karakter olabilir."),
+  sortOrder: z.coerce
+    .number()
+    .int("Görüntülenme sırası tam sayı olmalı.")
+    .min(0, "Görüntülenme sırası 0 veya daha büyük olmalı.")
+    .max(9999, "Görüntülenme sırası en fazla 9999 olabilir."),
+  isActive: z.boolean(),
+});

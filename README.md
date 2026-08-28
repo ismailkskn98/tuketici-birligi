@@ -45,8 +45,8 @@ Frontend production sunucusundan önce `npm run build` çalıştırılmalıdır.
 
 ## Navicat ile Veritabanı Kurulumu
 
-Node migration/seed komutları yerine SQL çalıştırmak isterseniz
-`backend/sql/` klasöründeki dosyaları Navicat'te ad sırasıyla çalıştırın:
+Node migration/seed komutları yerine SQL çalıştırmak isterseniz önce Navicat'te mevcut
+veritabanını seçin, ardından `backend/sql/` klasöründeki dosyaları ad sırasıyla çalıştırın:
 
 1. `2026-08-28_001_schema.sql`
 2. `2026-08-28_002_seed.sql`

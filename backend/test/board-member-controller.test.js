@@ -209,6 +209,47 @@ test("admin update preserves omitted category and changes order and visibility",
   }
 });
 
+test("admin cannot publish a board member while required profile fields are missing", async () => {
+  const originalExecute = pool.execute;
+  let updateAttempted = false;
+
+  pool.execute = async (sql) => {
+    if (sql.includes("FROM board_members")) {
+      return [[{
+        id: 12,
+        full_name: "Pending Member",
+        role_tr: null,
+        role_en: null,
+        title_tr: null,
+        title_en: null,
+        summary_tr: null,
+        summary_en: null,
+        media_id: null,
+        category_id: null,
+        is_active: 0,
+        sort_order: 90,
+      }]];
+    }
+
+    if (sql.includes("UPDATE board_members")) updateAttempted = true;
+    return [[]];
+  };
+
+  try {
+    await assert.rejects(
+      callHandler(boardMemberController.updateBoardMember, {
+        body: { isActive: true },
+        params: { id: "12" },
+        user: { id: 5 },
+      }),
+      (error) => error.status === 422 && error.message === "Yayındaki üyeler için iki dilli mesleki unvan zorunludur.",
+    );
+    assert.equal(updateAttempted, false);
+  } finally {
+    pool.execute = originalExecute;
+  }
+});
+
 test("admin can create an inactive profile while portrait and biography are pending", async () => {
   const originalExecute = pool.execute;
   const calls = [];

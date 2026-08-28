@@ -27,9 +27,6 @@ export function MemberCard({ index, isVisible = true, member, portraitAlt }) {
           className="relative aspect-[4/5] overflow-hidden border-t border-[#dfe3e8] bg-[#f1f4f6]"
           data-board-media
         >
-          <span className="absolute left-3 top-3 z-10 bg-white/90 px-2 py-1 font-mono text-[9px] tracking-[0.12em] text-[#7d8795] backdrop-blur-sm sm:left-4 sm:top-4">
-            {String(index + 1).padStart(2, "0")}
-          </span>
           <div
             className={`absolute ${variant.frame}`}
             data-board-portrait

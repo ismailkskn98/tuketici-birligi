@@ -1,27 +1,27 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, LoaderCircle } from "lucide-react";
 import { useState } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { AdminAlert } from "@/components/admin/common/admin-alert";
 import { AdminFormField } from "@/components/admin/common/admin-form-field";
 import { AdminSelect } from "@/components/admin/common/admin-select";
 import { ImageUploadCropField } from "@/components/admin/common/image-upload-crop-field";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import {
+  ResponsiveModal,
+  ResponsiveModalHeader,
+} from "@/components/ui/responsive-modal";
 import { Textarea } from "@/components/ui/textarea";
 import {
   createBoardMember,
   updateBoardMember,
   uploadAdminMedia,
 } from "@/lib/admin-api";
+import { boardMemberSchema } from "@/lib/form-schemas";
 
 function getDefaultValues(item) {
   return {
@@ -32,66 +32,64 @@ function getDefaultValues(item) {
     titleEn: item?.titleEn || "",
     summaryTr: item?.summaryTr || "",
     summaryEn: item?.summaryEn || "",
-    mediaId: item?.mediaId || 0,
+    mediaId: item?.mediaId || null,
     categoryId: item?.categoryId || null,
     isActive: item?.isActive ?? true,
     sortOrder: item?.sortOrder ?? 0,
+    hasPortrait: Boolean(item?.mediaId && item?.image?.url),
   };
 }
 
 export function BoardMemberFormDialog({ categories, item, onOpenChange, onSaved, open }) {
-  const [values, setValues] = useState(() => getDefaultValues(item));
   const [pendingFile, setPendingFile] = useState(null);
-  const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const isEditMode = Boolean(item?.id);
+  const form = useForm({
+    defaultValues: getDefaultValues(item),
+    resolver: zodResolver(boardMemberSchema),
+  });
+  const {
+    clearErrors,
+    control,
+    handleSubmit,
+    register,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = form;
+  const fullName = useWatch({ control, name: "fullName" });
+  const isActive = useWatch({ control, name: "isActive" });
+  const mediaId = useWatch({ control, name: "mediaId" });
+  const summaryTr = useWatch({ control, name: "summaryTr" }) || "";
+  const summaryEn = useWatch({ control, name: "summaryEn" }) || "";
 
-  function updateField(field, value) {
-    setValues((current) => ({ ...current, [field]: value }));
+  function handlePortraitChange({ file }) {
+    setPendingFile(file || null);
+    setValue("hasPortrait", Boolean(file), { shouldDirty: true, shouldValidate: true });
+    clearErrors("mediaId");
   }
 
-  function validate() {
-    if (!values.fullName.trim()) return "Ad ve soyad alanını doldurmalısınız.";
-    if (Boolean(values.roleTr.trim()) !== Boolean(values.roleEn.trim())) {
-      return "Yönetim görevi Türkçe ve İngilizce birlikte girilmelidir.";
-    }
-    if (values.isActive && (!values.titleTr.trim() || !values.titleEn.trim())) {
-      return "Türkçe ve İngilizce mesleki unvanları doldurmalısınız.";
-    }
-    if (values.isActive && (values.summaryTr.trim().length < 10 || values.summaryEn.trim().length < 10)) {
-      return "Türkçe ve İngilizce özetler en az 10 karakter olmalıdır.";
-    }
-    if (values.isActive && !values.mediaId && !pendingFile) return "4:5 oranında bir portre seçmelisiniz.";
-    return "";
+  function handlePortraitRemove() {
+    setPendingFile(null);
+    setValue("mediaId", null, { shouldDirty: true });
+    setValue("hasPortrait", false, { shouldDirty: true, shouldValidate: true });
   }
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    const validationError = validate();
-
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
-
+  async function onSubmit(values) {
     try {
-      setSubmitting(true);
-      setError("");
-      let mediaId = values.mediaId;
+      setSubmitError("");
+      let nextMediaId = values.mediaId;
 
       if (pendingFile) {
         const formData = new FormData();
         formData.append("file", pendingFile);
         const upload = await uploadAdminMedia(formData);
-        mediaId = upload.id;
+        nextMediaId = upload.id;
       }
 
-      const payload = {
-        ...values,
-        mediaId,
-        categoryId: values.categoryId || null,
-        sortOrder: Number(values.sortOrder || 0),
-      };
+      const payload = { ...values };
+      delete payload.hasPortrait;
+      payload.mediaId = nextMediaId || null;
+      payload.categoryId = values.categoryId || null;
 
       if (isEditMode) {
         await updateBoardMember(item.id, payload);
@@ -101,187 +99,225 @@ export function BoardMemberFormDialog({ categories, item, onOpenChange, onSaved,
 
       await onSaved?.();
       onOpenChange(false);
-    } catch (submitError) {
-      setError(submitError.message || "Yönetim kurulu kaydı kaydedilemedi.");
-    } finally {
-      setSubmitting(false);
+    } catch (error) {
+      setSubmitError(error.message || "Yönetim kurulu kaydı kaydedilemedi.");
     }
   }
 
+  function handleOpenChange(nextOpen) {
+    if (!isSubmitting) onOpenChange(nextOpen);
+  }
+
   return (
-    <Dialog onOpenChange={onOpenChange} open={open}>
-      <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-hidden p-0 sm:max-w-5xl">
-        <form className="flex max-h-[calc(100dvh-2rem)] flex-col" onSubmit={handleSubmit}>
-          <DialogHeader className="border-b border-line bg-white px-5 py-4 sm:px-6">
-            <DialogTitle>
-              {isEditMode ? "Kurul üyesini düzenle" : "Yeni kurul üyesi"}
-            </DialogTitle>
-            <DialogDescription>
-              Public sayfada kullanılacak portreyi ve kısa iki dilli kurumsal profili yönetin.
-            </DialogDescription>
-          </DialogHeader>
+    <ResponsiveModal
+      description="Portreyi, iki dilli profil metnini, kategoriyi ve yayın durumunu yönetin."
+      dialogClassName="max-h-[calc(100dvh-2rem)] overflow-hidden p-0 sm:max-w-6xl"
+      drawerClassName="max-h-[calc(100dvh-0.5rem)] overflow-hidden"
+      onOpenChange={handleOpenChange}
+      open={open}
+      title={isEditMode ? "Kurul üyesini düzenle" : "Yeni kurul üyesi"}
+    >
+      <form className="flex max-h-[calc(100dvh-0.5rem)] min-h-0 flex-col sm:max-h-[calc(100dvh-2rem)]" onSubmit={handleSubmit(onSubmit)}>
+        <ResponsiveModalHeader
+          className="border-b border-line pb-5"
+          description="Portreyi, iki dilli profil metnini, kategoriyi ve yayın durumunu tek kayıtta yönetin."
+          title={isEditMode ? "Kurul üyesini düzenle" : "Yeni kurul üyesi"}
+        />
 
-          <div className="min-h-0 flex-1 overflow-y-auto bg-surface/70">
-            <div className="grid gap-5 px-5 py-5 sm:px-6">
-              <section className="grid gap-4 rounded-lg border border-line bg-white p-4">
-                <ImageUploadCropField
-                  aspect={4 / 5}
-                  aspectClassName="aspect-[4/5]"
-                  cropInstruction="Portreyi 4:5 oranında kadrajlayın. Şeffaf arka plan WebP çıktısında korunur."
-                  helperText="PNG, WEBP, JPG veya AVIF yükleyin. Çıktı en fazla 1080 × 1350 px alfa WebP olur."
-                  initialPreview={item?.image?.url || ""}
-                  label={values.isActive ? "Portre" : "Portre (yayına almadan önce zorunlu)"}
-                  maxOutputHeight={1350}
-                  maxOutputWidth={1080}
-                  onChange={({ file, mediaId }) => {
-                    setPendingFile(file);
-                    updateField("mediaId", mediaId || values.mediaId);
-                  }}
-                  outputExtension="webp"
-                  outputMimeType="image/webp"
-                  outputQuality={0.9}
-                  previewLabel={`${values.fullName || "Kurul üyesi"} portresi`}
-                  value={values.mediaId}
+        <div className="min-h-0 flex-1 overflow-y-auto bg-surface/60">
+          <div className="grid gap-5 px-4 py-5 sm:px-7 sm:py-6">
+            <section className="grid gap-5 rounded-lg border border-line bg-white p-4 sm:p-5">
+              <ImageUploadCropField
+                aspect={4 / 5}
+                aspectClassName="aspect-[4/5]"
+                cropInstruction="Portreyi 4:5 oranında kadrajlayın. Şeffaf arka plan WebP çıktısında korunur."
+                error={errors.mediaId?.message}
+                helperText="PNG, WEBP, JPG veya AVIF yükleyin. Çıktı en fazla 1080 × 1350 px WebP olur."
+                initialPreview={item?.image?.url || ""}
+                label={isActive ? "Portre" : "Portre (yayına almadan önce zorunlu)"}
+                maxOutputHeight={1350}
+                maxOutputWidth={1080}
+                onChange={handlePortraitChange}
+                onRemove={handlePortraitRemove}
+                outputExtension="webp"
+                outputMimeType="image/webp"
+                outputQuality={0.9}
+                previewLabel={`${fullName || "Kurul üyesi"} portresi`}
+                value={mediaId}
+              />
+
+              <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_12rem]">
+                <AdminFormField error={errors.fullName?.message} label="Ad ve soyad">
+                  <Input
+                    aria-invalid={Boolean(errors.fullName)}
+                    autoComplete="name"
+                    maxLength={160}
+                    placeholder="Ad Soyad"
+                    {...register("fullName")}
+                  />
+                </AdminFormField>
+                <AdminFormField
+                  error={errors.sortOrder?.message}
+                  hint="Küçük değer önce gösterilir."
+                  label="Görüntülenme sırası"
+                >
+                  <Input
+                    aria-invalid={Boolean(errors.sortOrder)}
+                    inputMode="numeric"
+                    max="9999"
+                    min="0"
+                    type="number"
+                    {...register("sortOrder")}
+                  />
+                </AdminFormField>
+              </div>
+
+              <AdminFormField
+                error={errors.categoryId?.message}
+                hint="Üye public sayfada seçilen kurul başlığı altında yer alır."
+                label="Kategori"
+              >
+                <AdminSelect
+                  aria-invalid={Boolean(errors.categoryId)}
+                  options={categories.map((category) => ({
+                    label: `${category.titleTr}${category.isActive ? "" : " (pasif)"}`,
+                    value: String(category.id),
+                  }))}
+                  placeholder="Genel kurul üyeleri"
+                  {...register("categoryId", {
+                    setValueAs: (value) => (value ? Number(value) : null),
+                  })}
                 />
+              </AdminFormField>
+            </section>
 
-                <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_180px]">
-                  <AdminFormField label="Ad ve soyad">
-                    <Input
-                      maxLength={160}
-                      onChange={(event) => updateField("fullName", event.target.value)}
-                      placeholder="Ad Soyad"
-                      value={values.fullName}
-                    />
-                  </AdminFormField>
-                  <AdminFormField hint="Küçük sayı önce görünür." label="Sıra">
-                    <Input
-                      max="9999"
-                      min="0"
-                      onChange={(event) => updateField("sortOrder", event.target.value)}
-                      type="number"
-                      value={values.sortOrder}
-                    />
-                  </AdminFormField>
+            <div className="grid gap-5 lg:grid-cols-2">
+              <section className="grid content-start gap-4 rounded-lg border border-line bg-white p-4 sm:p-5">
+                <div className="border-b border-line pb-3">
+                  <p className="text-sm font-semibold text-ink">Türkçe profil</p>
+                  <p className="mt-1 text-xs leading-5 text-muted">Türkçe public sayfada gösterilir.</p>
                 </div>
-
-                <AdminFormField hint="Public sayfada üyeler bu başlık altında gruplanır." label="Kategori">
-                  <AdminSelect
-                    onChange={(event) => updateField("categoryId", event.target.value ? Number(event.target.value) : null)}
-                    options={categories.map((category) => ({
-                      label: `${category.titleTr}${category.isActive ? "" : " (pasif)"}`,
-                      value: String(category.id),
-                    }))}
-                    placeholder="Genel kurul üyeleri"
-                    value={values.categoryId ? String(values.categoryId) : ""}
+                <AdminFormField error={errors.titleTr?.message} label="Mesleki unvan">
+                  <Input
+                    aria-invalid={Boolean(errors.titleTr)}
+                    maxLength={160}
+                    placeholder="Örn. Avukat"
+                    {...register("titleTr")}
+                  />
+                </AdminFormField>
+                <AdminFormField
+                  error={errors.roleTr?.message}
+                  hint="Örn. Geçici Başkan Yardımcısı"
+                  label="Yönetim görevi"
+                >
+                  <Input
+                    aria-invalid={Boolean(errors.roleTr)}
+                    maxLength={160}
+                    placeholder="Varsa resmî görev unvanı"
+                    {...register("roleTr")}
+                  />
+                </AdminFormField>
+                <AdminFormField
+                  error={errors.summaryTr?.message}
+                  hint={`${summaryTr.length}/2000 karakter`}
+                  label="Kısa özet"
+                >
+                  <Textarea
+                    aria-invalid={Boolean(errors.summaryTr)}
+                    className="min-h-36 resize-y"
+                    maxLength={2000}
+                    placeholder="Kısa, doğrulanmış ve kurumsal bir özgeçmiş özeti"
+                    {...register("summaryTr")}
                   />
                 </AdminFormField>
               </section>
 
-              <div className="grid gap-5 lg:grid-cols-2">
-                <section className="grid gap-4 rounded-lg border border-line bg-white p-4">
-                  <div>
-                    <p className="text-sm font-bold text-ink">Türkçe profil</p>
-                    <p className="mt-1 text-xs leading-5 text-muted">Public Türkçe sayfada gösterilir.</p>
-                  </div>
-                  <AdminFormField label="Mesleki unvan">
-                    <Input
-                      maxLength={160}
-                      onChange={(event) => updateField("titleTr", event.target.value)}
-                      placeholder="Örn. Avukat"
-                      value={values.titleTr}
-                    />
-                  </AdminFormField>
-                  <AdminFormField hint="Örn. Geçici Başkan Yardımcısı" label="Yönetim görevi">
-                    <Input
-                      maxLength={160}
-                      onChange={(event) => updateField("roleTr", event.target.value)}
-                      placeholder="Varsa resmî görev unvanı"
-                      value={values.roleTr}
-                    />
-                  </AdminFormField>
-                  <AdminFormField hint={`${values.summaryTr.length}/2000 karakter`} label="Kısa özet">
-                    <Textarea
-                      className="min-h-36"
-                      maxLength={2000}
-                      onChange={(event) => updateField("summaryTr", event.target.value)}
-                      placeholder="Kısa, doğrulanmış ve kurumsal bir özgeçmiş özeti"
-                      value={values.summaryTr}
-                    />
-                  </AdminFormField>
-                </section>
-
-                <section className="grid gap-4 rounded-lg border border-line bg-white p-4">
-                  <div>
-                    <p className="text-sm font-bold text-ink">İngilizce profil</p>
-                    <p className="mt-1 text-xs leading-5 text-muted">Public İngilizce sayfada gösterilir.</p>
-                  </div>
-                  <AdminFormField label="Professional title">
-                    <Input
-                      maxLength={160}
-                      onChange={(event) => updateField("titleEn", event.target.value)}
-                      placeholder="E.g. Attorney"
-                      value={values.titleEn}
-                    />
-                  </AdminFormField>
-                  <AdminFormField hint="E.g. Interim Vice Chair" label="Board role">
-                    <Input
-                      maxLength={160}
-                      onChange={(event) => updateField("roleEn", event.target.value)}
-                      placeholder="Official role, if applicable"
-                      value={values.roleEn}
-                    />
-                  </AdminFormField>
-                  <AdminFormField hint={`${values.summaryEn.length}/2000 characters`} label="Short summary">
-                    <Textarea
-                      className="min-h-36"
-                      maxLength={2000}
-                      onChange={(event) => updateField("summaryEn", event.target.value)}
-                      placeholder="A concise, verified institutional profile"
-                      value={values.summaryEn}
-                    />
-                  </AdminFormField>
-                </section>
-              </div>
-
-              <section className="rounded-lg border border-line bg-white p-4">
-                <label className="flex items-start gap-3" htmlFor="board-member-active">
-                  <Checkbox
-                    checked={values.isActive}
-                    id="board-member-active"
-                    onCheckedChange={(checked) => updateField("isActive", checked === true)}
+              <section className="grid content-start gap-4 rounded-lg border border-line bg-white p-4 sm:p-5">
+                <div className="border-b border-line pb-3">
+                  <p className="text-sm font-semibold text-ink">İngilizce profil</p>
+                  <p className="mt-1 text-xs leading-5 text-muted">İngilizce public sayfada gösterilir.</p>
+                </div>
+                <AdminFormField error={errors.titleEn?.message} label="Professional title">
+                  <Input
+                    aria-invalid={Boolean(errors.titleEn)}
+                    maxLength={160}
+                    placeholder="E.g. Attorney"
+                    {...register("titleEn")}
                   />
-                  <span className="grid gap-1">
-                    <span className="text-sm font-semibold text-ink">Public sayfada yayınla</span>
-                    <span className="text-xs leading-5 text-muted">
-                      Pasif kayıtlar admin panelinde korunur, public API ve sayfada gösterilmez.
-                    </span>
-                  </span>
-                </label>
+                </AdminFormField>
+                <AdminFormField
+                  error={errors.roleEn?.message}
+                  hint="E.g. Interim Vice Chair"
+                  label="Board role"
+                >
+                  <Input
+                    aria-invalid={Boolean(errors.roleEn)}
+                    maxLength={160}
+                    placeholder="Official role, if applicable"
+                    {...register("roleEn")}
+                  />
+                </AdminFormField>
+                <AdminFormField
+                  error={errors.summaryEn?.message}
+                  hint={`${summaryEn.length}/2000 characters`}
+                  label="Short summary"
+                >
+                  <Textarea
+                    aria-invalid={Boolean(errors.summaryEn)}
+                    className="min-h-36 resize-y"
+                    maxLength={2000}
+                    placeholder="A concise, verified institutional profile"
+                    {...register("summaryEn")}
+                  />
+                </AdminFormField>
               </section>
-
-              {error ? (
-                <AdminAlert icon={AlertCircle} title="Kayıt kaydedilemedi" variant="destructive">
-                  {error}
-                </AdminAlert>
-              ) : null}
             </div>
-          </div>
 
-          <div className="mt-auto flex flex-col gap-3 border-t border-line bg-white px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-            <p className="text-sm leading-6 text-muted">
-              Eksik bilgilerle kayıt oluşturabilirsiniz; public yayın için portre ve iki dilli profil zorunludur.
-            </p>
-            <Button className="w-full shrink-0 sm:w-auto" disabled={submitting} type="submit">
-              {submitting ? <LoaderCircle aria-hidden="true" className="size-4 animate-spin" /> : null}
-              {submitting
-                ? "Kaydediliyor"
-                : isEditMode
-                  ? "Değişiklikleri kaydet"
-                  : "Kurul üyesi oluştur"}
+            <section className="rounded-lg border border-line bg-white p-4 sm:p-5">
+              <Controller
+                control={control}
+                name="isActive"
+                render={({ field }) => (
+                  <label className="flex cursor-pointer items-start gap-3" htmlFor="board-member-active">
+                    <Checkbox
+                      checked={field.value}
+                      id="board-member-active"
+                      onCheckedChange={(checked) => field.onChange(checked === true)}
+                    />
+                    <span className="grid gap-1">
+                      <span className="text-sm font-semibold text-ink">Public sayfada yayınla</span>
+                      <span className="text-xs leading-5 text-muted">
+                        Kapalı kayıtlar admin panelinde korunur, public API ve sayfada gösterilmez.
+                      </span>
+                    </span>
+                  </label>
+                )}
+              />
+            </section>
+
+            {submitError ? (
+              <AdminAlert icon={AlertCircle} title="Kayıt kaydedilemedi" variant="destructive">
+                {submitError}
+              </AdminAlert>
+            ) : null}
+          </div>
+        </div>
+
+        <div className="mt-auto flex flex-col-reverse gap-3 border-t border-line bg-white px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-7">
+          <p className="text-xs leading-5 text-muted sm:max-w-xl">
+            Eksik profili pasif kaydedebilirsiniz. Yayın için portre ve iki dilli profil zorunludur.
+          </p>
+          <div className="flex shrink-0 gap-2">
+            <Button className="flex-1 sm:flex-none" disabled={isSubmitting} onClick={() => handleOpenChange(false)} variant="outline">
+              Vazgeç
+            </Button>
+            <Button className="flex-1 sm:flex-none" disabled={isSubmitting} type="submit">
+              {isSubmitting ? <LoaderCircle aria-hidden="true" className="size-4 animate-spin" /> : null}
+              {isSubmitting ? "Kaydediliyor" : isEditMode ? "Değişiklikleri kaydet" : "Üye ekle"}
             </Button>
           </div>
-        </form>
-      </DialogContent>
-    </Dialog>
+        </div>
+      </form>
+    </ResponsiveModal>
   );
 }

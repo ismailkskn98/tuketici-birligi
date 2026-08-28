@@ -335,9 +335,18 @@ const boardMemberCategories = [
     sortOrder: 10,
     isActive: true,
   },
+  {
+    key: "founding-members",
+    titleTr: "Kurucu Üyeler",
+    titleEn: "Founding Members",
+    slug: "kurucu-uyeler",
+    sortOrder: 20,
+    isActive: true,
+  },
 ];
 
 const boardMemberSeedVersion = "board-members-2026-08-28-company-sources-v1";
+const boardMemberCategoryCorrectionVersion = "board-members-2026-08-28-founding-category-v1";
 
 const generalMemberOrder = new Map([
   ["Alpay Korkmaz", 10],
@@ -404,7 +413,7 @@ const boardMembers = [
         ...member,
         roleTr: "Kurucu Üye",
         roleEn: "Founding Member",
-        categoryKey: "interim-board",
+        categoryKey: "founding-members",
         isActive: true,
         sortOrder: 50,
       };
@@ -738,6 +747,22 @@ async function seedNewBoardMemberSources({ categoryIds, createdBy }) {
   );
 }
 
+async function correctFoundingMemberCategory(categoryIds) {
+  const interimCategoryId = categoryIds.get("interim-board");
+  const foundingCategoryId = categoryIds.get("founding-members");
+
+  if (!interimCategoryId || !foundingCategoryId) return;
+
+  await pool.execute(
+    `UPDATE board_members
+     SET category_id = ?
+     WHERE full_name = 'Uğuralp Coşkun'
+       AND role_tr = 'Kurucu Üye'
+       AND category_id = ?`,
+    [foundingCategoryId, interimCategoryId],
+  );
+}
+
 async function hasSeedVersion(versionKey) {
   const [rows] = await pool.execute(
     `SELECT version_key
@@ -769,6 +794,7 @@ async function seedBoardMembers() {
 
   const categoryResult = await seedBoardMemberCategories();
   const isCompanySourceSeeded = await hasSeedVersion(boardMemberSeedVersion);
+  const isCategoryCorrectionSeeded = await hasSeedVersion(boardMemberCategoryCorrectionVersion);
 
   const [adminRows] = await pool.execute(
     `SELECT id
@@ -787,6 +813,10 @@ async function seedBoardMembers() {
       });
       await markSeedVersion(boardMemberSeedVersion);
     }
+    if (!isCategoryCorrectionSeeded) {
+      await correctFoundingMemberCategory(categoryResult.categoryIds);
+      await markSeedVersion(boardMemberCategoryCorrectionVersion);
+    }
     return;
   }
 
@@ -798,6 +828,7 @@ async function seedBoardMembers() {
   }
 
   await markSeedVersion(boardMemberSeedVersion);
+  await markSeedVersion(boardMemberCategoryCorrectionVersion);
 }
 
 async function seed() {

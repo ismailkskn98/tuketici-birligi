@@ -91,9 +91,40 @@ test("board seed leaves existing admin-managed records untouched", async () => {
 
   try {
     await seed.seedBoardMembers();
-    assert.equal(statements.length, 4);
     assert.ok(statements.every((sql) => !sql.includes("INSERT INTO board_members")));
     assert.ok(statements.every((sql) => !sql.includes("UPDATE board_members")));
+  } finally {
+    pool.execute = originalExecute;
+  }
+});
+
+test("board seed moves only the founding member out of the interim category once", async () => {
+  const originalExecute = pool.execute;
+  const updates = [];
+
+  pool.execute = async (sql, params = []) => {
+    if (sql.includes("FROM board_members")) return [[{ id: 42 }]];
+    if (sql.includes("FROM board_member_categories")) {
+      return [[{ id: params[0] === "kurucu-uyeler" ? 9 : 8 }]];
+    }
+    if (sql.includes("FROM seed_versions")) {
+      return [params[0].includes("company-sources") ? [{ version_key: params[0] }] : []];
+    }
+    if (sql.includes("FROM admin_users")) return [[{ id: 1 }]];
+    if (sql.includes("UPDATE board_members")) {
+      updates.push({ sql, params });
+      return [{ affectedRows: 1 }];
+    }
+    return [[]];
+  };
+
+  try {
+    await seed.seedBoardMembers();
+    assert.equal(updates.length, 1);
+    assert.deepEqual(updates[0].params, [9, 8]);
+    assert.match(updates[0].sql, /full_name = 'Uğuralp Coşkun'/);
+    assert.match(updates[0].sql, /role_tr = 'Kurucu Üye'/);
+    assert.match(updates[0].sql, /category_id = \?/);
   } finally {
     pool.execute = originalExecute;
   }

@@ -5,6 +5,7 @@ import {
   getFallbackHeroSlides,
   getFallbackProvinceMap
 } from "./fallback-data";
+import { getFallbackBoardMembers } from "./board-data";
 
 const apiBaseUrl =
   process.env.API_BASE_URL ||
@@ -74,7 +75,7 @@ export async function getProvinceMap(locale = "tr") {
 
 export async function getBoardMembers(locale = "tr") {
   const data = await request(`/api/public/board-members?locale=${locale}`);
-  return data?.items || [];
+  return Array.isArray(data?.items) ? data.items : getFallbackBoardMembers(locale);
 }
 
 export function getClientApiBaseUrl() {

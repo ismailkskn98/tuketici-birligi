@@ -2,17 +2,14 @@ const portraitVariants = [
   {
     frame: "inset-x-0 -inset-y-[5%]",
     image: "object-cover",
-    depth: "3.5",
   },
   {
     frame: "inset-x-[7%] -bottom-[5%] top-[1%]",
     image: "object-cover",
-    depth: "5",
   },
   {
     frame: "inset-x-[4%] -bottom-[5%] top-[6%]",
     image: "object-contain object-bottom",
-    depth: "4.25",
   },
 ];
 
@@ -27,11 +24,7 @@ export function MemberCard({ index, isVisible = true, member, portraitAlt }) {
           className="relative aspect-[4/5] overflow-hidden border-t border-[#dfe3e8] bg-[#f1f4f6]"
           data-board-media
         >
-          <div
-            className={`absolute ${variant.frame}`}
-            data-board-portrait
-            data-depth={variant.depth}
-          >
+          <div className={`absolute ${variant.frame}`}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               alt={portraitAlt}

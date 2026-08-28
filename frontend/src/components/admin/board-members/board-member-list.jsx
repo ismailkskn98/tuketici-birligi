@@ -1,25 +1,10 @@
 "use client";
 
-import {
-  Edit3,
-  Eye,
-  EyeOff,
-  LoaderCircle,
-  Trash2,
-  UserRound,
-  UsersRound,
-} from "lucide-react";
+import { Edit3, Eye, EyeOff, LoaderCircle, Trash2, UserRound, UsersRound } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/common/admin-empty-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 function StatusBadge({ isActive, isComplete }) {
   if (!isComplete) {
@@ -44,12 +29,7 @@ function Portrait({ item, className }) {
     <div className={`grid place-items-center overflow-hidden rounded-md border border-line bg-surface text-muted ${className || ""}`}>
       {item.image?.url ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img
-          alt={`${item.fullName} portresi`}
-          className="h-full w-full object-cover"
-          loading="lazy"
-          src={item.image.url}
-        />
+        <img alt={`${item.fullName} portresi`} className="h-full w-full object-contain" loading="lazy" src={item.image.url} />
       ) : (
         <UserRound aria-label="Portre bekleniyor" className="size-6" />
       )}
@@ -73,11 +53,7 @@ export function BoardMemberList({ items, onDelete, onEdit, onToggleStatus, updat
   if (!items.length) {
     return (
       <div className="p-4">
-        <AdminEmptyState
-          description="Filtrelere uyan kurul üyesi bulunamadı. Yeni kayıt ekleyebilir veya filtreleri temizleyebilirsiniz."
-          icon={UsersRound}
-          title="Kurul üyesi bulunamadı"
-        />
+        <AdminEmptyState description="Filtrelere uyan kurul üyesi bulunamadı. Yeni kayıt ekleyebilir veya filtreleri temizleyebilirsiniz." icon={UsersRound} title="Kurul üyesi bulunamadı" />
       </div>
     );
   }

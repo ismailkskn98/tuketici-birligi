@@ -140,14 +140,21 @@ const statements = [
     INDEX idx_board_member_category_sort (is_active, sort_order, id)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`,
 
+  `CREATE TABLE IF NOT EXISTS seed_versions (
+    version_key VARCHAR(190) NOT NULL PRIMARY KEY,
+    applied_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`,
+
   `CREATE TABLE IF NOT EXISTS board_members (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     full_name VARCHAR(160) NOT NULL,
-    title_tr VARCHAR(160) NOT NULL,
-    title_en VARCHAR(160) NOT NULL,
-    summary_tr TEXT NOT NULL,
-    summary_en TEXT NOT NULL,
-    media_id BIGINT UNSIGNED NOT NULL,
+    role_tr VARCHAR(160) NULL,
+    role_en VARCHAR(160) NULL,
+    title_tr VARCHAR(160) NULL,
+    title_en VARCHAR(160) NULL,
+    summary_tr TEXT NULL,
+    summary_en TEXT NULL,
+    media_id BIGINT UNSIGNED NULL,
     category_id BIGINT UNSIGNED NULL,
     is_active TINYINT(1) NOT NULL DEFAULT 1,
     sort_order INT NOT NULL DEFAULT 0,
@@ -214,6 +221,24 @@ async function addColumnIfMissing(table, column, definition) {
   if (Number(rows[0]?.total || 0) > 0) return;
 
   await pool.execute(`ALTER TABLE \`${table}\` ADD COLUMN \`${column}\` ${definition}`);
+}
+
+async function makeColumnNullableIfNeeded(table, column, definition) {
+  const [rows] = await pool.execute(
+    `SELECT IS_NULLABLE AS is_nullable
+     FROM information_schema.COLUMNS
+     WHERE TABLE_SCHEMA = DATABASE()
+       AND TABLE_NAME = ?
+       AND COLUMN_NAME = ?
+     LIMIT 1`,
+    [table, column]
+  );
+
+  if (!rows[0] || rows[0].is_nullable === "YES") return;
+
+  await pool.execute(
+    `ALTER TABLE \`${table}\` MODIFY COLUMN \`${column}\` ${definition}`
+  );
 }
 
 async function addUniqueIndexIfMissing(table, indexName, column) {
@@ -331,6 +356,26 @@ async function migrate({ createDatabase = false } = {}) {
     "media_assets",
     "id",
     "RESTRICT"
+  );
+
+  await addColumnIfMissing(
+    "board_members",
+    "role_tr",
+    "VARCHAR(160) NULL AFTER full_name"
+  );
+  await addColumnIfMissing(
+    "board_members",
+    "role_en",
+    "VARCHAR(160) NULL AFTER role_tr"
+  );
+  await makeColumnNullableIfNeeded("board_members", "title_tr", "VARCHAR(160) NULL");
+  await makeColumnNullableIfNeeded("board_members", "title_en", "VARCHAR(160) NULL");
+  await makeColumnNullableIfNeeded("board_members", "summary_tr", "TEXT NULL");
+  await makeColumnNullableIfNeeded("board_members", "summary_en", "TEXT NULL");
+  await makeColumnNullableIfNeeded(
+    "board_members",
+    "media_id",
+    "BIGINT UNSIGNED NULL"
   );
 }
 

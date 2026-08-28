@@ -163,14 +163,22 @@ CREATE TABLE IF NOT EXISTS `board_member_categories` (
   KEY `idx_board_member_category_sort` (`is_active`, `sort_order`, `id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS `seed_versions` (
+  `version_key` VARCHAR(190) NOT NULL,
+  `applied_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`version_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS `board_members` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `full_name` VARCHAR(160) NOT NULL,
-  `title_tr` VARCHAR(160) NOT NULL,
-  `title_en` VARCHAR(160) NOT NULL,
-  `summary_tr` TEXT NOT NULL,
-  `summary_en` TEXT NOT NULL,
-  `media_id` BIGINT UNSIGNED NOT NULL,
+  `role_tr` VARCHAR(160) NULL,
+  `role_en` VARCHAR(160) NULL,
+  `title_tr` VARCHAR(160) NULL,
+  `title_en` VARCHAR(160) NULL,
+  `summary_tr` TEXT NULL,
+  `summary_en` TEXT NULL,
+  `media_id` BIGINT UNSIGNED NULL,
   `category_id` BIGINT UNSIGNED NULL,
   `is_active` TINYINT(1) NOT NULL DEFAULT 1,
   `sort_order` INT NOT NULL DEFAULT 0,

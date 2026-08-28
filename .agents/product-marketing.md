@@ -1,8 +1,8 @@
 # Product Marketing Context
 
 **Belge türü:** Kurumsal mesajlaşma bağlamı (ticari ürün pazarlama dökümanı değil)
-**Document version:** v2
-**Last updated:** 2026-08-26
+**Document version:** v3
+**Last updated:** 2026-08-28
 
 Bu belge, Tüketiciler Birliği’nin web sitesi ve dijital iletişiminde kullanılacak ortak konumlandırma, dil ve dönüşüm çerçevesidir. Kaynaklar: `tüzük28072026.pdf` (TÜKETİCİLER BİRLİĞİ STATÜSÜ), mevcut frontend/backend metinleri ve canlı kullanıcı yolları.
 
@@ -35,11 +35,15 @@ Canlı arayüz ve meta metinler şu an “Tüketici Birliği” / İngilizce “
 
 ### Yönetim Kurulu İçerik İlkesi
 
-Müşteri tarafından 26 Ağustos 2026 tarihinde web yayını için sağlanan yedi kişilik liste alfabetik ve hiyerarşi iddiası taşımayan sırayla şöyledir: Alpay Korkmaz, Hakan Akçam, İsmail Çağlar, Muhammed Emin Yeşil, Murat Kahya, Mustafa Başer ve Uğuralp Coşkun.
+Müşteri tarafından 28 Ağustos 2026 tarihinde iletilen görev dağılımı, ilk genel kurula kadar görevli **Geçici Yönetim Kurulu**nu şöyle belirtir: Hasan Oğuz Altınkaynak (Geçici Yönetim Kurulu Başkanı), Ali Selek (Geçici Başkan Yardımcısı), Hüseyin Taşer (Geçici Sekreter), Mustafa Başer (Geçici Sayman) ve Uğuralp Coşkun (Kurucu Üye). Public sayfada bu görevler mesleki unvanlardan ayrı ve “geçici” niteliği korunarak yayımlanır.
+
+26 Ağustos 2026 tarihinde sağlanan Alpay Korkmaz, Hakan Akçam, İsmail Çağlar, Muhammed Emin Yeşil, Murat Kahya, Mustafa Başer ve Uğuralp Coşkun profilleri korunur. 28 Ağustos kaynağıyla Ali Selek ve İrem Eskici için portre ve CV metni eklenmiştir. İrem Eskici’ye ait CV ve portre mevcut olsa da iletilen geçici görev dağılımında adı bulunmadığı için resmi kurul görevi yazılmaz; görev teyidi gelene kadar genel kurul üyesi grubunda sunulur.
+
+Hasan Oğuz Altınkaynak ve Hüseyin Taşer için görev bilgisi mevcuttur ancak portre ve kısa özgeçmiş kaynağı henüz sağlanmamıştır. Bu kişiler admin/veritabanı tarafında pasif, tamamlanmayı bekleyen kayıt olarak tutulur; public sayfada temsili portre veya eksik profil kartı yayımlanmaz.
 
 Public profilde yalnızca kişinin adı, müşterinin sağladığı mesleki unvan, kısa kurumsal özgeçmiş özeti ve portre yayımlanır. Telefon, e-posta, açık adres, doğum tarihi, medeni durum, aile bilgisi ve parti görevleri yayımlanmaz. Kaynak CV’lerde bulunan bu bilgiler özet metne taşınmaz; kaynak belgeler web tarafından sunulmayan korumalı proje alanında tutulur.
 
-Bu liste, statüdeki ilk genel kurula kadar görevli geçici yönetim kaydıyla aynı şey değildir. Resmi görev dönemi, kurul içi unvanlar ve ilk genel kurul durumu ayrıca doğrulanmalıdır.
+Geçici görev dağılımı, kalıcı veya seçilmiş yönetim dönemi gibi sunulmaz. İlk genel kurulun yapılıp yapılmadığı ve geçici görevlerin sona erip ermediği ayrıca doğrulanmalıdır.
 
 ---
 
@@ -363,13 +367,16 @@ SSS, başvuru rehberi, tüketici haritası, KVKK / aydınlatma / gizlilik. Harit
 - Yayın yapma yetkisi  
 - Organlar, denetim, çift imza mali kontrol  
 - Sivil toplum mevzuatı kapsamında incelenmiş statü  
+- İlk genel kurula kadar görevli geçici yönetim listesi ve “geçici” ibaresiyle kurul görevleri
 
 **Kullanılamaz (yok veya yer tutucu)**  
 - Üye / başvuru / başarı sayıları  
 - Logo şeridindeki kamu kurumlarıyla resmi ortaklık iddiası  
 - Seed haber, duyuru ve rehber metinleri  
 - İletişim bilgileri  
-- Kurul listesinin resmi görev dönemi ve kurul içi görev unvanları
+- İlk genel kurulun yapılıp yapılmadığı, geçici görevlerin sona erme tarihi ve kalıcı/seçilmiş kurul dönemi
+- Hasan Oğuz Altınkaynak ile Hüseyin Taşer’in portre ve kısa özgeçmiş bilgileri
+- İrem Eskici’nin kurul içi resmi görevi
 - Yayımlanmış test raporu veya emsal dava özeti  
 
 **Değer temaları**
@@ -411,24 +418,26 @@ Aşağıdakiler tahminle doldurulmadı. İçerik ve hukuk ekibi netleştirmeden 
 
 1. **Kamuya açık ad:** Tüketiciler Birliği mi, Tüketici Birliği mi? İngilizce CONSUMERS ASSOCIATION mı, Consumers Union mı?  
 2. **Kuruluş / tescil tarihi** ve varsa dernek / teşekkül sicil numarası.  
-3. **Yönetim kurulunun resmi statüsü:** Müşterinin sağladığı yedi kişilik liste hangi görev dönemine ait? İlk genel kurul yapıldı mı; kurul içi resmi unvanlar ve geçici kadronun sona erdiği tarih nedir?
-4. **Açık adres, telefon, KEP, e-posta, çalışma saatleri.**  
-5. **Ön başvuru ile üyelik ilişkisi:** Üyeliksiz yardımın sınırı; danışmanlığın üye/üye değil ayrımı; ücret.  
-6. **Ön başvurunun hukuki niteliği:** Yönlendirme mi, vekâlet/dava hazırlığı mı, yalnızca kayıt mı?  
-7. **Şikayet platformunun** sitedeki formla birebir aynı olup olmadığı.  
-8. **Resmi kamu yararı statüsü** var mı? (Perspektif var; unvan tüzükte yok.)  
-9. **Yayımlanmış rapor, test, emsal dava, üye sayısı.**  
-10. **Navigasyon:** Mevzuat, stratejik plan, performans programı, kariyer gerçekten yayımlanacak mı, yoksa kamu kurumu taklidi mi?  
-11. **Anasayfa kamu logoları:** Yönlendirme mi, ortaklık mı? Ortaklık değilse devlet kurumu izlenimi riski.  
-12. **Üyelik aidatı tutarı** ve üyelik başvurusunun sitede açılıp açılmayacağı.  
-13. **Şube / temsilcilik** bugün var mı?  
-14. **KVKK aydınlatma metni** taslak; nihai metin yok.  
-15. **Basın iletişim kişisi** ve medya kiti içeriği.
+3. **Yönetim kurulunun dönem durumu:** İlk genel kurul yapıldı mı; geçici kadronun sona erdiği tarih ve seçilmiş/kalıcı kurul listesi nedir?
+4. **Eksik kurul profilleri:** Hasan Oğuz Altınkaynak ve Hüseyin Taşer’in web yayınına uygun portre, mesleki unvan ve kısa özgeçmiş metni; İrem Eskici’nin varsa kurul içi resmi görevi.
+5. **Açık adres, telefon, KEP, e-posta, çalışma saatleri.**
+6. **Ön başvuru ile üyelik ilişkisi:** Üyeliksiz yardımın sınırı; danışmanlığın üye/üye değil ayrımı; ücret.
+7. **Ön başvurunun hukuki niteliği:** Yönlendirme mi, vekâlet/dava hazırlığı mı, yalnızca kayıt mı?
+8. **Şikayet platformunun** sitedeki formla birebir aynı olup olmadığı.
+9. **Resmi kamu yararı statüsü** var mı? (Perspektif var; unvan tüzükte yok.)
+10. **Yayımlanmış rapor, test, emsal dava, üye sayısı.**
+11. **Navigasyon:** Mevzuat, stratejik plan, performans programı, kariyer gerçekten yayımlanacak mı, yoksa kamu kurumu taklidi mi?
+12. **Anasayfa kamu logoları:** Yönlendirme mi, ortaklık mı? Ortaklık değilse devlet kurumu izlenimi riski.
+13. **Üyelik aidatı tutarı** ve üyelik başvurusunun sitede açılıp açılmayacağı.
+14. **Şube / temsilcilik** bugün var mı?
+15. **KVKK aydınlatma metni** taslak; nihai metin yok.
+16. **Basın iletişim kişisi** ve medya kiti içeriği.
 
 ---
 
 ## Changelog
 
 *Newest first. One line per revision: what changed and why.*
+- v3 (2026-08-28) — Müşterinin ilettiği geçici görev dağılımı, Ali Selek ve İrem Eskici kaynakları, eksik Hasan Oğuz Altınkaynak/Hüseyin Taşer profilleri ve kategorili yayın ilkesi eklendi.
 - v2 (2026-08-26) — Müşteri tarafından sağlanan yedi kişilik yönetim kurulu listesi ve CV özetleri eklendi; kişisel veri yayınlamama ilkesi netleştirildi.
 - v1 (2026-08-17) — Statü ve mevcut site yollarından ilk kurumsal mesajlaşma bağlamı; ticari SaaS kalıpları çıkarılıp doğrulanamayan iddialar ayrı tutuldu.

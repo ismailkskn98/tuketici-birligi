@@ -121,6 +121,30 @@ export function deleteBoardMember(id) {
   });
 }
 
+export function listBoardMemberCategories() {
+  return adminRequest("/api/admin/board-member-categories");
+}
+
+export function createBoardMemberCategory(values) {
+  return adminRequest("/api/admin/board-member-categories", {
+    method: "POST",
+    body: JSON.stringify(values)
+  });
+}
+
+export function updateBoardMemberCategory(id, values) {
+  return adminRequest(`/api/admin/board-member-categories/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(values)
+  });
+}
+
+export function deleteBoardMemberCategory(id) {
+  return adminRequest(`/api/admin/board-member-categories/${id}`, {
+    method: "DELETE"
+  });
+}
+
 export function listProvinceMapEntries({ locale = "tr" } = {}) {
   const params = new URLSearchParams({ locale });
   return adminRequest(`/api/admin/province-map?${params.toString()}`);

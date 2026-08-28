@@ -4,6 +4,7 @@ import { AlertCircle, LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { AdminAlert } from "@/components/admin/common/admin-alert";
 import { AdminFormField } from "@/components/admin/common/admin-form-field";
+import { AdminSelect } from "@/components/admin/common/admin-select";
 import { ImageUploadCropField } from "@/components/admin/common/image-upload-crop-field";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -25,6 +26,8 @@ import {
 function getDefaultValues(item) {
   return {
     fullName: item?.fullName || "",
+    roleTr: item?.roleTr || "",
+    roleEn: item?.roleEn || "",
     titleTr: item?.titleTr || "",
     titleEn: item?.titleEn || "",
     summaryTr: item?.summaryTr || "",
@@ -36,7 +39,7 @@ function getDefaultValues(item) {
   };
 }
 
-export function BoardMemberFormDialog({ item, onOpenChange, onSaved, open }) {
+export function BoardMemberFormDialog({ categories, item, onOpenChange, onSaved, open }) {
   const [values, setValues] = useState(() => getDefaultValues(item));
   const [pendingFile, setPendingFile] = useState(null);
   const [error, setError] = useState("");
@@ -49,13 +52,16 @@ export function BoardMemberFormDialog({ item, onOpenChange, onSaved, open }) {
 
   function validate() {
     if (!values.fullName.trim()) return "Ad ve soyad alanını doldurmalısınız.";
-    if (!values.titleTr.trim() || !values.titleEn.trim()) {
+    if (Boolean(values.roleTr.trim()) !== Boolean(values.roleEn.trim())) {
+      return "Yönetim görevi Türkçe ve İngilizce birlikte girilmelidir.";
+    }
+    if (values.isActive && (!values.titleTr.trim() || !values.titleEn.trim())) {
       return "Türkçe ve İngilizce mesleki unvanları doldurmalısınız.";
     }
-    if (values.summaryTr.trim().length < 10 || values.summaryEn.trim().length < 10) {
+    if (values.isActive && (values.summaryTr.trim().length < 10 || values.summaryEn.trim().length < 10)) {
       return "Türkçe ve İngilizce özetler en az 10 karakter olmalıdır.";
     }
-    if (!values.mediaId && !pendingFile) return "4:5 oranında bir portre seçmelisiniz.";
+    if (values.isActive && !values.mediaId && !pendingFile) return "4:5 oranında bir portre seçmelisiniz.";
     return "";
   }
 
@@ -124,7 +130,7 @@ export function BoardMemberFormDialog({ item, onOpenChange, onSaved, open }) {
                   cropInstruction="Portreyi 4:5 oranında kadrajlayın. Şeffaf arka plan WebP çıktısında korunur."
                   helperText="PNG, WEBP, JPG veya AVIF yükleyin. Çıktı en fazla 1080 × 1350 px alfa WebP olur."
                   initialPreview={item?.image?.url || ""}
-                  label="Portre"
+                  label={values.isActive ? "Portre" : "Portre (yayına almadan önce zorunlu)"}
                   maxOutputHeight={1350}
                   maxOutputWidth={1080}
                   onChange={({ file, mediaId }) => {
@@ -157,6 +163,18 @@ export function BoardMemberFormDialog({ item, onOpenChange, onSaved, open }) {
                     />
                   </AdminFormField>
                 </div>
+
+                <AdminFormField hint="Public sayfada üyeler bu başlık altında gruplanır." label="Kategori">
+                  <AdminSelect
+                    onChange={(event) => updateField("categoryId", event.target.value ? Number(event.target.value) : null)}
+                    options={categories.map((category) => ({
+                      label: `${category.titleTr}${category.isActive ? "" : " (pasif)"}`,
+                      value: String(category.id),
+                    }))}
+                    placeholder="Genel kurul üyeleri"
+                    value={values.categoryId ? String(values.categoryId) : ""}
+                  />
+                </AdminFormField>
               </section>
 
               <div className="grid gap-5 lg:grid-cols-2">
@@ -171,6 +189,14 @@ export function BoardMemberFormDialog({ item, onOpenChange, onSaved, open }) {
                       onChange={(event) => updateField("titleTr", event.target.value)}
                       placeholder="Örn. Avukat"
                       value={values.titleTr}
+                    />
+                  </AdminFormField>
+                  <AdminFormField hint="Örn. Geçici Başkan Yardımcısı" label="Yönetim görevi">
+                    <Input
+                      maxLength={160}
+                      onChange={(event) => updateField("roleTr", event.target.value)}
+                      placeholder="Varsa resmî görev unvanı"
+                      value={values.roleTr}
                     />
                   </AdminFormField>
                   <AdminFormField hint={`${values.summaryTr.length}/2000 karakter`} label="Kısa özet">
@@ -195,6 +221,14 @@ export function BoardMemberFormDialog({ item, onOpenChange, onSaved, open }) {
                       onChange={(event) => updateField("titleEn", event.target.value)}
                       placeholder="E.g. Attorney"
                       value={values.titleEn}
+                    />
+                  </AdminFormField>
+                  <AdminFormField hint="E.g. Interim Vice Chair" label="Board role">
+                    <Input
+                      maxLength={160}
+                      onChange={(event) => updateField("roleEn", event.target.value)}
+                      placeholder="Official role, if applicable"
+                      value={values.roleEn}
                     />
                   </AdminFormField>
                   <AdminFormField hint={`${values.summaryEn.length}/2000 characters`} label="Short summary">
@@ -235,7 +269,7 @@ export function BoardMemberFormDialog({ item, onOpenChange, onSaved, open }) {
 
           <div className="mt-auto flex flex-col gap-3 border-t border-line bg-white px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
             <p className="text-sm leading-6 text-muted">
-              Kategori altyapısı hazırdır; kategori seçimi public tasarıma alınana kadar bu formda gösterilmez.
+              Eksik bilgilerle kayıt oluşturabilirsiniz; public yayın için portre ve iki dilli profil zorunludur.
             </p>
             <Button className="w-full shrink-0 sm:w-auto" disabled={submitting} type="submit">
               {submitting ? <LoaderCircle aria-hidden="true" className="size-4 animate-spin" /> : null}

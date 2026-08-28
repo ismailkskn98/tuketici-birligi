@@ -130,11 +130,13 @@
   "BoardMembers": {
     "eyebrow": "Kurumsal yönetim",
     "title": "Yönetim Kurulu",
-    "titleLineOne": "Yönetim",
-    "titleLineTwo": "Kurulu",
-    "description": "Tüketiciler Birliği Yönetim Kurulu üyelerini ve farklı alanlardan gelen mesleki birikimlerini tanıyın.",
-    "membersTitle": "Kurul üyeleri",
+    "description": "Tüketiciler Birliği'nin yönetim yapısını, resmî görev dağılımını ve farklı uzmanlık alanlarından gelen kurul üyelerini inceleyin.",
+    "categoryIndex": "Kurul yapısı",
+    "categoryNavLabel": "Yönetim kurulu kategorileri",
+    "allMembers": "Tüm Kadro",
+    "generalGroup": "Kurul Üyeleri",
     "memberCount": "{count} kurul üyesi",
+    "groupCount": "{count} üye",
     "portraitAlt": "{name} portresi",
     "empty": "Yönetim kurulu bilgileri güncelleniyor."
   },

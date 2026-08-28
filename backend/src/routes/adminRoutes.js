@@ -29,6 +29,10 @@ router.get("/board-members", boardMemberController.listBoardMembers);
 router.post("/board-members", boardMemberController.createBoardMember);
 router.patch("/board-members/:id", boardMemberController.updateBoardMember);
 router.delete("/board-members/:id", boardMemberController.deleteBoardMember);
+router.get("/board-member-categories", boardMemberController.listBoardMemberCategories);
+router.post("/board-member-categories", boardMemberController.createBoardMemberCategory);
+router.patch("/board-member-categories/:id", boardMemberController.updateBoardMemberCategory);
+router.delete("/board-member-categories/:id", boardMemberController.deleteBoardMemberCategory);
 
 router.get("/province-map", provinceMapController.listProvinceMapEntries);
 router.post("/province-map", provinceMapController.createProvinceMapEntry);

@@ -23,34 +23,44 @@ export function BoardMembersMotion() {
 
       gsap.registerPlugin(ScrollTrigger);
 
+      const refreshDirectory = () => {
+        window.requestAnimationFrame(() => ScrollTrigger.refresh());
+      };
+
+      window.addEventListener("board-directory-change", refreshDirectory);
+
       animationContext = gsap.context(() => {
         const mastheadItems = root.querySelectorAll("[data-board-masthead-item]");
+        const groups = root.querySelectorAll("[data-board-group]");
         const cards = root.querySelectorAll("[data-board-card-reveal]");
 
         gsap.fromTo(
           mastheadItems,
-          { autoAlpha: 0, y: 18 },
+          { autoAlpha: 0, y: 16 },
           {
             autoAlpha: 1,
             clearProps: "opacity,transform,visibility",
-            duration: 0.8,
+            duration: 0.72,
             ease: "power3.out",
-            stagger: 0.09,
+            stagger: 0.08,
           },
         );
 
-        cards.forEach((card) => {
+        groups.forEach((group) => {
+          const groupCards = group.querySelectorAll("[data-board-card-reveal]");
+
           gsap.fromTo(
-            card,
-            { autoAlpha: 0, y: 26 },
+            groupCards,
+            { autoAlpha: 0, y: 22 },
             {
               autoAlpha: 1,
               clearProps: "opacity,transform,visibility",
-              duration: 0.72,
+              duration: 0.68,
               ease: "power3.out",
+              stagger: 0.07,
               scrollTrigger: {
-                trigger: card,
-                start: "top 88%",
+                trigger: group,
+                start: "top 84%",
                 once: true,
               },
             },
@@ -59,53 +69,45 @@ export function BoardMembersMotion() {
 
         motionMediaQuery = gsap.matchMedia();
         motionMediaQuery.add("(min-width: 768px)", () => {
-          cards.forEach((card, index) => {
-            const cardDepth = card.querySelector("[data-board-card-depth]");
+          cards.forEach((card) => {
             const portrait = card.querySelector("[data-board-portrait]");
-            const cardDistance = 8;
-            const portraitDistance = 2.5 + (index % 2) * 0.75;
+            const distance = Number(portrait?.dataset.depth || 4);
 
-            gsap.fromTo(
-              cardDepth,
-              { y: cardDistance },
-              {
-                y: -cardDistance,
-                ease: "none",
-                scrollTrigger: {
-                  trigger: card,
-                  start: "top bottom",
-                  end: "bottom top",
-                  scrub: 0.85,
-                },
-              },
-            );
+            if (!portrait) return;
 
             gsap.fromTo(
               portrait,
-              { yPercent: -portraitDistance },
+              { yPercent: -distance },
               {
-                yPercent: portraitDistance,
+                yPercent: distance,
                 ease: "none",
                 scrollTrigger: {
                   trigger: card,
                   start: "top bottom",
                   end: "bottom top",
-                  scrub: 0.85,
+                  scrub: 0.9,
                 },
               },
             );
           });
-
         });
       }, root);
 
       ScrollTrigger.refresh();
+
+      return () => {
+        window.removeEventListener("board-directory-change", refreshDirectory);
+      };
     }
 
-    void prepareMotion();
+    let removeDirectoryListener;
+    void prepareMotion().then((cleanup) => {
+      removeDirectoryListener = cleanup;
+    });
 
     return () => {
       cancelled = true;
+      removeDirectoryListener?.();
       motionMediaQuery?.revert();
       animationContext?.revert();
     };

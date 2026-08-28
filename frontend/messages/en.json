@@ -130,11 +130,13 @@
   "BoardMembers": {
     "eyebrow": "Institutional governance",
     "title": "Board of Directors",
-    "titleLineOne": "Board of",
-    "titleLineTwo": "Directors",
-    "description": "Meet the members of the Consumers Association Board of Directors and the professional experience they bring from different fields.",
-    "membersTitle": "Board members",
+    "description": "Explore the Consumers Association's governance structure, official responsibilities and board members from different fields of expertise.",
+    "categoryIndex": "Board structure",
+    "categoryNavLabel": "Board of Directors categories",
+    "allMembers": "All Members",
+    "generalGroup": "Board Members",
     "memberCount": "{count} board members",
+    "groupCount": "{count} members",
     "portraitAlt": "Portrait of {name}",
     "empty": "Board of Directors information is being updated."
   },

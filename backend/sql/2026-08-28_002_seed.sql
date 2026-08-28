@@ -317,6 +317,31 @@ WHERE NOT EXISTS (
   WHERE `locale` = 'tr' AND `province_code` = 16 AND `title` = 'Bursa iletişim kanalları duyurusu'
 );
 
+INSERT INTO `board_member_categories`
+  (`title_tr`, `title_en`, `slug`, `sort_order`, `is_active`)
+SELECT 'Geçici Yönetim Kurulu', 'Interim Board of Directors',
+       'gecici-yonetim-kurulu', 10, 1
+FROM DUAL
+WHERE NOT EXISTS (
+  SELECT 1 FROM `board_member_categories` WHERE `slug` = 'gecici-yonetim-kurulu'
+);
+
+INSERT INTO `media_assets`
+  (`file_name`, `original_name`, `mime_type`, `size_bytes`, `storage_driver`, `path`,
+   `public_url`, `alt_text`, `created_by`)
+SELECT 'ali-selek.webp', 'ali-selek.webp', 'image/webp', 187804, 'public',
+       'yonetim-kurulu/ali-selek.webp', '/yonetim-kurulu/ali-selek.webp', 'Ali Selek portresi', @seed_admin_id
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `media_assets` WHERE `public_url` = '/yonetim-kurulu/ali-selek.webp');
+
+INSERT INTO `media_assets`
+  (`file_name`, `original_name`, `mime_type`, `size_bytes`, `storage_driver`, `path`,
+   `public_url`, `alt_text`, `created_by`)
+SELECT 'irem-eskici.webp', 'irem-eskici.webp', 'image/webp', 141630, 'public',
+       'yonetim-kurulu/irem-eskici.webp', '/yonetim-kurulu/irem-eskici.webp', 'İrem Eskici portresi', @seed_admin_id
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `media_assets` WHERE `public_url` = '/yonetim-kurulu/irem-eskici.webp');
+
 INSERT INTO `media_assets`
   (`file_name`, `original_name`, `mime_type`, `size_bytes`, `storage_driver`, `path`,
    `public_url`, `alt_text`, `created_by`)
@@ -328,7 +353,7 @@ WHERE NOT EXISTS (SELECT 1 FROM `media_assets` WHERE `public_url` = '/yonetim-ku
 INSERT INTO `media_assets`
   (`file_name`, `original_name`, `mime_type`, `size_bytes`, `storage_driver`, `path`,
    `public_url`, `alt_text`, `created_by`)
-SELECT 'hakan-akcam.webp', 'hakan-akcam.webp', 'image/webp', 51838, 'public',
+SELECT 'hakan-akcam.webp', 'hakan-akcam.webp', 'image/webp', 67354, 'public',
        'yonetim-kurulu/hakan-akcam.webp', '/yonetim-kurulu/hakan-akcam.webp', 'Hakan Akçam portresi', @seed_admin_id
 FROM DUAL
 WHERE NOT EXISTS (SELECT 1 FROM `media_assets` WHERE `public_url` = '/yonetim-kurulu/hakan-akcam.webp');
@@ -368,7 +393,7 @@ WHERE NOT EXISTS (SELECT 1 FROM `media_assets` WHERE `public_url` = '/yonetim-ku
 INSERT INTO `media_assets`
   (`file_name`, `original_name`, `mime_type`, `size_bytes`, `storage_driver`, `path`,
    `public_url`, `alt_text`, `created_by`)
-SELECT 'uguralp-coskun.webp', 'uguralp-coskun.webp', 'image/webp', 25622, 'public',
+SELECT 'uguralp-coskun.webp', 'uguralp-coskun.webp', 'image/webp', 110392, 'public',
        'yonetim-kurulu/uguralp-coskun.webp', '/yonetim-kurulu/uguralp-coskun.webp', 'Uğuralp Coşkun portresi', @seed_admin_id
 FROM DUAL
 WHERE NOT EXISTS (SELECT 1 FROM `media_assets` WHERE `public_url` = '/yonetim-kurulu/uguralp-coskun.webp');
@@ -390,8 +415,8 @@ INSERT INTO `board_members`
    `category_id`, `is_active`, `sort_order`, `created_by`, `updated_by`)
 SELECT
   'Hakan Akçam', 'Yönetici ve Girişimci', 'Executive and Entrepreneur',
-  'Gayrimenkul, mesleki örgütlenme ve sivil toplum alanlarında yönetim sorumlulukları üstlenen Hakan Akçam, Tüketiciler Birliği Genel Başkan Vekili olarak görev yapmaktadır.',
-  'Hakan Akçam has held leadership responsibilities in real estate, professional organisations and civil society, and serves as Deputy President of the Consumers Association.',
+  'Gayrimenkul, mesleki örgütlenme ve sivil toplum alanlarında yönetim sorumlulukları üstlenen Hakan Akçam, bu alanlarda çalışmalarını sürdürmektedir.',
+  'Hakan Akçam has held leadership responsibilities in real estate, professional organisations and civil society, and continues his work across these fields.',
   (SELECT `id` FROM `media_assets` WHERE `public_url` = '/yonetim-kurulu/hakan-akcam.webp' ORDER BY `id` LIMIT 1),
   NULL, 1, 20, @seed_admin_id, @seed_admin_id
 FROM DUAL
@@ -456,5 +481,93 @@ SELECT
   NULL, 1, 70, @seed_admin_id, @seed_admin_id
 FROM DUAL
 WHERE NOT EXISTS (SELECT 1 FROM `board_members` WHERE `full_name` = 'Uğuralp Coşkun');
+
+SET @board_member_source_seed = 'board-members-2026-08-28-company-sources-v1';
+SET @board_member_source_pending = NOT EXISTS (
+  SELECT 1 FROM `seed_versions` WHERE `version_key` = @board_member_source_seed
+);
+
+INSERT INTO `board_members`
+  (`full_name`, `role_tr`, `role_en`, `title_tr`, `title_en`, `summary_tr`, `summary_en`,
+   `media_id`, `category_id`, `is_active`, `sort_order`, `created_by`, `updated_by`)
+SELECT
+  'Hasan Oğuz Altınkaynak', 'Geçici Yönetim Kurulu Başkanı', 'Interim Chair of the Board',
+  NULL, NULL, NULL, NULL, NULL,
+  (SELECT `id` FROM `board_member_categories` WHERE `slug` = 'gecici-yonetim-kurulu' LIMIT 1),
+  0, 10, @seed_admin_id, @seed_admin_id
+FROM DUAL
+WHERE @board_member_source_pending = 1
+  AND NOT EXISTS (SELECT 1 FROM `board_members` WHERE `full_name` = 'Hasan Oğuz Altınkaynak');
+
+INSERT INTO `board_members`
+  (`full_name`, `role_tr`, `role_en`, `title_tr`, `title_en`, `summary_tr`, `summary_en`,
+   `media_id`, `category_id`, `is_active`, `sort_order`, `created_by`, `updated_by`)
+SELECT
+  'Ali Selek', 'Geçici Başkan Yardımcısı', 'Interim Vice Chair',
+  'Avukat ve Arabulucu', 'Attorney and Mediator',
+  'Ankara Üniversitesi Hukuk Fakültesi mezunu olan Ali Selek; hâkimlik deneyiminin ardından avukatlık, uzman arabuluculuk ve bilirkişilik alanlarında çalışmakta, tahkim ve arabuluculuk eğitimleri vermektedir.',
+  'Ali Selek graduated from Ankara University Faculty of Law. Following his judicial career, he works in legal practice, specialist mediation and expert witness services, and provides arbitration and mediation training.',
+  (SELECT `id` FROM `media_assets` WHERE `public_url` = '/yonetim-kurulu/ali-selek.webp' ORDER BY `id` LIMIT 1),
+  (SELECT `id` FROM `board_member_categories` WHERE `slug` = 'gecici-yonetim-kurulu' LIMIT 1),
+  1, 20, @seed_admin_id, @seed_admin_id
+FROM DUAL
+WHERE @board_member_source_pending = 1
+  AND NOT EXISTS (SELECT 1 FROM `board_members` WHERE `full_name` = 'Ali Selek');
+
+INSERT INTO `board_members`
+  (`full_name`, `role_tr`, `role_en`, `title_tr`, `title_en`, `summary_tr`, `summary_en`,
+   `media_id`, `category_id`, `is_active`, `sort_order`, `created_by`, `updated_by`)
+SELECT
+  'Hüseyin Taşer', 'Geçici Sekreter', 'Interim Secretary',
+  NULL, NULL, NULL, NULL, NULL,
+  (SELECT `id` FROM `board_member_categories` WHERE `slug` = 'gecici-yonetim-kurulu' LIMIT 1),
+  0, 30, @seed_admin_id, @seed_admin_id
+FROM DUAL
+WHERE @board_member_source_pending = 1
+  AND NOT EXISTS (SELECT 1 FROM `board_members` WHERE `full_name` = 'Hüseyin Taşer');
+
+INSERT INTO `board_members`
+  (`full_name`, `role_tr`, `role_en`, `title_tr`, `title_en`, `summary_tr`, `summary_en`,
+   `media_id`, `category_id`, `is_active`, `sort_order`, `created_by`, `updated_by`)
+SELECT
+  'İrem Eskici', NULL, NULL, 'Avukat', 'Attorney',
+  'Antalya Bilim Üniversitesi Hukuk Fakültesi mezunu olan İrem Eskici, Ankara’da avukatlık yapmakta; kamu hukuku alanında yüksek lisans ve moleküler biyoloji ve genetik alanında lisans eğitimine devam etmektedir.',
+  'İrem Eskici graduated from Antalya Bilim University Faculty of Law and practices law in Ankara. She continues her graduate studies in public law and undergraduate studies in molecular biology and genetics.',
+  (SELECT `id` FROM `media_assets` WHERE `public_url` = '/yonetim-kurulu/irem-eskici.webp' ORDER BY `id` LIMIT 1),
+  NULL, 1, 30, @seed_admin_id, @seed_admin_id
+FROM DUAL
+WHERE @board_member_source_pending = 1
+  AND NOT EXISTS (SELECT 1 FROM `board_members` WHERE `full_name` = 'İrem Eskici');
+
+UPDATE `board_members`
+SET `role_tr` = COALESCE(`role_tr`, 'Geçici Sayman'),
+    `role_en` = COALESCE(`role_en`, 'Interim Treasurer'),
+    `category_id` = COALESCE(
+      `category_id`,
+      (SELECT `id` FROM `board_member_categories` WHERE `slug` = 'gecici-yonetim-kurulu' LIMIT 1)
+    )
+WHERE @board_member_source_pending = 1 AND `full_name` = 'Mustafa Başer';
+
+UPDATE `board_members`
+SET `role_tr` = COALESCE(`role_tr`, 'Kurucu Üye'),
+    `role_en` = COALESCE(`role_en`, 'Founding Member'),
+    `category_id` = COALESCE(
+      `category_id`,
+      (SELECT `id` FROM `board_member_categories` WHERE `slug` = 'gecici-yonetim-kurulu' LIMIT 1)
+    )
+WHERE @board_member_source_pending = 1 AND `full_name` = 'Uğuralp Coşkun';
+
+UPDATE `board_members`
+SET `summary_tr` = 'Gayrimenkul, mesleki örgütlenme ve sivil toplum alanlarında yönetim sorumlulukları üstlenen Hakan Akçam, bu alanlarda çalışmalarını sürdürmektedir.',
+    `summary_en` = 'Hakan Akçam has held leadership responsibilities in real estate, professional organisations and civil society, and continues his work across these fields.'
+WHERE @board_member_source_pending = 1
+  AND `full_name` = 'Hakan Akçam'
+  AND `summary_tr` = 'Gayrimenkul, mesleki örgütlenme ve sivil toplum alanlarında yönetim sorumlulukları üstlenen Hakan Akçam, Tüketiciler Birliği Genel Başkan Vekili olarak görev yapmaktadır.';
+
+INSERT INTO `seed_versions` (`version_key`)
+SELECT @board_member_source_seed
+FROM DUAL
+WHERE @board_member_source_pending = 1
+ON DUPLICATE KEY UPDATE `version_key` = VALUES(`version_key`);
 
 COMMIT;

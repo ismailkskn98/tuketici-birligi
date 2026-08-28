@@ -260,7 +260,7 @@ const provinceMapEntries = [
   },
 ];
 
-const boardMembers = [
+const legacyBoardMembers = [
   {
     fullName: "Alpay Korkmaz",
     titleTr: "Avukat",
@@ -323,6 +323,123 @@ const boardMembers = [
     summaryEn: "Uğuralp Coşkun completed his civil engineering education at London South Bank University and works in construction and real estate, contributing to the development of professional standards.",
     imageFileName: "uguralp-coskun.webp",
     sortOrder: 70,
+  },
+];
+
+const boardMemberCategories = [
+  {
+    key: "interim-board",
+    titleTr: "Geçici Yönetim Kurulu",
+    titleEn: "Interim Board of Directors",
+    slug: "gecici-yonetim-kurulu",
+    sortOrder: 10,
+    isActive: true,
+  },
+];
+
+const boardMemberSeedVersion = "board-members-2026-08-28-company-sources-v1";
+
+const generalMemberOrder = new Map([
+  ["Alpay Korkmaz", 10],
+  ["Hakan Akçam", 20],
+  ["İsmail Çağlar", 40],
+  ["Muhammed Emin Yeşil", 50],
+  ["Murat Kahya", 60],
+]);
+
+const boardMembers = [
+  {
+    fullName: "Hasan Oğuz Altınkaynak",
+    roleTr: "Geçici Yönetim Kurulu Başkanı",
+    roleEn: "Interim Chair of the Board",
+    titleTr: null,
+    titleEn: null,
+    summaryTr: null,
+    summaryEn: null,
+    imageFileName: null,
+    categoryKey: "interim-board",
+    isActive: false,
+    sortOrder: 10,
+  },
+  {
+    fullName: "Ali Selek",
+    roleTr: "Geçici Başkan Yardımcısı",
+    roleEn: "Interim Vice Chair",
+    titleTr: "Avukat ve Arabulucu",
+    titleEn: "Attorney and Mediator",
+    summaryTr: "Ankara Üniversitesi Hukuk Fakültesi mezunu olan Ali Selek; hâkimlik deneyiminin ardından avukatlık, uzman arabuluculuk ve bilirkişilik alanlarında çalışmakta, tahkim ve arabuluculuk eğitimleri vermektedir.",
+    summaryEn: "Ali Selek graduated from Ankara University Faculty of Law. Following his judicial career, he works in legal practice, specialist mediation and expert witness services, and provides arbitration and mediation training.",
+    imageFileName: "ali-selek.webp",
+    categoryKey: "interim-board",
+    isActive: true,
+    sortOrder: 20,
+  },
+  {
+    fullName: "Hüseyin Taşer",
+    roleTr: "Geçici Sekreter",
+    roleEn: "Interim Secretary",
+    titleTr: null,
+    titleEn: null,
+    summaryTr: null,
+    summaryEn: null,
+    imageFileName: null,
+    categoryKey: "interim-board",
+    isActive: false,
+    sortOrder: 30,
+  },
+  ...legacyBoardMembers.map((member) => {
+    if (member.fullName === "Mustafa Başer") {
+      return {
+        ...member,
+        roleTr: "Geçici Sayman",
+        roleEn: "Interim Treasurer",
+        categoryKey: "interim-board",
+        isActive: true,
+        sortOrder: 40,
+      };
+    }
+
+    if (member.fullName === "Uğuralp Coşkun") {
+      return {
+        ...member,
+        roleTr: "Kurucu Üye",
+        roleEn: "Founding Member",
+        categoryKey: "interim-board",
+        isActive: true,
+        sortOrder: 50,
+      };
+    }
+
+    if (member.fullName === "Hakan Akçam") {
+      return {
+        ...member,
+        summaryTr: "Gayrimenkul, mesleki örgütlenme ve sivil toplum alanlarında yönetim sorumlulukları üstlenen Hakan Akçam, bu alanlarda çalışmalarını sürdürmektedir.",
+        summaryEn: "Hakan Akçam has held leadership responsibilities in real estate, professional organisations and civil society, and continues his work across these fields.",
+        categoryKey: null,
+        isActive: true,
+        sortOrder: generalMemberOrder.get(member.fullName),
+      };
+    }
+
+    return {
+      ...member,
+      categoryKey: null,
+      isActive: true,
+      sortOrder: generalMemberOrder.get(member.fullName),
+    };
+  }),
+  {
+    fullName: "İrem Eskici",
+    roleTr: null,
+    roleEn: null,
+    titleTr: "Avukat",
+    titleEn: "Attorney",
+    summaryTr: "Antalya Bilim Üniversitesi Hukuk Fakültesi mezunu olan İrem Eskici, Ankara’da avukatlık yapmakta; kamu hukuku alanında yüksek lisans ve moleküler biyoloji ve genetik alanında lisans eğitimine devam etmektedir.",
+    summaryEn: "İrem Eskici graduated from Antalya Bilim University Faculty of Law and practices law in Ankara. She continues her graduate studies in public law and undergraduate studies in molecular biology and genetics.",
+    imageFileName: "irem-eskici.webp",
+    categoryKey: null,
+    isActive: true,
+    sortOrder: 30,
   },
 ];
 
@@ -490,6 +607,8 @@ async function seedProvinceMapEntries() {
 }
 
 async function ensureBoardMemberMedia(item, createdBy) {
+  if (!item.imageFileName) return null;
+
   const relativePath = `yonetim-kurulu/${item.imageFileName}`;
 
   return ensurePublicMedia({
@@ -500,6 +619,146 @@ async function ensureBoardMemberMedia(item, createdBy) {
   });
 }
 
+async function seedBoardMemberCategories() {
+  const categoryIds = new Map();
+  let createdAny = false;
+
+  for (const category of boardMemberCategories) {
+    const [existingRows] = await pool.execute(
+      `SELECT id
+       FROM board_member_categories
+       WHERE slug = ?
+       LIMIT 1`,
+      [category.slug],
+    );
+
+    if (existingRows[0]) {
+      categoryIds.set(category.key, existingRows[0].id);
+      continue;
+    }
+
+    const [result] = await pool.execute(
+      `INSERT INTO board_member_categories
+        (title_tr, title_en, slug, sort_order, is_active)
+       VALUES (?, ?, ?, ?, ?)`,
+      [
+        category.titleTr,
+        category.titleEn,
+        category.slug,
+        category.sortOrder,
+        category.isActive ? 1 : 0,
+      ],
+    );
+
+    categoryIds.set(category.key, result.insertId);
+    createdAny = true;
+  }
+
+  return { categoryIds, createdAny };
+}
+
+async function insertBoardMember(item, { categoryIds, createdBy }) {
+  const mediaId = await ensureBoardMemberMedia(item, createdBy);
+  const categoryId = item.categoryKey
+    ? categoryIds.get(item.categoryKey) || null
+    : null;
+
+  await pool.execute(
+    `INSERT INTO board_members
+      (full_name, role_tr, role_en, title_tr, title_en, summary_tr, summary_en,
+       media_id, category_id, is_active, sort_order, created_by, updated_by)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      item.fullName,
+      item.roleTr || null,
+      item.roleEn || null,
+      item.titleTr || null,
+      item.titleEn || null,
+      item.summaryTr || null,
+      item.summaryEn || null,
+      mediaId,
+      categoryId,
+      item.isActive ? 1 : 0,
+      item.sortOrder,
+      createdBy,
+      createdBy,
+    ],
+  );
+}
+
+async function seedNewBoardMemberSources({ categoryIds, createdBy }) {
+  const newMemberNames = new Set([
+    "Hasan Oğuz Altınkaynak",
+    "Ali Selek",
+    "Hüseyin Taşer",
+    "İrem Eskici",
+  ]);
+
+  for (const item of boardMembers.filter((member) => newMemberNames.has(member.fullName))) {
+    const [existingRows] = await pool.execute(
+      `SELECT id
+       FROM board_members
+       WHERE full_name = ?
+       LIMIT 1`,
+      [item.fullName],
+    );
+
+    if (!existingRows[0]) {
+      await insertBoardMember(item, { categoryIds, createdBy });
+    }
+  }
+
+  for (const fullName of ["Mustafa Başer", "Uğuralp Coşkun"]) {
+    const item = boardMembers.find((member) => member.fullName === fullName);
+    await pool.execute(
+      `UPDATE board_members
+       SET role_tr = COALESCE(role_tr, ?),
+           role_en = COALESCE(role_en, ?),
+           category_id = COALESCE(category_id, ?)
+       WHERE full_name = ?`,
+      [
+        item.roleTr,
+        item.roleEn,
+        categoryIds.get(item.categoryKey) || null,
+        item.fullName,
+      ],
+    );
+  }
+
+  await pool.execute(
+    `UPDATE board_members
+     SET summary_tr = ?, summary_en = ?
+     WHERE full_name = 'Hakan Akçam'
+       AND summary_tr = ?`,
+    [
+      "Gayrimenkul, mesleki örgütlenme ve sivil toplum alanlarında yönetim sorumlulukları üstlenen Hakan Akçam, bu alanlarda çalışmalarını sürdürmektedir.",
+      "Hakan Akçam has held leadership responsibilities in real estate, professional organisations and civil society, and continues his work across these fields.",
+      "Gayrimenkul, mesleki örgütlenme ve sivil toplum alanlarında yönetim sorumlulukları üstlenen Hakan Akçam, Tüketiciler Birliği Genel Başkan Vekili olarak görev yapmaktadır.",
+    ],
+  );
+}
+
+async function hasSeedVersion(versionKey) {
+  const [rows] = await pool.execute(
+    `SELECT version_key
+     FROM seed_versions
+     WHERE version_key = ?
+     LIMIT 1`,
+    [versionKey],
+  );
+
+  return Boolean(rows[0]);
+}
+
+async function markSeedVersion(versionKey) {
+  await pool.execute(
+    `INSERT INTO seed_versions (version_key)
+     VALUES (?)
+     ON DUPLICATE KEY UPDATE version_key = VALUES(version_key)`,
+    [versionKey],
+  );
+}
+
 async function seedBoardMembers() {
   const [existingRows] = await pool.execute(
     `SELECT id
@@ -508,9 +767,8 @@ async function seedBoardMembers() {
      LIMIT 1`,
   );
 
-  if (existingRows[0]) {
-    return;
-  }
+  const categoryResult = await seedBoardMemberCategories();
+  const isCompanySourceSeeded = await hasSeedVersion(boardMemberSeedVersion);
 
   const [adminRows] = await pool.execute(
     `SELECT id
@@ -521,27 +779,25 @@ async function seedBoardMembers() {
   );
   const createdBy = adminRows[0]?.id || null;
 
-  for (const item of boardMembers) {
-    const mediaId = await ensureBoardMemberMedia(item, createdBy);
-
-    await pool.execute(
-      `INSERT INTO board_members
-        (full_name, title_tr, title_en, summary_tr, summary_en, media_id, category_id,
-         is_active, sort_order, created_by, updated_by)
-       VALUES (?, ?, ?, ?, ?, ?, NULL, 1, ?, ?, ?)`,
-      [
-        item.fullName,
-        item.titleTr,
-        item.titleEn,
-        item.summaryTr,
-        item.summaryEn,
-        mediaId,
-        item.sortOrder,
+  if (existingRows[0]) {
+    if (!isCompanySourceSeeded) {
+      await seedNewBoardMemberSources({
+        categoryIds: categoryResult.categoryIds,
         createdBy,
-        createdBy,
-      ],
-    );
+      });
+      await markSeedVersion(boardMemberSeedVersion);
+    }
+    return;
   }
+
+  for (const item of boardMembers) {
+    await insertBoardMember(item, {
+      categoryIds: categoryResult.categoryIds,
+      createdBy,
+    });
+  }
+
+  await markSeedVersion(boardMemberSeedVersion);
 }
 
 async function seed() {
@@ -580,6 +836,8 @@ if (require.main === module) {
 }
 
 module.exports = seed;
+module.exports.boardMemberCategories = boardMemberCategories;
 module.exports.boardMembers = boardMembers;
+module.exports.seedBoardMemberCategories = seedBoardMemberCategories;
 module.exports.seedBoardMembers = seedBoardMembers;
 module.exports.seedHeroSlides = seedHeroSlides;

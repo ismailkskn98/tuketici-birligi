@@ -7,7 +7,9 @@ function groupMembers(members, generalGroupTitle, generalGroupSlug) {
   const groups = new Map();
 
   for (const member of members) {
-    const key = member.category?.id ? `category-${member.category.id}` : "general";
+    const key = member.category?.slug
+      ? `category-${member.category.slug}`
+      : "general";
 
     if (!groups.has(key)) {
       groups.set(key, {

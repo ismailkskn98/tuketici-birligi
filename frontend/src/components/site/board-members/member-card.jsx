@@ -1,20 +1,4 @@
-const portraitVariants = [
-  {
-    frame: "inset-x-0 -inset-y-[5%]",
-    image: "object-cover",
-  },
-  {
-    frame: "inset-x-[7%] -bottom-[5%] top-[1%]",
-    image: "object-cover",
-  },
-  {
-    frame: "inset-x-[4%] -bottom-[5%] top-[6%]",
-    image: "object-contain object-bottom",
-  },
-];
-
 export function MemberCard({ index, isVisible = true, member, portraitAlt }) {
-  const variant = portraitVariants[index % portraitVariants.length];
   const primaryLabel = member.boardRole || member.professionalTitle;
 
   return (
@@ -24,11 +8,11 @@ export function MemberCard({ index, isVisible = true, member, portraitAlt }) {
           className="relative aspect-[4/5] overflow-hidden border-t border-[#dfe3e8] bg-[#f1f4f6]"
           data-board-media
         >
-          <div className={`absolute ${variant.frame}`}>
+          <div className="absolute inset-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               alt={portraitAlt}
-              className={`h-full w-full ${variant.image} transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.015]`}
+              className="block h-full w-full scale-[1.01] object-cover object-center transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.025]"
               decoding="async"
               fetchPriority={index < 3 ? "high" : "auto"}
               height="1350"

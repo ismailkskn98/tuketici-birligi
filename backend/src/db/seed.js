@@ -328,10 +328,11 @@ const legacyBoardMembers = [
 
 const boardMemberCategories = [
   {
-    key: "interim-board",
-    titleTr: "Geçici Yönetim Kurulu",
-    titleEn: "Interim Board of Directors",
-    slug: "gecici-yonetim-kurulu",
+    key: "board",
+    titleTr: "Yönetim Kurulu",
+    titleEn: "Board of Directors",
+    slug: "yonetim-kurulu",
+    legacySlug: "gecici-yonetim-kurulu",
     sortOrder: 10,
     isActive: true,
   },
@@ -347,6 +348,7 @@ const boardMemberCategories = [
 
 const boardMemberSeedVersion = "board-members-2026-08-28-company-sources-v1";
 const boardMemberCategoryCorrectionVersion = "board-members-2026-08-28-founding-category-v1";
+const boardMemberCompletedProfilesVersion = "board-members-2026-08-28-complete-board-v1";
 
 const generalMemberOrder = new Map([
   ["Alpay Korkmaz", 10],
@@ -359,50 +361,50 @@ const generalMemberOrder = new Map([
 const boardMembers = [
   {
     fullName: "Hasan Oğuz Altınkaynak",
-    roleTr: "Geçici Yönetim Kurulu Başkanı",
-    roleEn: "Interim Chair of the Board",
-    titleTr: null,
-    titleEn: null,
-    summaryTr: null,
-    summaryEn: null,
-    imageFileName: null,
-    categoryKey: "interim-board",
-    isActive: false,
+    roleTr: "Yönetim Kurulu Başkanı",
+    roleEn: "Chair of the Board",
+    titleTr: "Avukat",
+    titleEn: "Attorney",
+    summaryTr: "Çankaya Üniversitesi Hukuk Fakültesi mezunu olan ve Exeter Üniversitesi’nde uluslararası hukuk yüksek lisansını tamamlayan Hasan Oğuz Altınkaynak, Ankara 2 No’lu Barosu’na kayıtlı avukat olarak çalışmaktadır.",
+    summaryEn: "Hasan Oğuz Altınkaynak graduated from Çankaya University Faculty of Law and completed a master’s degree in international law at the University of Exeter. He practises as an attorney registered with Ankara Bar Association No. 2.",
+    imageFileName: "hasan-oguz-altinkaynak.webp",
+    categoryKey: "board",
+    isActive: true,
     sortOrder: 10,
   },
   {
     fullName: "Ali Selek",
-    roleTr: "Geçici Başkan Yardımcısı",
-    roleEn: "Interim Vice Chair",
+    roleTr: "Başkan Yardımcısı",
+    roleEn: "Vice Chair",
     titleTr: "Avukat ve Arabulucu",
     titleEn: "Attorney and Mediator",
     summaryTr: "Ankara Üniversitesi Hukuk Fakültesi mezunu olan Ali Selek; hâkimlik deneyiminin ardından avukatlık, uzman arabuluculuk ve bilirkişilik alanlarında çalışmakta, tahkim ve arabuluculuk eğitimleri vermektedir.",
     summaryEn: "Ali Selek graduated from Ankara University Faculty of Law. Following his judicial career, he works in legal practice, specialist mediation and expert witness services, and provides arbitration and mediation training.",
     imageFileName: "ali-selek.webp",
-    categoryKey: "interim-board",
+    categoryKey: "board",
     isActive: true,
     sortOrder: 20,
   },
   {
     fullName: "Hüseyin Taşer",
-    roleTr: "Geçici Sekreter",
-    roleEn: "Interim Secretary",
-    titleTr: null,
-    titleEn: null,
-    summaryTr: null,
-    summaryEn: null,
-    imageFileName: null,
-    categoryKey: "interim-board",
-    isActive: false,
+    roleTr: "Sekreter",
+    roleEn: "Secretary",
+    titleTr: "Harita ve Kadastro Teknikeri",
+    titleEn: "Surveying and Cadastre Technician",
+    summaryTr: "Selçuk Üniversitesi Harita ve Kadastro programı ile Anadolu Üniversitesi İktisat Bölümü mezunu olan Hüseyin Taşer, şehir planlama, kentsel dönüşüm ve arazi geliştirme projelerinde koordinasyon ve haritalandırma sorumlulukları üstlenmiştir.",
+    summaryEn: "Hüseyin Taşer graduated from Selçuk University’s Surveying and Cadastre programme and Anadolu University’s Economics Department. He has undertaken coordination and mapping responsibilities in urban planning, urban transformation and land development projects.",
+    imageFileName: "huseyin-taser.webp",
+    categoryKey: "board",
+    isActive: true,
     sortOrder: 30,
   },
   ...legacyBoardMembers.map((member) => {
     if (member.fullName === "Mustafa Başer") {
       return {
         ...member,
-        roleTr: "Geçici Sayman",
-        roleEn: "Interim Treasurer",
-        categoryKey: "interim-board",
+        roleTr: "Sayman",
+        roleEn: "Treasurer",
+        categoryKey: "board",
         isActive: true,
         sortOrder: 40,
       };
@@ -646,6 +648,34 @@ async function seedBoardMemberCategories() {
       continue;
     }
 
+    if (category.legacySlug) {
+      const [legacyRows] = await pool.execute(
+        `SELECT id
+         FROM board_member_categories
+         WHERE slug = ?
+         LIMIT 1`,
+        [category.legacySlug],
+      );
+
+      if (legacyRows[0]) {
+        await pool.execute(
+          `UPDATE board_member_categories
+           SET title_tr = ?, title_en = ?, slug = ?, sort_order = ?, is_active = ?
+           WHERE id = ?`,
+          [
+            category.titleTr,
+            category.titleEn,
+            category.slug,
+            category.sortOrder,
+            category.isActive ? 1 : 0,
+            legacyRows[0].id,
+          ],
+        );
+        categoryIds.set(category.key, legacyRows[0].id);
+        continue;
+      }
+    }
+
     const [result] = await pool.execute(
       `INSERT INTO board_member_categories
         (title_tr, title_en, slug, sort_order, is_active)
@@ -748,10 +778,10 @@ async function seedNewBoardMemberSources({ categoryIds, createdBy }) {
 }
 
 async function correctFoundingMemberCategory(categoryIds) {
-  const interimCategoryId = categoryIds.get("interim-board");
+  const boardCategoryId = categoryIds.get("board");
   const foundingCategoryId = categoryIds.get("founding-members");
 
-  if (!interimCategoryId || !foundingCategoryId) return;
+  if (!boardCategoryId || !foundingCategoryId) return;
 
   await pool.execute(
     `UPDATE board_members
@@ -759,8 +789,98 @@ async function correctFoundingMemberCategory(categoryIds) {
      WHERE full_name = 'Uğuralp Coşkun'
        AND role_tr = 'Kurucu Üye'
        AND category_id = ?`,
-    [foundingCategoryId, interimCategoryId],
+    [foundingCategoryId, boardCategoryId],
   );
+}
+
+async function syncCompletedBoardMemberProfiles({ categoryIds, createdBy }) {
+  const boardCategoryId = categoryIds.get("board");
+  const foundingCategoryId = categoryIds.get("founding-members");
+
+  if (!boardCategoryId) return;
+
+  await pool.execute(
+    `UPDATE board_member_categories
+     SET title_tr = 'Yönetim Kurulu',
+         title_en = 'Board of Directors',
+         slug = 'yonetim-kurulu',
+         sort_order = 10,
+         is_active = 1
+     WHERE id = ?`,
+    [boardCategoryId],
+  );
+
+  const [legacyCategoryRows] = await pool.execute(
+    `SELECT id
+     FROM board_member_categories
+     WHERE slug = 'gecici-yonetim-kurulu'
+     LIMIT 1`,
+  );
+  const legacyCategoryId = legacyCategoryRows[0]?.id;
+
+  if (legacyCategoryId && legacyCategoryId !== boardCategoryId) {
+    await pool.execute(
+      `UPDATE board_members
+       SET category_id = ?
+       WHERE category_id = ?`,
+      [boardCategoryId, legacyCategoryId],
+    );
+
+    await pool.execute(
+      `DELETE FROM board_member_categories
+       WHERE id = ?`,
+      [legacyCategoryId],
+    );
+  }
+
+  if (foundingCategoryId) {
+    await pool.execute(
+      `UPDATE board_members
+       SET category_id = ?
+       WHERE full_name = 'Uğuralp Coşkun'
+         AND role_tr = 'Kurucu Üye'`,
+      [foundingCategoryId],
+    );
+  }
+
+  const managedMembers = boardMembers.filter((member) => member.categoryKey === "board");
+
+  for (const item of managedMembers) {
+    const mediaId = await ensureBoardMemberMedia(item, createdBy);
+    const [existingRows] = await pool.execute(
+      `SELECT id
+       FROM board_members
+       WHERE full_name = ?
+       LIMIT 1`,
+      [item.fullName],
+    );
+
+    if (!existingRows[0]) {
+      await insertBoardMember(item, { categoryIds, createdBy });
+      continue;
+    }
+
+    await pool.execute(
+      `UPDATE board_members
+       SET role_tr = ?, role_en = ?, title_tr = ?, title_en = ?,
+           summary_tr = ?, summary_en = ?, media_id = ?, category_id = ?,
+           is_active = 1, sort_order = ?, updated_by = ?
+       WHERE id = ?`,
+      [
+        item.roleTr,
+        item.roleEn,
+        item.titleTr,
+        item.titleEn,
+        item.summaryTr,
+        item.summaryEn,
+        mediaId,
+        boardCategoryId,
+        item.sortOrder,
+        createdBy,
+        existingRows[0].id,
+      ],
+    );
+  }
 }
 
 async function hasSeedVersion(versionKey) {
@@ -795,6 +915,7 @@ async function seedBoardMembers() {
   const categoryResult = await seedBoardMemberCategories();
   const isCompanySourceSeeded = await hasSeedVersion(boardMemberSeedVersion);
   const isCategoryCorrectionSeeded = await hasSeedVersion(boardMemberCategoryCorrectionVersion);
+  const areCompletedProfilesSeeded = await hasSeedVersion(boardMemberCompletedProfilesVersion);
 
   const [adminRows] = await pool.execute(
     `SELECT id
@@ -817,6 +938,13 @@ async function seedBoardMembers() {
       await correctFoundingMemberCategory(categoryResult.categoryIds);
       await markSeedVersion(boardMemberCategoryCorrectionVersion);
     }
+    if (!areCompletedProfilesSeeded) {
+      await syncCompletedBoardMemberProfiles({
+        categoryIds: categoryResult.categoryIds,
+        createdBy,
+      });
+      await markSeedVersion(boardMemberCompletedProfilesVersion);
+    }
     return;
   }
 
@@ -829,6 +957,7 @@ async function seedBoardMembers() {
 
   await markSeedVersion(boardMemberSeedVersion);
   await markSeedVersion(boardMemberCategoryCorrectionVersion);
+  await markSeedVersion(boardMemberCompletedProfilesVersion);
 }
 
 async function seed() {

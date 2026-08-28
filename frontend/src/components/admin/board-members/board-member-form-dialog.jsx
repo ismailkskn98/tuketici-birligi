@@ -217,7 +217,7 @@ export function BoardMemberFormDialog({ categories, item, onOpenChange, onSaved,
                 </AdminFormField>
                 <AdminFormField
                   error={errors.roleTr?.message}
-                  hint="Örn. Geçici Başkan Yardımcısı"
+                  hint="Örn. Başkan Yardımcısı"
                   label="Yönetim görevi"
                 >
                   <Input
@@ -257,7 +257,7 @@ export function BoardMemberFormDialog({ categories, item, onOpenChange, onSaved,
                 </AdminFormField>
                 <AdminFormField
                   error={errors.roleEn?.message}
-                  hint="E.g. Interim Vice Chair"
+                  hint="E.g. Vice Chair"
                   label="Board role"
                 >
                   <Input

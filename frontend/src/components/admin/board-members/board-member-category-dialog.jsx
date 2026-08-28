@@ -157,7 +157,7 @@ export function BoardMemberCategoryDialog({ categories, onChanged, onOpenChange,
                   <Input
                     aria-invalid={Boolean(errors.titleTr)}
                     maxLength={160}
-                    placeholder="Örn. Geçici Yönetim Kurulu"
+                    placeholder="Örn. Yönetim Kurulu"
                     {...register("titleTr")}
                   />
                 </AdminFormField>
@@ -165,7 +165,7 @@ export function BoardMemberCategoryDialog({ categories, onChanged, onOpenChange,
                   <Input
                     aria-invalid={Boolean(errors.titleEn)}
                     maxLength={160}
-                    placeholder="E.g. Interim Board of Directors"
+                    placeholder="E.g. Board of Directors"
                     {...register("titleEn")}
                   />
                 </AdminFormField>

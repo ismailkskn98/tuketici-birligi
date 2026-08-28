@@ -2,15 +2,10 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { useMemo, useState } from "react";
+import { BoardCategoryNavigation } from "./board-category-navigation";
 import { MemberCard } from "./member-card";
 
 const allMembersKey = "all";
-const indicatorSpring = {
-  type: "spring",
-  stiffness: 440,
-  damping: 38,
-  mass: 0.7,
-};
 
 export function BoardMemberDirectory({ groups, labels }) {
   const [selectedGroup, setSelectedGroup] = useState(allMembersKey);
@@ -41,50 +36,18 @@ export function BoardMemberDirectory({ groups, labels }) {
     <section className="gridContainer bg-white pb-20 sm:pb-28 lg:pb-36">
       <div className="mx-auto grid w-full max-w-[88rem] gap-10 py-12 sm:py-16 lg:grid-cols-[13rem_minmax(0,1fr)] lg:items-start lg:gap-12 lg:py-24">
         <motion.aside className="min-w-0 lg:sticky lg:top-28" layoutRoot>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8a93a2]">
-            {labels.categoryIndex}
-          </p>
-          <motion.div
-            aria-label={labels.categoryNavLabel}
-            className="mt-5 flex snap-x gap-0 overflow-x-auto border-b border-[#dfe3e8] lg:block lg:overflow-visible lg:border-b-0 lg:border-l"
-            layoutScroll
-            role="tablist"
-          >
-            {tabs.map((tab) => {
-              const isActive = tab.id === selectedGroup;
-
-              return (
-                <button
-                  aria-controls="board-member-panel"
-                  aria-selected={isActive}
-                  className={`relative flex shrink-0 snap-start items-center px-4 py-3 text-left text-sm transition-colors focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-inset lg:w-full lg:py-3.5 ${
-                    isActive
-                      ? "font-semibold text-[#14213d]"
-                      : "font-medium text-[#8a93a2] hover:text-[#39465d]"
-                  }`}
-                  id={`board-tab-${tab.id}`}
-                  key={tab.id}
-                  onClick={() => setSelectedGroup(tab.id)}
-                  role="tab"
-                  type="button"
-                >
-                  {isActive ? (
-                    <motion.span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute bottom-[-1px] left-0 h-0.5 w-full bg-[#14213d] lg:-left-px lg:bottom-auto lg:top-0 lg:h-full lg:w-0.5"
-                      layoutId="board-category-active-indicator"
-                      transition={shouldReduceMotion ? { duration: 0 } : indicatorSpring}
-                    />
-                  ) : null}
-                  <span className="whitespace-nowrap">{tab.title}</span>
-                </button>
-              );
-            })}
-          </motion.div>
+          <BoardCategoryNavigation
+            activeId={selectedGroup}
+            categoryLabel={labels.categoryIndex}
+            navigationLabel={labels.categoryNavLabel}
+            onSelect={setSelectedGroup}
+            reduceMotion={shouldReduceMotion}
+            tabs={tabs}
+          />
         </motion.aside>
 
         <div
-          aria-labelledby={`board-tab-${activeTab.id}`}
+          aria-label={activeTab.title}
           id="board-member-panel"
           role="tabpanel"
         >

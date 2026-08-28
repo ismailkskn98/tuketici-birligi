@@ -36,7 +36,7 @@ test("migration remains repeatable and creates both board tables defensively", a
   }
 });
 
-test("board seed creates nine public-ready and two pending records when empty", async () => {
+test("board seed creates eleven public-ready records when empty", async () => {
   const originalExecute = pool.execute;
   let mediaId = 100;
   let boardInsertCount = 0;
@@ -67,10 +67,20 @@ test("board seed creates nine public-ready and two pending records when empty", 
     await seed.seedBoardMembers();
     assert.equal(seed.boardMembers.length, 11);
     assert.equal(boardInsertCount, 11);
-    assert.equal(insertedMembers.filter((params) => params[9] === 1).length, 9);
-    assert.equal(insertedMembers.filter((params) => params[9] === 0).length, 2);
-    assert.ok(insertedMembers.some((params) => params[0] === "Hasan Oğuz Altınkaynak" && params[7] === null));
-    assert.ok(insertedMembers.some((params) => params[0] === "Hüseyin Taşer" && params[7] === null));
+    assert.equal(insertedMembers.filter((params) => params[9] === 1).length, 11);
+    assert.equal(insertedMembers.filter((params) => params[9] === 0).length, 0);
+    assert.ok(insertedMembers.some((params) =>
+      params[0] === "Hasan Oğuz Altınkaynak" &&
+      params[3] === "Avukat" &&
+      params[5].includes("Exeter Üniversitesi") &&
+      Number.isInteger(params[7])
+    ));
+    assert.ok(insertedMembers.some((params) =>
+      params[0] === "Hüseyin Taşer" &&
+      params[3] === "Harita ve Kadastro Teknikeri" &&
+      params[5].includes("şehir planlama") &&
+      Number.isInteger(params[7])
+    ));
   } finally {
     pool.execute = originalExecute;
   }
@@ -98,7 +108,7 @@ test("board seed leaves existing admin-managed records untouched", async () => {
   }
 });
 
-test("board seed moves only the founding member out of the interim category once", async () => {
+test("board seed moves only the founding member out of the board category once", async () => {
   const originalExecute = pool.execute;
   const updates = [];
 
@@ -108,7 +118,11 @@ test("board seed moves only the founding member out of the interim category once
       return [[{ id: params[0] === "kurucu-uyeler" ? 9 : 8 }]];
     }
     if (sql.includes("FROM seed_versions")) {
-      return [params[0].includes("company-sources") ? [{ version_key: params[0] }] : []];
+      return [
+        params[0].includes("company-sources") || params[0].includes("complete-board")
+          ? [{ version_key: params[0] }]
+          : [],
+      ];
     }
     if (sql.includes("FROM admin_users")) return [[{ id: 1 }]];
     if (sql.includes("UPDATE board_members")) {
@@ -125,6 +139,46 @@ test("board seed moves only the founding member out of the interim category once
     assert.match(updates[0].sql, /full_name = 'Uğuralp Coşkun'/);
     assert.match(updates[0].sql, /role_tr = 'Kurucu Üye'/);
     assert.match(updates[0].sql, /category_id = \?/);
+  } finally {
+    pool.execute = originalExecute;
+  }
+});
+
+test("board seed completes the two new profiles and removes temporary role wording once", async () => {
+  const originalExecute = pool.execute;
+  const memberUpdates = [];
+
+  pool.execute = async (sql, params = []) => {
+    if (sql.includes("FROM board_members")) return [[{ id: 42 }]];
+    if (sql.includes("FROM board_member_categories")) {
+      if (sql.includes("gecici-yonetim-kurulu")) return [[]];
+      return [[{ id: params[0] === "kurucu-uyeler" ? 9 : 8 }]];
+    }
+    if (sql.includes("FROM seed_versions")) {
+      return [params[0].includes("complete-board") ? [] : [{ version_key: params[0] }]];
+    }
+    if (sql.includes("FROM admin_users")) return [[{ id: 1 }]];
+    if (sql.includes("FROM media_assets")) return [[{ id: 101 }]];
+    if (sql.includes("UPDATE board_members") && sql.includes("WHERE id = ?")) {
+      memberUpdates.push({ sql, params });
+      return [{ affectedRows: 1 }];
+    }
+    return [{ affectedRows: 1 }];
+  };
+
+  try {
+    await seed.seedBoardMembers();
+
+    assert.equal(memberUpdates.length, 4);
+    const hasanUpdate = memberUpdates.find((update) => update.params[0] === "Yönetim Kurulu Başkanı");
+    const huseyinUpdate = memberUpdates.find((update) => update.params[0] === "Sekreter");
+    assert.equal(hasanUpdate.params[3], "Attorney");
+    assert.equal(hasanUpdate.params[6], 101);
+    assert.equal(huseyinUpdate.params[2], "Harita ve Kadastro Teknikeri");
+    assert.match(hasanUpdate.sql, /is_active = 1/);
+    assert.ok(memberUpdates.every((update) => !update.params.some((value) =>
+      typeof value === "string" && /Geçici|Interim/.test(value)
+    )));
   } finally {
     pool.execute = originalExecute;
   }

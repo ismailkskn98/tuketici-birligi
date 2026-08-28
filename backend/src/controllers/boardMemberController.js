@@ -38,11 +38,34 @@ function normalizeText(value) {
   return normalized || null;
 }
 
+function normalizeBoardLabel(value) {
+  const normalized = normalizeText(value);
+  if (typeof normalized !== "string") return normalized;
+
+  return normalized.replace(/^(?:Geçici|Interim)\s+/iu, "").trim();
+}
+
+function normalizeBoardCategorySlug(slug) {
+  return ["gecici-yonetim-kurulu", "interim-board"].includes(slug)
+    ? "yonetim-kurulu"
+    : slug;
+}
+
+function normalizeBoardCategory(values) {
+  return {
+    ...values,
+    titleTr:
+      values.titleTr === undefined ? undefined : normalizeBoardLabel(values.titleTr),
+    titleEn:
+      values.titleEn === undefined ? undefined : normalizeBoardLabel(values.titleEn),
+  };
+}
+
 function normalizeBoardMember(values) {
   return {
     ...values,
-    roleTr: normalizeText(values.roleTr),
-    roleEn: normalizeText(values.roleEn),
+    roleTr: normalizeBoardLabel(values.roleTr),
+    roleEn: normalizeBoardLabel(values.roleEn),
     titleTr: normalizeText(values.titleTr),
     titleEn: normalizeText(values.titleEn),
     summaryTr: normalizeText(values.summaryTr),
@@ -97,8 +120,8 @@ function mapAdminRow(row) {
   return {
     id: row.id,
     fullName: row.full_name,
-    roleTr: row.role_tr,
-    roleEn: row.role_en,
+    roleTr: normalizeBoardLabel(row.role_tr),
+    roleEn: normalizeBoardLabel(row.role_en),
     titleTr: row.title_tr,
     titleEn: row.title_en,
     summaryTr: row.summary_tr,
@@ -108,8 +131,8 @@ function mapAdminRow(row) {
     category: row.category_id
       ? {
           id: row.category_id,
-          titleTr: row.category_title_tr,
-          titleEn: row.category_title_en,
+          titleTr: normalizeBoardLabel(row.category_title_tr),
+          titleEn: normalizeBoardLabel(row.category_title_en),
           isActive: Boolean(row.category_is_active),
         }
       : null,
@@ -125,9 +148,9 @@ function mapAdminRow(row) {
 function mapCategoryRow(row) {
   return {
     id: row.id,
-    titleTr: row.title_tr,
-    titleEn: row.title_en,
-    slug: row.slug,
+    titleTr: normalizeBoardLabel(row.title_tr),
+    titleEn: normalizeBoardLabel(row.title_en),
+    slug: normalizeBoardCategorySlug(row.slug),
     sortOrder: row.sort_order,
     isActive: Boolean(row.is_active),
     memberCount: Number(row.member_count || 0),
@@ -246,14 +269,14 @@ const getPublicBoardMembers = asyncHandler(async (req, res) => {
     items: rows.map((row) => ({
       id: row.id,
       fullName: row.full_name,
-      boardRole: row.board_role,
+      boardRole: normalizeBoardLabel(row.board_role),
       professionalTitle: row.professional_title,
       summary: row.summary,
       category: row.category_id
         ? {
             id: row.category_id,
-            title: row.category_title,
-            slug: row.category_slug,
+            title: normalizeBoardLabel(row.category_title),
+            slug: normalizeBoardCategorySlug(row.category_slug),
             sortOrder: row.category_sort_order,
           }
         : null,
@@ -390,7 +413,7 @@ const listBoardMemberCategories = asyncHandler(async (req, res) => {
 });
 
 const createBoardMemberCategory = asyncHandler(async (req, res) => {
-  const values = boardMemberCategorySchema.parse(req.body);
+  const values = normalizeBoardCategory(boardMemberCategorySchema.parse(req.body));
   const slug = await createUniqueCategorySlug(values.titleTr);
   const [result] = await pool.execute(
     `INSERT INTO board_member_categories
@@ -409,7 +432,9 @@ const createBoardMemberCategory = asyncHandler(async (req, res) => {
 });
 
 const updateBoardMemberCategory = asyncHandler(async (req, res) => {
-  const values = boardMemberCategorySchema.partial().parse(req.body);
+  const values = normalizeBoardCategory(
+    boardMemberCategorySchema.partial().parse(req.body)
+  );
   const [rows] = await pool.execute(
     `SELECT *
      FROM board_member_categories

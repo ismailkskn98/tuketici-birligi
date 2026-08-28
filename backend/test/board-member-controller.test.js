@@ -55,13 +55,13 @@ test("public board member endpoint localizes and limits its response contract", 
       items: [{
         id: 7,
         fullName: "Test Member",
-        boardRole: "Interim Treasurer",
+        boardRole: "Treasurer",
         professionalTitle: "Civil Engineer",
         summary: "A concise institutional profile.",
         category: {
           id: 4,
-          title: "Interim Board of Directors",
-          slug: "interim-board",
+          title: "Board of Directors",
+          slug: "yonetim-kurulu",
           sortOrder: 10,
         },
         image: {
@@ -145,8 +145,8 @@ test("admin create stores bilingual content and publication settings", async () 
     assert.ok(insertCall);
     assert.deepEqual(insertCall.params, [
       "Test Member",
-      "Geçici Sayman",
-      "Interim Treasurer",
+      "Sayman",
+      "Treasurer",
       "Yönetici",
       "Executive",
       "Doğrulanmış kısa kurumsal profil metni.",
@@ -264,8 +264,8 @@ test("admin can create an inactive profile while portrait and biography are pend
     const result = await callHandler(boardMemberController.createBoardMember, {
       body: {
         fullName: "Pending Member",
-        roleTr: "Geçici Sekreter",
-        roleEn: "Interim Secretary",
+        roleTr: "Sekreter",
+        roleEn: "Secretary",
         titleTr: null,
         titleEn: null,
         summaryTr: null,
@@ -316,9 +316,9 @@ test("admin category create generates a stable slug and stores bilingual labels"
 
     assert.deepEqual(result, { payload: { id: 17 }, statusCode: 201 });
     assert.deepEqual(insertCall.params, [
-      "Geçici Yönetim Kurulu",
-      "Interim Board of Directors",
-      "gecici-yonetim-kurulu",
+      "Yönetim Kurulu",
+      "Board of Directors",
+      "yonetim-kurulu",
       10,
       1,
     ]);

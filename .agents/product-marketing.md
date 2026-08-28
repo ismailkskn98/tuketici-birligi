@@ -1,7 +1,7 @@
 # Product Marketing Context
 
 **Belge türü:** Kurumsal mesajlaşma bağlamı (ticari ürün pazarlama dökümanı değil)
-**Document version:** v3
+**Document version:** v4
 **Last updated:** 2026-08-28
 
 Bu belge, Tüketiciler Birliği’nin web sitesi ve dijital iletişiminde kullanılacak ortak konumlandırma, dil ve dönüşüm çerçevesidir. Kaynaklar: `tüzük28072026.pdf` (TÜKETİCİLER BİRLİĞİ STATÜSÜ), mevcut frontend/backend metinleri ve canlı kullanıcı yolları.
@@ -35,15 +35,15 @@ Canlı arayüz ve meta metinler şu an “Tüketici Birliği” / İngilizce “
 
 ### Yönetim Kurulu İçerik İlkesi
 
-Müşteri tarafından 28 Ağustos 2026 tarihinde iletilen görev dağılımında **Geçici Yönetim Kurulu** Hasan Oğuz Altınkaynak (Geçici Yönetim Kurulu Başkanı), Ali Selek (Geçici Başkan Yardımcısı), Hüseyin Taşer (Geçici Sekreter) ve Mustafa Başer’den (Geçici Sayman) oluşur. Uğuralp Coşkun’un “Kurucu Üye” statüsü kurul görevinden ayrıştırılarak **Kurucu Üyeler** kategorisinde yayımlanır. Public sayfada görevler mesleki unvanlardan ayrı ve “geçici” niteliği korunarak gösterilir.
+Müşteri tarafından 28 Ağustos 2026 tarihinde onaylanan görev dağılımında **Yönetim Kurulu** Hasan Oğuz Altınkaynak (Yönetim Kurulu Başkanı), Ali Selek (Başkan Yardımcısı), Hüseyin Taşer (Sekreter) ve Mustafa Başer’den (Sayman) oluşur. Uğuralp Coşkun’un “Kurucu Üye” statüsü kurul görevinden ayrıştırılarak **Kurucu Üyeler** kategorisinde yayımlanır. Müşteri talebi doğrultusunda public kategori ve görev adlarında dönem niteliği belirten ek ifade kullanılmaz.
 
-26 Ağustos 2026 tarihinde sağlanan Alpay Korkmaz, Hakan Akçam, İsmail Çağlar, Muhammed Emin Yeşil, Murat Kahya, Mustafa Başer ve Uğuralp Coşkun profilleri korunur. 28 Ağustos kaynağıyla Ali Selek ve İrem Eskici için portre ve CV metni eklenmiştir. İrem Eskici’ye ait CV ve portre mevcut olsa da iletilen geçici görev dağılımında adı bulunmadığı için resmi kurul görevi yazılmaz; görev teyidi gelene kadar genel kurul üyesi grubunda sunulur.
+26 Ağustos 2026 tarihinde sağlanan Alpay Korkmaz, Hakan Akçam, İsmail Çağlar, Muhammed Emin Yeşil, Murat Kahya, Mustafa Başer ve Uğuralp Coşkun profilleri korunur. 28 Ağustos kaynaklarıyla Ali Selek, İrem Eskici, Hasan Oğuz Altınkaynak ve Hüseyin Taşer için portre ve CV metinleri eklenmiştir. İrem Eskici’ye ait CV ve portre mevcut olsa da iletilen görev dağılımında adı bulunmadığı için resmi kurul görevi yazılmaz; görev teyidi gelene kadar genel kurul üyesi grubunda sunulur.
 
-Hasan Oğuz Altınkaynak ve Hüseyin Taşer için görev bilgisi mevcuttur ancak portre ve kısa özgeçmiş kaynağı henüz sağlanmamıştır. Bu kişiler admin/veritabanı tarafında pasif, tamamlanmayı bekleyen kayıt olarak tutulur; public sayfada temsili portre veya eksik profil kartı yayımlanmaz.
+Hasan Oğuz Altınkaynak ve Hüseyin Taşer’in portre ve özgeçmiş kaynakları sağlanmıştır. Public özetlerde Hasan Oğuz Altınkaynak’ın hukuk eğitimi, uluslararası hukuk yüksek lisansı ve avukatlık deneyimi; Hüseyin Taşer’in harita-kadastro ve iktisat eğitimi ile şehir planlama, kentsel dönüşüm ve arazi geliştirme projelerindeki sorumlulukları kullanılır.
 
 Public profilde yalnızca kişinin adı, müşterinin sağladığı mesleki unvan, kısa kurumsal özgeçmiş özeti ve portre yayımlanır. Telefon, e-posta, açık adres, doğum tarihi, medeni durum, aile bilgisi ve parti görevleri yayımlanmaz. Kaynak CV’lerde bulunan bu bilgiler özet metne taşınmaz; kaynak belgeler web tarafından sunulmayan korumalı proje alanında tutulur.
 
-Geçici görev dağılımı, kalıcı veya seçilmiş yönetim dönemi gibi sunulmaz. İlk genel kurulun yapılıp yapılmadığı ve geçici görevlerin sona erip ermediği ayrıca doğrulanmalıdır.
+Kurulun resmi dönem ve seçilme durumu bağımsız olarak doğrulanmış sayılmaz. Public arayüzde müşteri tarafından onaylanan görev adları kullanılır; dönem niteliğine ilişkin doğrulama ayrı içerik notu olarak korunur.
 
 ---
 
@@ -180,10 +180,10 @@ Navigasyondaki Mevzuat / Stratejik Plan / Performans Programı / Kariyer kurgusu
 - Kâr amacı gütmeme; üyelere pay dağıtmama  
 - Banka hesaplarından çekim için en az iki imza yetkisi  
 - Çevrimiçi toplantılarda KVKK’ya uygun veri işleme, güvenli e-imza veya iki faktörlü doğrulama  
-- Geçici yönetim (ilk genel kurula kadar): Hasan Oğuz Altınkaynak (başkan), Ali Selek (başkan yardımcısı), Hüseyin Taşer (sekreter), Mustafa Başer (sayman), Uğuralp Coşkun (kurucu üye)  
+- Müşteri onaylı yönetim listesi: Hasan Oğuz Altınkaynak (başkan), Ali Selek (başkan yardımcısı), Hüseyin Taşer (sekreter), Mustafa Başer (sayman); Uğuralp Coşkun ayrı Kurucu Üyeler kategorisinde
 
 **Kullanım kuralı:**  
-Geçici yönetim, seçilmiş kalıcı kadro gibi sunulmamalıdır. “Bakanlık onaylı devlet kurumu” denmemelidir; doğru ifade “İçişleri Bakanlığı Sivil Toplumla İlişkiler Genel Müdürlüğü nezdinde statüsü incelenmiş / tescile konu sivil toplum kuruluşu”dur.
+Kurulun resmi dönem ve seçilme durumu ayrıca doğrulanmalıdır. “Bakanlık onaylı devlet kurumu” denmemelidir; doğru ifade “İçişleri Bakanlığı Sivil Toplumla İlişkiler Genel Müdürlüğü nezdinde statüsü incelenmiş / tescile konu sivil toplum kuruluşu”dur.
 
 **Henüz kanıtlanmayanlar:** üye sayısı, sonuçlanan başvuru adedi, test raporu, emsal dava, basında yer alma, müşteri tarafından sağlanan kurul listesinin resmi dönem ve kurul içi görev unvanları, adres/telefon. Bunlar proof point olarak kullanılmaz.
 
@@ -367,15 +367,14 @@ SSS, başvuru rehberi, tüketici haritası, KVKK / aydınlatma / gizlilik. Harit
 - Yayın yapma yetkisi  
 - Organlar, denetim, çift imza mali kontrol  
 - Sivil toplum mevzuatı kapsamında incelenmiş statü  
-- İlk genel kurula kadar görevli geçici yönetim listesi ve “geçici” ibaresiyle kurul görevleri
+- Müşteri tarafından web yayını için onaylanan yönetim kurulu listesi ve görev dağılımı
 
 **Kullanılamaz (yok veya yer tutucu)**  
 - Üye / başvuru / başarı sayıları  
 - Logo şeridindeki kamu kurumlarıyla resmi ortaklık iddiası  
 - Seed haber, duyuru ve rehber metinleri  
 - İletişim bilgileri  
-- İlk genel kurulun yapılıp yapılmadığı, geçici görevlerin sona erme tarihi ve kalıcı/seçilmiş kurul dönemi
-- Hasan Oğuz Altınkaynak ile Hüseyin Taşer’in portre ve kısa özgeçmiş bilgileri
+- İlk genel kurulun yapılıp yapılmadığı ve kurulun resmi dönem/seçilme durumu
 - İrem Eskici’nin kurul içi resmi görevi
 - Yayımlanmış test raporu veya emsal dava özeti  
 
@@ -418,8 +417,8 @@ Aşağıdakiler tahminle doldurulmadı. İçerik ve hukuk ekibi netleştirmeden 
 
 1. **Kamuya açık ad:** Tüketiciler Birliği mi, Tüketici Birliği mi? İngilizce CONSUMERS ASSOCIATION mı, Consumers Union mı?  
 2. **Kuruluş / tescil tarihi** ve varsa dernek / teşekkül sicil numarası.  
-3. **Yönetim kurulunun dönem durumu:** İlk genel kurul yapıldı mı; geçici kadronun sona erdiği tarih ve seçilmiş/kalıcı kurul listesi nedir?
-4. **Eksik kurul profilleri:** Hasan Oğuz Altınkaynak ve Hüseyin Taşer’in web yayınına uygun portre, mesleki unvan ve kısa özgeçmiş metni; İrem Eskici’nin varsa kurul içi resmi görevi.
+3. **Yönetim kurulunun dönem durumu:** İlk genel kurul yapıldı mı; mevcut kurulun resmi dönem ve seçilme durumu nedir?
+4. **Eksik kurul görevi:** İrem Eskici’nin varsa kurul içi resmi görevi.
 5. **Açık adres, telefon, KEP, e-posta, çalışma saatleri.**
 6. **Ön başvuru ile üyelik ilişkisi:** Üyeliksiz yardımın sınırı; danışmanlığın üye/üye değil ayrımı; ücret.
 7. **Ön başvurunun hukuki niteliği:** Yönlendirme mi, vekâlet/dava hazırlığı mı, yalnızca kayıt mı?
@@ -438,6 +437,7 @@ Aşağıdakiler tahminle doldurulmadı. İçerik ve hukuk ekibi netleştirmeden 
 ## Changelog
 
 *Newest first. One line per revision: what changed and why.*
+- v4 (2026-08-28) — Hasan Oğuz Altınkaynak ve Hüseyin Taşer’in portre/CV kaynakları eklendi; müşteri talebiyle yönetim kategorisi ve görevler dönem belirten ek ifadelerden arındırıldı.
 - v3 (2026-08-28) — Müşterinin ilettiği geçici görev dağılımı, Ali Selek ve İrem Eskici kaynakları, eksik Hasan Oğuz Altınkaynak/Hüseyin Taşer profilleri ve kategorili yayın ilkesi eklendi.
 - v2 (2026-08-26) — Müşteri tarafından sağlanan yedi kişilik yönetim kurulu listesi ve CV özetleri eklendi; kişisel veri yayınlamama ilkesi netleştirildi.
 - v1 (2026-08-17) — Statü ve mevcut site yollarından ilk kurumsal mesajlaşma bağlamı; ticari SaaS kalıpları çıkarılıp doğrulanamayan iddialar ayrı tutuldu.

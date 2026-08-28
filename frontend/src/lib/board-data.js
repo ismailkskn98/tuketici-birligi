@@ -1,11 +1,13 @@
+import { normalizePublicBoardMembers } from "./board-terminology";
+
 const boardCategories = {
-  interim: {
+  board: {
     id: 9001,
     title: {
-      tr: "Geçici Yönetim Kurulu",
-      en: "Interim Board of Directors",
+      tr: "Yönetim Kurulu",
+      en: "Board of Directors",
     },
-    slug: "gecici-yonetim-kurulu",
+    slug: "yonetim-kurulu",
     sortOrder: 10,
   },
   founders: {
@@ -21,11 +23,30 @@ const boardCategories = {
 
 const boardMembers = [
   {
+    id: 90010,
+    fullName: "Hasan Oğuz Altınkaynak",
+    boardRole: {
+      tr: "Yönetim Kurulu Başkanı",
+      en: "Chair of the Board",
+    },
+    professionalTitle: {
+      tr: "Avukat",
+      en: "Attorney",
+    },
+    summary: {
+      tr: "Çankaya Üniversitesi Hukuk Fakültesi mezunu olan ve Exeter Üniversitesi’nde uluslararası hukuk yüksek lisansını tamamlayan Hasan Oğuz Altınkaynak, Ankara 2 No’lu Barosu’na kayıtlı avukat olarak çalışmaktadır.",
+      en: "Hasan Oğuz Altınkaynak graduated from Çankaya University Faculty of Law and completed a master’s degree in international law at the University of Exeter. He practises as an attorney registered with Ankara Bar Association No. 2.",
+    },
+    imageUrl: "/yonetim-kurulu/hasan-oguz-altinkaynak.webp",
+    categoryKey: "board",
+    sortOrder: 10,
+  },
+  {
     id: 90001,
     fullName: "Ali Selek",
     boardRole: {
-      tr: "Geçici Başkan Yardımcısı",
-      en: "Interim Vice Chair",
+      tr: "Başkan Yardımcısı",
+      en: "Vice Chair",
     },
     professionalTitle: {
       tr: "Avukat ve Arabulucu",
@@ -36,15 +57,34 @@ const boardMembers = [
       en: "Ali Selek graduated from Ankara University Faculty of Law. Following his judicial career, he works in legal practice, specialist mediation and expert witness services, and provides arbitration and mediation training.",
     },
     imageUrl: "/yonetim-kurulu/ali-selek.webp",
-    categoryKey: "interim",
+    categoryKey: "board",
     sortOrder: 20,
+  },
+  {
+    id: 90011,
+    fullName: "Hüseyin Taşer",
+    boardRole: {
+      tr: "Sekreter",
+      en: "Secretary",
+    },
+    professionalTitle: {
+      tr: "Harita ve Kadastro Teknikeri",
+      en: "Surveying and Cadastre Technician",
+    },
+    summary: {
+      tr: "Selçuk Üniversitesi Harita ve Kadastro programı ile Anadolu Üniversitesi İktisat Bölümü mezunu olan Hüseyin Taşer, şehir planlama, kentsel dönüşüm ve arazi geliştirme projelerinde koordinasyon ve haritalandırma sorumlulukları üstlenmiştir.",
+      en: "Hüseyin Taşer graduated from Selçuk University’s Surveying and Cadastre programme and Anadolu University’s Economics Department. He has undertaken coordination and mapping responsibilities in urban planning, urban transformation and land development projects.",
+    },
+    imageUrl: "/yonetim-kurulu/huseyin-taser.webp",
+    categoryKey: "board",
+    sortOrder: 30,
   },
   {
     id: 90002,
     fullName: "Mustafa Başer",
     boardRole: {
-      tr: "Geçici Sayman",
-      en: "Interim Treasurer",
+      tr: "Sayman",
+      en: "Treasurer",
     },
     professionalTitle: {
       tr: "Yönetici",
@@ -55,7 +95,7 @@ const boardMembers = [
       en: "Mustafa Başer studied Justice as well as Labour Economics and Industrial Relations, and has held various leadership roles in local government, sports and civil society.",
     },
     imageUrl: "/yonetim-kurulu/mustafa-baser.webp",
-    categoryKey: "interim",
+    categoryKey: "board",
     sortOrder: 40,
   },
   {
@@ -178,7 +218,7 @@ const boardMembers = [
 export function getFallbackBoardMembers(locale = "tr") {
   const language = locale === "en" ? "en" : "tr";
 
-  return boardMembers.map((member) => {
+  return normalizePublicBoardMembers(boardMembers.map((member) => {
     const category = member.categoryKey ? boardCategories[member.categoryKey] : null;
 
     return {
@@ -205,5 +245,5 @@ export function getFallbackBoardMembers(locale = "tr") {
       },
       sortOrder: member.sortOrder,
     };
-  });
+  }));
 }

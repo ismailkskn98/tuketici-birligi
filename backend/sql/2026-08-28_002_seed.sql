@@ -202,6 +202,8 @@ VALUES
   ('ornek-hero-2.webp', 'ornek-hero-2.webp', 'image/webp', 154756, 'public', 'ornek-hero-2.webp', '/ornek-hero-2.webp', 'Hero tablet görseli'),
   ('ali-selek.webp', 'ali-selek.webp', 'image/webp', 187804, 'public', 'yonetim-kurulu/ali-selek.webp', '/yonetim-kurulu/ali-selek.webp', 'Ali Selek portresi'),
   ('irem-eskici.webp', 'irem-eskici.webp', 'image/webp', 141630, 'public', 'yonetim-kurulu/irem-eskici.webp', '/yonetim-kurulu/irem-eskici.webp', 'İrem Eskici portresi'),
+  ('hasan-oguz-altinkaynak.webp', 'hasan-oguz-altinkaynak.webp', 'image/webp', 42234, 'public', 'yonetim-kurulu/hasan-oguz-altinkaynak.webp', '/yonetim-kurulu/hasan-oguz-altinkaynak.webp', 'Hasan Oğuz Altınkaynak portresi'),
+  ('huseyin-taser.webp', 'huseyin-taser.webp', 'image/webp', 46190, 'public', 'yonetim-kurulu/huseyin-taser.webp', '/yonetim-kurulu/huseyin-taser.webp', 'Hüseyin Taşer portresi'),
   ('alpay-korkmaz.webp', 'alpay-korkmaz.webp', 'image/webp', 68834, 'public', 'yonetim-kurulu/alpay-korkmaz.webp', '/yonetim-kurulu/alpay-korkmaz.webp', 'Alpay Korkmaz portresi'),
   ('hakan-akcam.webp', 'hakan-akcam.webp', 'image/webp', 67354, 'public', 'yonetim-kurulu/hakan-akcam.webp', '/yonetim-kurulu/hakan-akcam.webp', 'Hakan Akçam portresi'),
   ('ismail-caglar.webp', 'ismail-caglar.webp', 'image/webp', 30028, 'public', 'yonetim-kurulu/ismail-caglar.webp', '/yonetim-kurulu/ismail-caglar.webp', 'İsmail Çağlar portresi'),
@@ -428,13 +430,51 @@ WHERE NOT EXISTS (
 INSERT INTO `board_member_categories`
   (`title_tr`, `title_en`, `slug`, `sort_order`, `is_active`)
 VALUES
-  ('Geçici Yönetim Kurulu', 'Interim Board of Directors', 'gecici-yonetim-kurulu', 10, 1),
+  ('Yönetim Kurulu', 'Board of Directors', 'yonetim-kurulu', 10, 1),
   ('Kurucu Üyeler', 'Founding Members', 'kurucu-uyeler', 20, 1)
 ON DUPLICATE KEY UPDATE
   `title_tr` = VALUES(`title_tr`),
   `title_en` = VALUES(`title_en`),
   `sort_order` = VALUES(`sort_order`),
   `is_active` = VALUES(`is_active`);
+
+SET @board_category_id := (
+  SELECT `id` FROM `board_member_categories`
+  WHERE `slug` = 'yonetim-kurulu'
+  LIMIT 1
+);
+SET @legacy_board_category_id := (
+  SELECT `id` FROM `board_member_categories`
+  WHERE `slug` = 'gecici-yonetim-kurulu'
+  LIMIT 1
+);
+
+UPDATE `board_members`
+SET `category_id` = @board_category_id
+WHERE `category_id` = @legacy_board_category_id
+  AND @legacy_board_category_id IS NOT NULL
+  AND @legacy_board_category_id <> @board_category_id;
+
+DELETE FROM `board_member_categories`
+WHERE `id` = @legacy_board_category_id
+  AND @legacy_board_category_id IS NOT NULL
+  AND @legacy_board_category_id <> @board_category_id;
+
+INSERT INTO `media_assets`
+  (`file_name`, `original_name`, `mime_type`, `size_bytes`, `storage_driver`, `path`,
+   `public_url`, `alt_text`, `created_by`)
+SELECT 'hasan-oguz-altinkaynak.webp', 'hasan-oguz-altinkaynak.webp', 'image/webp', 42234, 'public',
+       'yonetim-kurulu/hasan-oguz-altinkaynak.webp', '/yonetim-kurulu/hasan-oguz-altinkaynak.webp', 'Hasan Oğuz Altınkaynak portresi', @seed_admin_id
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `media_assets` WHERE `public_url` = '/yonetim-kurulu/hasan-oguz-altinkaynak.webp');
+
+INSERT INTO `media_assets`
+  (`file_name`, `original_name`, `mime_type`, `size_bytes`, `storage_driver`, `path`,
+   `public_url`, `alt_text`, `created_by`)
+SELECT 'huseyin-taser.webp', 'huseyin-taser.webp', 'image/webp', 46190, 'public',
+       'yonetim-kurulu/huseyin-taser.webp', '/yonetim-kurulu/huseyin-taser.webp', 'Hüseyin Taşer portresi', @seed_admin_id
+FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `media_assets` WHERE `public_url` = '/yonetim-kurulu/huseyin-taser.webp');
 
 INSERT INTO `media_assets`
   (`file_name`, `original_name`, `mime_type`, `size_bytes`, `storage_driver`, `path`,
@@ -601,10 +641,13 @@ INSERT INTO `board_members`
   (`full_name`, `role_tr`, `role_en`, `title_tr`, `title_en`, `summary_tr`, `summary_en`,
    `media_id`, `category_id`, `is_active`, `sort_order`, `created_by`, `updated_by`)
 SELECT
-  'Hasan Oğuz Altınkaynak', 'Geçici Yönetim Kurulu Başkanı', 'Interim Chair of the Board',
-  NULL, NULL, NULL, NULL, NULL,
-  (SELECT `id` FROM `board_member_categories` WHERE `slug` = 'gecici-yonetim-kurulu' LIMIT 1),
-  0, 10, @seed_admin_id, @seed_admin_id
+  'Hasan Oğuz Altınkaynak', 'Yönetim Kurulu Başkanı', 'Chair of the Board',
+  'Avukat', 'Attorney',
+  'Çankaya Üniversitesi Hukuk Fakültesi mezunu olan ve Exeter Üniversitesi’nde uluslararası hukuk yüksek lisansını tamamlayan Hasan Oğuz Altınkaynak, Ankara 2 No’lu Barosu’na kayıtlı avukat olarak çalışmaktadır.',
+  'Hasan Oğuz Altınkaynak graduated from Çankaya University Faculty of Law and completed a master’s degree in international law at the University of Exeter. He practises as an attorney registered with Ankara Bar Association No. 2.',
+  (SELECT `id` FROM `media_assets` WHERE `public_url` = '/yonetim-kurulu/hasan-oguz-altinkaynak.webp' ORDER BY `id` LIMIT 1),
+  (SELECT `id` FROM `board_member_categories` WHERE `slug` = 'yonetim-kurulu' LIMIT 1),
+  1, 10, @seed_admin_id, @seed_admin_id
 FROM DUAL
 WHERE @board_member_source_pending = 1
   AND NOT EXISTS (SELECT 1 FROM `board_members` WHERE `full_name` = 'Hasan Oğuz Altınkaynak');
@@ -613,12 +656,12 @@ INSERT INTO `board_members`
   (`full_name`, `role_tr`, `role_en`, `title_tr`, `title_en`, `summary_tr`, `summary_en`,
    `media_id`, `category_id`, `is_active`, `sort_order`, `created_by`, `updated_by`)
 SELECT
-  'Ali Selek', 'Geçici Başkan Yardımcısı', 'Interim Vice Chair',
+  'Ali Selek', 'Başkan Yardımcısı', 'Vice Chair',
   'Avukat ve Arabulucu', 'Attorney and Mediator',
   'Ankara Üniversitesi Hukuk Fakültesi mezunu olan Ali Selek; hâkimlik deneyiminin ardından avukatlık, uzman arabuluculuk ve bilirkişilik alanlarında çalışmakta, tahkim ve arabuluculuk eğitimleri vermektedir.',
   'Ali Selek graduated from Ankara University Faculty of Law. Following his judicial career, he works in legal practice, specialist mediation and expert witness services, and provides arbitration and mediation training.',
   (SELECT `id` FROM `media_assets` WHERE `public_url` = '/yonetim-kurulu/ali-selek.webp' ORDER BY `id` LIMIT 1),
-  (SELECT `id` FROM `board_member_categories` WHERE `slug` = 'gecici-yonetim-kurulu' LIMIT 1),
+  (SELECT `id` FROM `board_member_categories` WHERE `slug` = 'yonetim-kurulu' LIMIT 1),
   1, 20, @seed_admin_id, @seed_admin_id
 FROM DUAL
 WHERE @board_member_source_pending = 1
@@ -628,10 +671,13 @@ INSERT INTO `board_members`
   (`full_name`, `role_tr`, `role_en`, `title_tr`, `title_en`, `summary_tr`, `summary_en`,
    `media_id`, `category_id`, `is_active`, `sort_order`, `created_by`, `updated_by`)
 SELECT
-  'Hüseyin Taşer', 'Geçici Sekreter', 'Interim Secretary',
-  NULL, NULL, NULL, NULL, NULL,
-  (SELECT `id` FROM `board_member_categories` WHERE `slug` = 'gecici-yonetim-kurulu' LIMIT 1),
-  0, 30, @seed_admin_id, @seed_admin_id
+  'Hüseyin Taşer', 'Sekreter', 'Secretary',
+  'Harita ve Kadastro Teknikeri', 'Surveying and Cadastre Technician',
+  'Selçuk Üniversitesi Harita ve Kadastro programı ile Anadolu Üniversitesi İktisat Bölümü mezunu olan Hüseyin Taşer, şehir planlama, kentsel dönüşüm ve arazi geliştirme projelerinde koordinasyon ve haritalandırma sorumlulukları üstlenmiştir.',
+  'Hüseyin Taşer graduated from Selçuk University’s Surveying and Cadastre programme and Anadolu University’s Economics Department. He has undertaken coordination and mapping responsibilities in urban planning, urban transformation and land development projects.',
+  (SELECT `id` FROM `media_assets` WHERE `public_url` = '/yonetim-kurulu/huseyin-taser.webp' ORDER BY `id` LIMIT 1),
+  (SELECT `id` FROM `board_member_categories` WHERE `slug` = 'yonetim-kurulu' LIMIT 1),
+  1, 30, @seed_admin_id, @seed_admin_id
 FROM DUAL
 WHERE @board_member_source_pending = 1
   AND NOT EXISTS (SELECT 1 FROM `board_members` WHERE `full_name` = 'Hüseyin Taşer');
@@ -650,12 +696,9 @@ WHERE @board_member_source_pending = 1
   AND NOT EXISTS (SELECT 1 FROM `board_members` WHERE `full_name` = 'İrem Eskici');
 
 UPDATE `board_members`
-SET `role_tr` = COALESCE(`role_tr`, 'Geçici Sayman'),
-    `role_en` = COALESCE(`role_en`, 'Interim Treasurer'),
-    `category_id` = COALESCE(
-      `category_id`,
-      (SELECT `id` FROM `board_member_categories` WHERE `slug` = 'gecici-yonetim-kurulu' LIMIT 1)
-    )
+SET `role_tr` = 'Sayman',
+    `role_en` = 'Treasurer',
+    `category_id` = (SELECT `id` FROM `board_member_categories` WHERE `slug` = 'yonetim-kurulu' LIMIT 1)
 WHERE @board_member_source_pending = 1 AND `full_name` = 'Mustafa Başer';
 
 UPDATE `board_members`
@@ -663,7 +706,7 @@ SET `role_tr` = COALESCE(`role_tr`, 'Kurucu Üye'),
     `role_en` = COALESCE(`role_en`, 'Founding Member'),
     `category_id` = COALESCE(
       `category_id`,
-      (SELECT `id` FROM `board_member_categories` WHERE `slug` = 'gecici-yonetim-kurulu' LIMIT 1)
+      (SELECT `id` FROM `board_member_categories` WHERE `slug` = 'kurucu-uyeler' LIMIT 1)
     )
 WHERE @board_member_source_pending = 1 AND `full_name` = 'Uğuralp Coşkun';
 
@@ -701,26 +744,32 @@ INSERT INTO `_seed_board_members`
    `media_url`, `category_slug`, `is_active`, `sort_order`)
 VALUES
   (
-    'Hasan Oğuz Altınkaynak', 'Geçici Yönetim Kurulu Başkanı', 'Interim Chair of the Board',
-    NULL, NULL, NULL, NULL, NULL, 'gecici-yonetim-kurulu', 0, 10
+    'Hasan Oğuz Altınkaynak', 'Yönetim Kurulu Başkanı', 'Chair of the Board',
+    'Avukat', 'Attorney',
+    'Çankaya Üniversitesi Hukuk Fakültesi mezunu olan ve Exeter Üniversitesi’nde uluslararası hukuk yüksek lisansını tamamlayan Hasan Oğuz Altınkaynak, Ankara 2 No’lu Barosu’na kayıtlı avukat olarak çalışmaktadır.',
+    'Hasan Oğuz Altınkaynak graduated from Çankaya University Faculty of Law and completed a master’s degree in international law at the University of Exeter. He practises as an attorney registered with Ankara Bar Association No. 2.',
+    '/yonetim-kurulu/hasan-oguz-altinkaynak.webp', 'yonetim-kurulu', 1, 10
   ),
   (
-    'Ali Selek', 'Geçici Başkan Yardımcısı', 'Interim Vice Chair',
+    'Ali Selek', 'Başkan Yardımcısı', 'Vice Chair',
     'Avukat ve Arabulucu', 'Attorney and Mediator',
     'Ankara Üniversitesi Hukuk Fakültesi mezunu olan Ali Selek; hâkimlik deneyiminin ardından avukatlık, uzman arabuluculuk ve bilirkişilik alanlarında çalışmakta, tahkim ve arabuluculuk eğitimleri vermektedir.',
     'Ali Selek graduated from Ankara University Faculty of Law. Following his judicial career, he works in legal practice, specialist mediation and expert witness services, and provides arbitration and mediation training.',
-    '/yonetim-kurulu/ali-selek.webp', 'gecici-yonetim-kurulu', 1, 20
+    '/yonetim-kurulu/ali-selek.webp', 'yonetim-kurulu', 1, 20
   ),
   (
-    'Hüseyin Taşer', 'Geçici Sekreter', 'Interim Secretary',
-    NULL, NULL, NULL, NULL, NULL, 'gecici-yonetim-kurulu', 0, 30
+    'Hüseyin Taşer', 'Sekreter', 'Secretary',
+    'Harita ve Kadastro Teknikeri', 'Surveying and Cadastre Technician',
+    'Selçuk Üniversitesi Harita ve Kadastro programı ile Anadolu Üniversitesi İktisat Bölümü mezunu olan Hüseyin Taşer, şehir planlama, kentsel dönüşüm ve arazi geliştirme projelerinde koordinasyon ve haritalandırma sorumlulukları üstlenmiştir.',
+    'Hüseyin Taşer graduated from Selçuk University’s Surveying and Cadastre programme and Anadolu University’s Economics Department. He has undertaken coordination and mapping responsibilities in urban planning, urban transformation and land development projects.',
+    '/yonetim-kurulu/huseyin-taser.webp', 'yonetim-kurulu', 1, 30
   ),
   (
-    'Mustafa Başer', 'Geçici Sayman', 'Interim Treasurer',
+    'Mustafa Başer', 'Sayman', 'Treasurer',
     'Yönetici', 'Executive',
     'Adalet ile Çalışma Ekonomisi ve Endüstri İlişkileri eğitimi alan Mustafa Başer, yerel yönetimler, spor ve sivil toplum alanlarında çeşitli yönetim görevleri üstlenmiştir.',
     'Mustafa Başer studied Justice as well as Labour Economics and Industrial Relations, and has held various leadership roles in local government, sports and civil society.',
-    '/yonetim-kurulu/mustafa-baser.webp', 'gecici-yonetim-kurulu', 1, 40
+    '/yonetim-kurulu/mustafa-baser.webp', 'yonetim-kurulu', 1, 40
   ),
   (
     'Uğuralp Coşkun', 'Kurucu Üye', 'Founding Member',
@@ -816,7 +865,8 @@ DROP TEMPORARY TABLE `_seed_board_members`;
 INSERT INTO `seed_versions` (`version_key`)
 VALUES
   ('board-members-2026-08-28-company-sources-v1'),
-  ('board-members-2026-08-28-founding-category-v1')
+  ('board-members-2026-08-28-founding-category-v1'),
+  ('board-members-2026-08-28-complete-board-v1')
 ON DUPLICATE KEY UPDATE `version_key` = VALUES(`version_key`);
 
 COMMIT;

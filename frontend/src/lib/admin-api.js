@@ -1,6 +1,10 @@
 "use client";
 
 import { getClientApiBaseUrl } from "./api";
+import {
+  normalizeAdminBoardCategory,
+  normalizeAdminBoardMember,
+} from "./board-terminology";
 
 const API_BASE_URL = getClientApiBaseUrl();
 
@@ -97,8 +101,13 @@ export function deleteHeroSlide(id) {
   });
 }
 
-export function listBoardMembers() {
-  return adminRequest("/api/admin/board-members");
+export async function listBoardMembers() {
+  const response = await adminRequest("/api/admin/board-members");
+
+  return {
+    ...response,
+    items: (response?.items || []).map(normalizeAdminBoardMember),
+  };
 }
 
 export function createBoardMember(values) {
@@ -121,8 +130,13 @@ export function deleteBoardMember(id) {
   });
 }
 
-export function listBoardMemberCategories() {
-  return adminRequest("/api/admin/board-member-categories");
+export async function listBoardMemberCategories() {
+  const response = await adminRequest("/api/admin/board-member-categories");
+
+  return {
+    ...response,
+    items: (response?.items || []).map(normalizeAdminBoardCategory),
+  };
 }
 
 export function createBoardMemberCategory(values) {

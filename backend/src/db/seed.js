@@ -187,6 +187,9 @@ const heroSlides = [
     ctaLabelTr: "Devamını Oku",
     ctaLabelEn: "Read More",
     ctaHref: "/haberler/tuketici-haklari-bilgilendirme-icerikleri-hazirlaniyor",
+    imageFileName: "ornek-hero.webp",
+    imageMobileFileName: "ornek-hero-16-15.webp",
+    imageTabletFileName: "ornek-hero-2.webp",
     sortOrder: 0,
   },
   {
@@ -197,6 +200,9 @@ const heroSlides = [
     ctaLabelTr: "Başvuru Rehberi",
     ctaLabelEn: "Application Guide",
     ctaHref: "/basvuru-rehberi",
+    imageFileName: "ornek-hero-2.webp",
+    imageMobileFileName: "ornek-hero-16-15.webp",
+    imageTabletFileName: "ornek-hero.webp",
     sortOrder: 1,
   },
 ];
@@ -363,6 +369,46 @@ async function seedContent() {
   }
 }
 
+async function ensurePublicMedia({ fileName, relativePath, altText, createdBy }) {
+  const publicUrl = `/${relativePath}`;
+  const [existingRows] = await pool.execute(
+    `SELECT id
+     FROM media_assets
+     WHERE public_url = ?
+     ORDER BY id ASC
+     LIMIT 1`,
+    [publicUrl],
+  );
+
+  if (existingRows[0]) {
+    return existingRows[0].id;
+  }
+
+  const publicFilePath = path.resolve(
+    __dirname,
+    "../../../frontend/public",
+    relativePath,
+  );
+  const fileStats = await fs.stat(publicFilePath);
+  const [result] = await pool.execute(
+    `INSERT INTO media_assets
+      (file_name, original_name, mime_type, size_bytes, storage_driver, path,
+       public_url, alt_text, created_by)
+     VALUES (?, ?, 'image/webp', ?, 'public', ?, ?, ?, ?)`,
+    [
+      fileName,
+      fileName,
+      fileStats.size,
+      relativePath,
+      publicUrl,
+      altText,
+      createdBy,
+    ],
+  );
+
+  return result.insertId;
+}
+
 async function seedHeroSlides() {
   const [heroRows] = await pool.execute(
     `SELECT id FROM hero_slides
@@ -374,23 +420,41 @@ async function seedHeroSlides() {
     return;
   }
 
-  const [mediaRows] = await pool.execute(
-    `SELECT id FROM media_assets
-     ORDER BY created_at ASC, id ASC
+  const [adminRows] = await pool.execute(
+    `SELECT id
+     FROM admin_users
+     WHERE email = ?
      LIMIT 1`,
+    [env.seed.adminEmail],
   );
-
-  if (!mediaRows[0]) {
-    return;
-  }
+  const createdBy = adminRows[0]?.id || null;
 
   for (const item of heroSlides) {
+    const mediaId = await ensurePublicMedia({
+      fileName: item.imageFileName,
+      relativePath: item.imageFileName,
+      altText: item.titleTr,
+      createdBy,
+    });
+    const mediaMobileId = await ensurePublicMedia({
+      fileName: item.imageMobileFileName,
+      relativePath: item.imageMobileFileName,
+      altText: item.titleTr,
+      createdBy,
+    });
+    const mediaTabletId = await ensurePublicMedia({
+      fileName: item.imageTabletFileName,
+      relativePath: item.imageTabletFileName,
+      altText: item.titleTr,
+      createdBy,
+    });
+
     await pool.execute(
       `INSERT INTO hero_slides
         (title_tr, title_en, summary_tr, summary_en, cta_label_tr, cta_label_en, cta_href,
-         media_id, media_mobile_id, media_tablet_id, is_active, sort_order)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)`,
-      [item.titleTr, item.titleEn, item.summaryTr, item.summaryEn, item.ctaLabelTr, item.ctaLabelEn, item.ctaHref, mediaRows[0].id, mediaRows[0].id, mediaRows[0].id, item.sortOrder],
+         media_id, media_mobile_id, media_tablet_id, is_active, sort_order, created_by, updated_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)`,
+      [item.titleTr, item.titleEn, item.summaryTr, item.summaryEn, item.ctaLabelTr, item.ctaLabelEn, item.ctaHref, mediaId, mediaMobileId, mediaTabletId, item.sortOrder, createdBy, createdBy],
     );
   }
 }
@@ -426,44 +490,14 @@ async function seedProvinceMapEntries() {
 }
 
 async function ensureBoardMemberMedia(item, createdBy) {
-  const publicUrl = `/yonetim-kurulu/${item.imageFileName}`;
-  const [existingRows] = await pool.execute(
-    `SELECT id
-     FROM media_assets
-     WHERE public_url = ?
-     ORDER BY id ASC
-     LIMIT 1`,
-    [publicUrl],
-  );
-
-  if (existingRows[0]) {
-    return existingRows[0].id;
-  }
-
   const relativePath = `yonetim-kurulu/${item.imageFileName}`;
-  const publicFilePath = path.resolve(
-    __dirname,
-    "../../../frontend/public",
-    relativePath,
-  );
-  const fileStats = await fs.stat(publicFilePath);
-  const [result] = await pool.execute(
-    `INSERT INTO media_assets
-      (file_name, original_name, mime_type, size_bytes, storage_driver, path,
-       public_url, alt_text, created_by)
-     VALUES (?, ?, 'image/webp', ?, 'public', ?, ?, ?, ?)`,
-    [
-      item.imageFileName,
-      item.imageFileName,
-      fileStats.size,
-      relativePath,
-      publicUrl,
-      `${item.fullName} portresi`,
-      createdBy,
-    ],
-  );
 
-  return result.insertId;
+  return ensurePublicMedia({
+    fileName: item.imageFileName,
+    relativePath,
+    altText: `${item.fullName} portresi`,
+    createdBy,
+  });
 }
 
 async function seedBoardMembers() {
@@ -548,3 +582,4 @@ if (require.main === module) {
 module.exports = seed;
 module.exports.boardMembers = boardMembers;
 module.exports.seedBoardMembers = seedBoardMembers;
+module.exports.seedHeroSlides = seedHeroSlides;

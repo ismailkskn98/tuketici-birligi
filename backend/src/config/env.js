@@ -1,6 +1,10 @@
+const path = require("path");
 const dotenv = require("dotenv");
 
-dotenv.config();
+const nodeEnv = process.env.NODE_ENV || "development";
+const envFilePath = path.resolve(__dirname, `../../.env.${nodeEnv}`);
+
+dotenv.config({ path: envFilePath });
 
 const defaultFrontendUrl = process.env.FRONTEND_URL || "http://localhost:3601";
 
@@ -22,7 +26,8 @@ function listValue(value) {
 }
 
 const env = {
-  nodeEnv: process.env.NODE_ENV || "development",
+  nodeEnv,
+  envFilePath,
   port: numberValue(process.env.PORT, 3402),
   frontendUrl: defaultFrontendUrl,
   corsOrigins: listValue(process.env.CORS_ORIGINS || defaultFrontendUrl),

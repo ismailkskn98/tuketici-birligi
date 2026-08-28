@@ -1,3 +1,5 @@
+const mysql = require("mysql2/promise");
+const env = require("../config/env");
 const pool = require("./pool");
 
 const statements = [
@@ -263,7 +265,31 @@ async function backfillHeroResponsiveMedia() {
   );
 }
 
-async function migrate() {
+async function ensureDatabase() {
+  const connection = await mysql.createConnection({
+    host: env.db.host,
+    port: env.db.port,
+    user: env.db.user,
+    password: env.db.password
+  });
+
+  try {
+    const databaseName = mysql.escapeId(env.db.name);
+    await connection.query(
+      `CREATE DATABASE IF NOT EXISTS ${databaseName}
+       CHARACTER SET utf8mb4
+       COLLATE utf8mb4_unicode_ci`
+    );
+  } finally {
+    await connection.end();
+  }
+}
+
+async function migrate({ createDatabase = false } = {}) {
+  if (createDatabase) {
+    await ensureDatabase();
+  }
+
   for (const statement of statements) {
     await pool.execute(statement);
   }
@@ -309,7 +335,7 @@ async function migrate() {
 }
 
 if (require.main === module) {
-  migrate()
+  migrate({ createDatabase: true })
     .then(async () => {
       console.log("Migration tamamlandı.");
       await pool.end();

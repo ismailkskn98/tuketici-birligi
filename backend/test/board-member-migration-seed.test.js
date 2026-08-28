@@ -81,3 +81,41 @@ test("board seed leaves existing admin-managed records untouched", async () => {
     pool.execute = originalExecute;
   }
 });
+
+test("hero seed creates media before inserting slides on a clean database", async () => {
+  const originalExecute = pool.execute;
+  const mediaByUrl = new Map();
+  let nextMediaId = 200;
+  let heroInsertCount = 0;
+
+  pool.execute = async (sql, params = []) => {
+    if (sql.includes("FROM hero_slides")) return [[]];
+    if (sql.includes("FROM admin_users")) return [[{ id: 1 }]];
+
+    if (sql.includes("FROM media_assets")) {
+      const mediaId = mediaByUrl.get(params[0]);
+      return [mediaId ? [{ id: mediaId }] : []];
+    }
+
+    if (sql.includes("INSERT INTO media_assets")) {
+      nextMediaId += 1;
+      mediaByUrl.set(params[4], nextMediaId);
+      return [{ insertId: nextMediaId }];
+    }
+
+    if (sql.includes("INSERT INTO hero_slides")) {
+      heroInsertCount += 1;
+      return [{ insertId: heroInsertCount }];
+    }
+
+    return [[]];
+  };
+
+  try {
+    await seed.seedHeroSlides();
+    assert.equal(mediaByUrl.size, 3);
+    assert.equal(heroInsertCount, 2);
+  } finally {
+    pool.execute = originalExecute;
+  }
+});

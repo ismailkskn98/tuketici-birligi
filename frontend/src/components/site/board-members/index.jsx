@@ -91,6 +91,11 @@ export async function BoardMembersPageContent({ locale }) {
             categoryIndex: t("categoryIndex"),
             categoryNavLabel: t("categoryNavLabel"),
             portraitAlt: t.raw("portraitAlt"),
+            viewToggle: {
+              group: t("viewToggleGroup"),
+              single: t("singleColumnView"),
+              double: t("twoColumnView"),
+            },
           }}
         />
       ) : (

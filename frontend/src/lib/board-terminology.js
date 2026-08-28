@@ -10,6 +10,31 @@ export function normalizeBoardCategorySlug(slug) {
     : slug;
 }
 
+export function hasLegacyBoardTerminology(members = []) {
+  return members.some((member) =>
+    /^(?:Geçici|Interim)\s+/iu.test(member.boardRole || "") ||
+    /^(?:Geçici|Interim)\s+/iu.test(member.category?.title || "") ||
+    ["gecici-yonetim-kurulu", "interim-board"].includes(member.category?.slug)
+  );
+}
+
+export function mergeBoardMemberFallbacks(members, fallbackMembers) {
+  const existingNames = new Set(members.map((member) => member.fullName));
+  const mergedMembers = [
+    ...members,
+    ...fallbackMembers.filter((member) => !existingNames.has(member.fullName)),
+  ];
+
+  return mergedMembers.sort((first, second) => {
+    const categoryDifference =
+      (first.category?.sortOrder ?? 9999) - (second.category?.sortOrder ?? 9999);
+
+    if (categoryDifference) return categoryDifference;
+    if (first.sortOrder !== second.sortOrder) return first.sortOrder - second.sortOrder;
+    return first.fullName.localeCompare(second.fullName, "tr");
+  });
+}
+
 export function normalizePublicBoardMembers(members = []) {
   return members.map((member) => ({
     ...member,

@@ -6,7 +6,11 @@ import {
   getFallbackProvinceMap
 } from "./fallback-data";
 import { getFallbackBoardMembers } from "./board-data";
-import { normalizePublicBoardMembers } from "./board-terminology";
+import {
+  hasLegacyBoardTerminology,
+  mergeBoardMemberFallbacks,
+  normalizePublicBoardMembers,
+} from "./board-terminology";
 
 const apiBaseUrl =
   process.env.API_BASE_URL ||
@@ -76,9 +80,15 @@ export async function getProvinceMap(locale = "tr") {
 
 export async function getBoardMembers(locale = "tr") {
   const data = await request(`/api/public/board-members?locale=${locale}`);
-  return Array.isArray(data?.items)
-    ? normalizePublicBoardMembers(data.items)
-    : getFallbackBoardMembers(locale);
+  const fallbackMembers = getFallbackBoardMembers(locale);
+
+  if (!Array.isArray(data?.items)) return fallbackMembers;
+
+  const members = normalizePublicBoardMembers(data.items);
+
+  return hasLegacyBoardTerminology(data.items)
+    ? mergeBoardMemberFallbacks(members, fallbackMembers)
+    : members;
 }
 
 export function getClientApiBaseUrl() {

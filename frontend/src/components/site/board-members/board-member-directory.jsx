@@ -3,12 +3,14 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useMemo, useState } from "react";
 import { BoardCategoryNavigation } from "./board-category-navigation";
+import { BoardViewToggle } from "./board-view-toggle";
 import { MemberCard } from "./member-card";
 
 const allMembersKey = "all";
 
 export function BoardMemberDirectory({ groups, labels }) {
   const [selectedGroup, setSelectedGroup] = useState(allMembersKey);
+  const [mobileView, setMobileView] = useState("single");
   const shouldReduceMotion = useReducedMotion();
   const members = useMemo(
     () =>
@@ -51,19 +53,30 @@ export function BoardMemberDirectory({ groups, labels }) {
           id="board-member-panel"
           role="tabpanel"
         >
-          <div className="mb-8 border-b border-[#e8ebef] pb-5 sm:mb-10">
+          <div className="mb-8 flex items-center justify-between gap-5 border-b border-[#e8ebef] pb-5 sm:mb-10">
             <p className="font-heading text-2xl font-medium tracking-[-0.04em] text-[#14213d] sm:text-[1.75rem]">
               {activeTab.title}
             </p>
+            <BoardViewToggle
+              labels={labels.viewToggle}
+              onChange={setMobileView}
+              reduceMotion={shouldReduceMotion}
+              value={mobileView}
+            />
           </div>
 
           <div
-            className="grid min-w-0 items-start gap-x-7 gap-y-14 sm:grid-cols-2 sm:gap-y-18 xl:grid-cols-3 xl:gap-x-8 xl:gap-y-20"
+            className={`grid min-w-0 items-start transition-[gap] duration-200 sm:grid-cols-2 sm:gap-x-7 sm:gap-y-18 xl:grid-cols-3 xl:gap-x-8 xl:gap-y-20 ${
+              mobileView === "double"
+                ? "grid-cols-2 gap-x-3 gap-y-10"
+                : "grid-cols-1 gap-x-7 gap-y-14"
+            }`}
             data-board-group
           >
             {members.map((member, index) => (
               <MemberCard
                 index={index}
+                isCompact={mobileView === "double"}
                 isVisible={selectedGroup === allMembersKey || member.groupId === selectedGroup}
                 key={member.id}
                 member={member}
